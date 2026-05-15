@@ -4,7 +4,7 @@ Markdown stubs that describe and point at the user's real documents (passports, 
 
 ## Active files
 
-(none yet — add your first document stub to this folder)
+- [[passport]] — seeded course sample. Shows the canonical shape of a document stub.
 
 ## What goes here
 

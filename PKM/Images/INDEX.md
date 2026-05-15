@@ -24,7 +24,10 @@ The slug describes what is in the image. Avoid generic slugs like `screenshot` o
 
 ## Active files
 
-_(none yet — Penn saves images here as you share them)_
+- `2026/05/2026-05-04-dr-schmidt-business-card.png` — seeded course sample, embedded from [[dr-schmidt]].
+- `2026/05/2026-05-04-sample-screenshot.png` — seeded course sample, embedded from [[2026-05-04-first-day]].
+
+Penn saves further images here as you share them.
 
 ## Subfolders by year
 

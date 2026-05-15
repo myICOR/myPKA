@@ -12,7 +12,15 @@ The five life concepts. One file per concept. The wiki connects them via `[[wiki
 
 ## Active files
 
-(Dean is seeding sample files in each subsection - they will appear here after his pass.)
+Each subsection ships one seeded course sample, plus its own `INDEX.md`:
+
+- Topic — [[ai-tooling]]
+- Habit — [[morning-build-session]]
+- Goal — [[ship-mvp-by-q3]]
+- Project — [[side-project-mvp]]
+- Key Element — [[health]]
+
+These are worked examples the myICOR myPKA course walks through. They show the canonical shape each concept file follows — adapt them, or replace their contents with your own.
 
 ## Naming
 

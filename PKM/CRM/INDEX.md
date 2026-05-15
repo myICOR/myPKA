@@ -9,7 +9,10 @@ People and Organizations the user interacts with. Cross-linked into Journal entr
 
 ## Active files
 
-_(none yet — Penn adds entries here as people and organizations show up in the Journal)_
+- People: [[dr-schmidt]] — seeded course sample.
+- Organizations: [[dr-schmidt-clinic]] — seeded course sample.
+
+These two files plus the seeded Journal entry are the SSOT demo the course walks through — four files, one input, no duplication. Penn adds further entries here as people and organizations show up in the Journal.
 
 ## How the CRM stays in sync
 

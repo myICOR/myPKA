@@ -6,4 +6,12 @@ A Topic might link to a Habit. A Habit feeds a Goal. A Goal sits inside a Key El
 
 See [[INDEX]] for the full file listing in this section.
 
-The scaffold ships empty. Create your first Topic, Habit, Goal, Project, or Key Element by adding a markdown file to the matching folder. Use kebab-case filenames (e.g. `morning-walk.md`) and link between concepts with `[[wikilinks]]`.
+Each folder ships one seeded sample — the worked example the myICOR myPKA course walks through:
+
+- Topic: [[ai-tooling]]
+- Habit: [[morning-build-session]]
+- Goal: [[ship-mvp-by-q3]]
+- Project: [[side-project-mvp]]
+- Key Element: [[health]]
+
+Adapt a sample to your own life, or replace its contents and add your own files alongside it. Use kebab-case filenames (e.g. `morning-walk.md`) and link between concepts with `[[wikilinks]]`.

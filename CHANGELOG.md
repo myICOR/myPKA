@@ -2,6 +2,31 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [1.10.2] - 2026-05-15
+
+Restores the seeded sample content the myICOR myPKA course walks through. v1.10.x shipped the `PKM/My Life/`, `PKM/CRM/`, `PKM/Documents/`, `PKM/Journal/`, and `PKM/Images/` folders empty (`.gitkeep` placeholders), but the course curriculum references concrete files inside them by name — `morning-build-session.md`, `ship-mvp-by-q3.md`, and others. Learners following along found the files missing and assumed the download was broken. This release closes that gap. No folder structure, schema, or SOP changes — content only, so v1.10.x validation is unaffected.
+
+### Added
+
+- **`PKM/My Life/` concept samples** — one seeded file per subsection: `Topics/ai-tooling.md`, `Habits/morning-build-session.md`, `Goals/ship-mvp-by-q3.md`, `Projects/side-project-mvp.md`, `Key Elements/health.md`. Each is the canonical shape its concept follows and is cross-linked to the others via `[[wikilinks]]`.
+- **Per-subfolder `INDEX.md`** for each of the five `My Life` subsections (`Topics/`, `Habits/`, `Goals/`, `Projects/`, `Key Elements/`). The course (lesson "Habits — The Rhythms the Team Supports") references these directly.
+- **`PKM/CRM/` samples** — `People/dr-schmidt.md` and `Organizations/dr-schmidt-clinic.md`, the SSOT demo pair the course walks through.
+- **`PKM/Documents/passport.md`** — seeded document-stub sample.
+- **`PKM/Journal/2026/05/2026-05-04-first-day.md`** — seeded journal entry, the one referenced in the Dr. Schmidt demo.
+- **`PKM/Images/2026/05/`** — two seeded sample images (`2026-05-04-dr-schmidt-business-card.png`, `2026-05-04-sample-screenshot.png`), embedded by the CRM and Journal samples.
+- **Course-sample banner** — each seeded file opens with an Obsidian `[!example]` callout marking it as a worked sample to adapt or replace, so it is never mistaken for the learner's own content.
+
+### Changed
+
+- `PKM/My Life/INDEX.md`, `PKM/My Life/README.md` — replaced the "ships empty" / "Dean is seeding…" placeholder copy with the actual seeded-sample listing.
+- `PKM/Documents/INDEX.md`, `PKM/CRM/INDEX.md`, `PKM/Journal/INDEX.md`, `PKM/Images/INDEX.md` — "Active files" sections now list the seeded samples.
+- Removed `.gitkeep` placeholders from folders that now hold seeded content.
+
+### Version files
+
+- `VERSION` → `1.10.2`
+- `.scaffold-version` → `1.10.2`
+
 ## [1.10.1] - 2026-05-10
 
 Wires v1.10.0's task system and journal SOPs into the agent contracts. v1.10.0 shipped the folder structure, templates, validation script, and 8 SOPs — but the AGENTS.md files were not updated, which meant the boot-walk and journal-read only happened if the LLM discovered the SOPs on its own. v1.10.1 closes that gap. No new SOPs, no new folders, no new behaviors — only contract-level wiring of what v1.10.0 already shipped.
