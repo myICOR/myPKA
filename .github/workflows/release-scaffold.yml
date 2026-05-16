@@ -2,9 +2,18 @@
 # ---------------------------------------------------------------------------
 # On a `v<semver>` scaffold tag:
 #   build deterministic scaffold ZIP + per-version scaffold-manifest.json ->
-#   upload both to ai-library-packs under immutable keys -> upsert the
-#   discovery-index row (item_type 'mypka_scaffold') via the expansion-release
-#   edge function -> create a GitHub Release.
+#   ask the expansion-release edge function for signed UPLOAD urls -> PUT both
+#   artifacts straight to Storage -> call the edge function to publish (verify
+#   + upsert the discovery-index row, item_type 'mypka_scaffold') -> create a
+#   GitHub Release.
+#
+# SECURITY (AUTO-36 §4): CI NEVER holds the Supabase service-role key. The
+# edge function is the only service-role holder; CI talks only to the edge
+# function with a shared secret, and uploads via short-lived signed upload
+# URLs the function mints (those URLs need no service-role key to use).
+# The scaffold ZIP is ~12.6 MB — too large to stream through an Edge Function
+# request body — so the signed-upload-URL path is also a hard requirement,
+# not just a security choice.
 #
 # The scaffold-manifest.json (per-file sha256 map) is the classifier the
 # `mypka update` scaffold-merge depends on (AUTO-36 §5.6.1).
@@ -13,12 +22,15 @@
 # pipeline adds the Storage-backed, IC-gated delivery path; it does not
 # replace the public release. Both coexist.
 #
-# CREDENTIALS — repo secrets required (workflow is INERT and fails fast at
-# the guard step until all three exist; it changes nothing meanwhile):
-#   SUPABASE_URL              e.g. https://fgyukrumymzgsfeadvio.supabase.co
-#   SUPABASE_SERVICE_ROLE_KEY service-role key for the Storage upload
-#   EXPANSION_RELEASE_SECRET  shared secret for the expansion-release fn
-# See the AUTO-39 report for the exact provisioning spec.
+# CREDENTIALS — repo secret required (workflow is INERT and fails fast at the
+# guard step until it exists; it changes nothing meanwhile):
+#   EXPANSION_RELEASE_SECRET   shared secret for the expansion-release fn
+# SUPABASE_URL is a non-secret repo variable (or the default below).
+# NO service-role key, NO DB credentials in CI.
+#
+# PREREQUISITE: the ai-library-packs bucket file_size_limit must be >= the
+# scaffold ZIP size (~13 MB). It is currently 10 MB — Tom must raise it
+# before the first scaffold release (see the AUTO-38/39 revision report).
 #
 # Tag format:  v<semver>     e.g.  v1.10.3
 # ---------------------------------------------------------------------------
@@ -36,6 +48,9 @@ concurrency:
 permissions:
   contents: write          # create the GitHub Release
 
+env:
+  SUPABASE_URL: ${{ vars.SUPABASE_URL || 'https://fgyukrumymzgsfeadvio.supabase.co' }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -45,22 +60,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Guard — credentials present
+      - name: Guard — release secret present
         env:
-          SB_URL: ${{ secrets.SUPABASE_URL }}
-          SB_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           REL_SECRET: ${{ secrets.EXPANSION_RELEASE_SECRET }}
         run: |
-          missing=""
-          [ -z "$SB_URL" ]     && missing="$missing SUPABASE_URL"
-          [ -z "$SB_KEY" ]     && missing="$missing SUPABASE_SERVICE_ROLE_KEY"
-          [ -z "$REL_SECRET" ] && missing="$missing EXPANSION_RELEASE_SECRET"
-          if [ -n "$missing" ]; then
-            echo "::error::Missing repo secret(s):$missing"
-            echo "::error::The scaffold release pipeline is inert until these are set."
+          if [ -z "$REL_SECRET" ]; then
+            echo "::error::Missing repo secret EXPANSION_RELEASE_SECRET."
+            echo "::error::The scaffold release pipeline is inert until it is set."
             exit 1
           fi
-          echo "All release credentials present."
+          echo "Release secret present."
 
       - name: Parse tag → version
         id: tag
@@ -68,8 +77,7 @@ jobs:
           set -euo pipefail
           VERSION="${GITHUB_REF_NAME#v}"
           if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "::error::Tag '${GITHUB_REF_NAME}' is not v<semver>"
-            exit 1
+            echo "::error::Tag '${GITHUB_REF_NAME}' is not v<semver>"; exit 1
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Releasing scaffold version $VERSION"
@@ -82,8 +90,7 @@ jobs:
           if [ -f VERSION ]; then
             FV=$(tr -d '[:space:]' < VERSION)
             if [ "$FV" != "$TAG_VERSION" ]; then
-              echo "::error::VERSION file ($FV) != tag version ($TAG_VERSION)"
-              exit 1
+              echo "::error::VERSION file ($FV) != tag version ($TAG_VERSION)"; exit 1
             fi
             echo "VERSION file matches tag."
           else
@@ -97,61 +104,61 @@ jobs:
           chmod +x scripts/build-scaffold-release.sh
           scripts/build-scaffold-release.sh "${{ steps.tag.outputs.version }}" dist
 
-      - name: Upload scaffold ZIP to Storage (immutable key)
-        id: upload_zip
+      - name: Request signed upload URLs from the edge function
+        id: mint
         env:
-          SB_URL: ${{ secrets.SUPABASE_URL }}
-          SB_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          VERSION: ${{ steps.tag.outputs.version }}
-          ZIP: ${{ steps.build.outputs.zip }}
-        run: |
-          set -euo pipefail
-          KEY="scaffold/mypka-scaffold-v${VERSION}.zip"
-          echo "Uploading to ai-library-packs/${KEY}"
-          HTTP=$(curl -sS -o /tmp/up.out -w '%{http_code}' \
-            -X POST "${SB_URL}/storage/v1/object/ai-library-packs/${KEY}" \
-            -H "Authorization: Bearer ${SB_KEY}" \
-            -H "apikey: ${SB_KEY}" \
-            -H "Content-Type: application/zip" \
-            -H "x-upsert: false" \
-            --data-binary "@${ZIP}")
-          if [ "$HTTP" != "200" ] && [ "$HTTP" != "201" ]; then
-            echo "::error::ZIP upload failed (HTTP $HTTP):"; cat /tmp/up.out || true
-            echo "::error::If the key exists, this version was already released — bump it."
-            exit 1
-          fi
-          echo "file_url=$KEY" >> "$GITHUB_OUTPUT"
-
-      - name: Upload scaffold-manifest.json to Storage (immutable key)
-        env:
-          SB_URL: ${{ secrets.SUPABASE_URL }}
-          SB_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          VERSION: ${{ steps.tag.outputs.version }}
-          MANIFEST: ${{ steps.build.outputs.manifest }}
-        run: |
-          set -euo pipefail
-          # Sibling object so `mypka update` can fetch the per-version
-          # classifier without downloading the whole ZIP.
-          KEY="scaffold/mypka-scaffold-v${VERSION}-manifest.json"
-          HTTP=$(curl -sS -o /tmp/up.out -w '%{http_code}' \
-            -X POST "${SB_URL}/storage/v1/object/ai-library-packs/${KEY}" \
-            -H "Authorization: Bearer ${SB_KEY}" \
-            -H "apikey: ${SB_KEY}" \
-            -H "Content-Type: application/json" \
-            -H "x-upsert: false" \
-            --data-binary "@${MANIFEST}")
-          if [ "$HTTP" != "200" ] && [ "$HTTP" != "201" ]; then
-            echo "::error::Manifest upload failed (HTTP $HTTP):"; cat /tmp/up.out || true
-            exit 1
-          fi
-          echo "Uploaded ${KEY}"
-
-      - name: Upsert discovery-index row via expansion-release edge function
-        env:
-          SB_URL: ${{ secrets.SUPABASE_URL }}
           REL_SECRET: ${{ secrets.EXPANSION_RELEASE_SECRET }}
           VERSION: ${{ steps.tag.outputs.version }}
-          FILE_URL: ${{ steps.upload_zip.outputs.file_url }}
+        run: |
+          set -euo pipefail
+          ZIP_KEY="scaffold/mypka-scaffold-v${VERSION}.zip"
+          MAN_KEY="scaffold/mypka-scaffold-v${VERSION}-manifest.json"
+          mint() {
+            local key="$1"
+            local http
+            http=$(curl -sS -o /tmp/mint.json -w '%{http_code}' \
+              -X POST "${SUPABASE_URL}/functions/v1/expansion-release" \
+              -H "X-Release-Secret: ${REL_SECRET}" \
+              -H "Content-Type: application/json" \
+              -d "{\"action\":\"mint-upload-url\",\"object_key\":\"${key}\"}")
+            if [ "$http" != "200" ]; then
+              echo "::error::Could not mint upload URL for ${key} (HTTP $http):" >&2
+              cat /tmp/mint.json >&2; echo >&2
+              echo "::error::HTTP 409 = this version was already released; bump the version." >&2
+              exit 1
+            fi
+            python3 -c 'import json;print(json.load(open("/tmp/mint.json"))["signed_url"])'
+          }
+          ZIP_URL=$(mint "$ZIP_KEY")
+          MAN_URL=$(mint "$MAN_KEY")
+          echo "zip_key=$ZIP_KEY"   >> "$GITHUB_OUTPUT"
+          echo "man_key=$MAN_KEY"   >> "$GITHUB_OUTPUT"
+          echo "zip_url=$ZIP_URL"   >> "$GITHUB_OUTPUT"
+          echo "man_url=$MAN_URL"   >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifacts to Storage via signed URLs (no service-role key)
+        run: |
+          set -euo pipefail
+          put() {
+            local url="$1" file="$2" ctype="$3"
+            local http
+            http=$(curl -sS -o /tmp/up.out -w '%{http_code}' \
+              -X PUT "${url}" -H "Content-Type: ${ctype}" --data-binary "@${file}")
+            if [ "$http" != "200" ] && [ "$http" != "201" ]; then
+              echo "::error::Upload failed for ${file} (HTTP $http):"; cat /tmp/up.out || true
+              exit 1
+            fi
+          }
+          put "${{ steps.mint.outputs.zip_url }}" "${{ steps.build.outputs.zip }}"      "application/zip"
+          put "${{ steps.mint.outputs.man_url }}" "${{ steps.build.outputs.manifest }}" "application/json"
+          echo "Uploaded scaffold ZIP + manifest."
+
+      - name: Publish — verify upload + upsert discovery row
+        env:
+          REL_SECRET: ${{ secrets.EXPANSION_RELEASE_SECRET }}
+          VERSION: ${{ steps.tag.outputs.version }}
+          FILE_URL: ${{ steps.mint.outputs.zip_key }}
+          MAN_KEY: ${{ steps.mint.outputs.man_key }}
           ZIP_SHA: ${{ steps.build.outputs.zip_sha256 }}
           ZIP_SIZE: ${{ steps.build.outputs.zip_size }}
           MANIFEST_SHA: ${{ steps.build.outputs.manifest_sha256 }}
@@ -160,6 +167,7 @@ jobs:
           python3 - <<'PY' > /tmp/payload.json
           import json, os
           payload = {
+              "action": "publish",
               "item_type": "mypka_scaffold",
               "slug": "mypka-system",
               "version": os.environ["VERSION"],
@@ -167,23 +175,20 @@ jobs:
               "file_name": f'mypka-scaffold-v{os.environ["VERSION"]}.zip',
               "file_size_bytes": int(os.environ["ZIP_SIZE"]),
               "zip_sha256": os.environ["ZIP_SHA"],
-              # config_json records the manifest hash so the discovery index
-              # carries a pointer to the per-version scaffold-manifest.json.
               "config_json": {
                   "scaffold_manifest_sha256": os.environ["MANIFEST_SHA"],
-                  "scaffold_manifest_key":
-                      f'scaffold/mypka-scaffold-v{os.environ["VERSION"]}-manifest.json',
+                  "scaffold_manifest_key": os.environ["MAN_KEY"],
               },
           }
           print(json.dumps(payload))
           PY
           HTTP=$(curl -sS -o /tmp/fn.out -w '%{http_code}' \
-            -X POST "${SB_URL}/functions/v1/expansion-release" \
+            -X POST "${SUPABASE_URL}/functions/v1/expansion-release" \
             -H "X-Release-Secret: ${REL_SECRET}" \
             -H "Content-Type: application/json" \
             --data-binary "@/tmp/payload.json")
-          echo "edge function responded HTTP $HTTP:"; cat /tmp/fn.out; echo
-          [ "$HTTP" = "200" ] || { echo "::error::Discovery-index upsert failed."; exit 1; }
+          echo "publish responded HTTP $HTTP:"; cat /tmp/fn.out; echo
+          [ "$HTTP" = "200" ] || { echo "::error::Publish failed."; exit 1; }
 
       - name: Create GitHub Release (attach ZIP + manifest)
         env:
@@ -203,7 +208,6 @@ jobs:
             \`scaffold/mypka-scaffold-v${VERSION}-manifest.json\`.
 
           See CHANGELOG.md for details."
-          # --clobber so re-running the tag updates assets idempotently.
           gh release create "$TAG" "$ZIP" "$MANIFEST" \
             --title "myPKA scaffold v${VERSION}" \
             --notes "$NOTES" \
@@ -215,5 +219,6 @@ jobs:
             echo "### myPKA scaffold v${{ steps.tag.outputs.version }} released"
             echo "- ZIP sha256: \`${{ steps.build.outputs.zip_sha256 }}\`"
             echo "- manifest sha256: \`${{ steps.build.outputs.manifest_sha256 }}\`"
-            echo "- Storage key: \`${{ steps.upload_zip.outputs.file_url }}\`"
+            echo "- Storage key: \`${{ steps.mint.outputs.zip_key }}\`"
+            echo "- CI held no service-role key (signed-upload-URL path)."
           } >> "$GITHUB_STEP_SUMMARY"
