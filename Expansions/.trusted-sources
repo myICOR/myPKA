@@ -27,3 +27,8 @@ slack@1.0.2 sha256=dfdbb0e37117d88322638cac5825d4d13ff4ae61b2d7909238218c17bc3e3
 #     quarantine clear; packaging/docs only, no runtime change — Vex GREEN carries
 #     over from the v1.0.2 audit) ---
 slack@1.0.3 sha256=6b5d09ad46328af92e7e6d99706033af2304b13825de00ad391691f617756260
+
+# --- Re-pinned 2026-05-16 (AUTO-34: app-developer packaging release v1.0.2 — folder=slug,
+#     per-agent journal/ templates, version/requires_agents drift fix. Packaging-only:
+#     no agent behavior, SOP content, or routing change. Expedited re-pin precedent applies.) ---
+app-developer@1.0.2 sha256=4a905d86bf89839fe7631a58e91290b87e6dcc0833e4ba6ac7bd0740ecb66ede
