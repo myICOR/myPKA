@@ -20,6 +20,10 @@ Restores the seeded sample content the myICOR myPKA course walks through. v1.10.
 
 - `PKM/My Life/INDEX.md`, `PKM/My Life/README.md` — replaced the "ships empty" / "Dean is seeding…" placeholder copy with the actual seeded-sample listing.
 - `PKM/Documents/INDEX.md`, `PKM/CRM/INDEX.md`, `PKM/Journal/INDEX.md`, `PKM/Images/INDEX.md` — "Active files" sections now list the seeded samples.
+
+### Trust registry
+
+- `Expansions/.trusted-sources` — pinned `slack@1.0.3` (`sha256=6b5d09ad46328af92e7e6d99706033af2304b13825de00ad391691f617756260`). Slack Expansion v1.0.3 is a packaging/docs-only release (JSON manifest, `slack/` folder rename, `install.sh` quarantine clear); `runtime/index.js` is byte-identical to v1.0.2, so Vex's GREEN audit carries over. Restores the WS-003 §2 trust check to GREEN (silent auto-trust) for v1.0.3 installs. Existing `app-developer@1.0.1` and `slack@1.0.2` entries retained. (AUTO-26)
 - Removed `.gitkeep` placeholders from folders that now hold seeded content.
 
 ### Version files
