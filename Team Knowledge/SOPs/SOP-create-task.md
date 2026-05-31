@@ -3,11 +3,13 @@
 - **Owner:** any agent
 - **Triggered by:** an agent or the user identifying a unit of work that won't finish this turn and should be picked up later
 - **Output:** a new file in `Team Knowledge/tasks/open/`
-- **References:** [[SOP-rebuild-task-index]], [[SOP-claim-task]], [[GL-001-file-naming-conventions]]
+- **References:** [[SOP-rebuild-task-index]], [[SOP-claim-task]], [[GL-001-file-naming-conventions]], [[GL-004-task-resource-linking]]
 
 ## Purpose
 
-A task is a **resumption point**. Whoever opens this file later — Tom, the assignee, a different agent — should be able to reconstruct the full working context one wikilink away. Creating a task well means making that resumption easy. The discipline of populating cross-references at creation is the whole job.
+A task is a **resumption point**. Whoever opens this file later — the user, the assignee, a different agent — should be able to reconstruct the full working context one wikilink away. Creating a task well means making that resumption easy. The discipline of populating cross-references at creation is the whole job.
+
+A task is also the **owning artifact for its working deliverables**. A Deliverables folder by itself is a working surface with no clean record of which workflow owns it. The owning task is the one place that record lives. See [[GL-004-task-resource-linking]].
 
 ## When to call this
 
@@ -30,7 +32,7 @@ If those three are true, create a task. Otherwise just do it now.
 | Source | no | Where the request originated. |
 | Parent | no | Task id of the parent if this is a sub-task. |
 | Due date | no | ISO date. |
-| **Cross-references** | **yes (each may be empty)** | The six `linked_*` arrays. See step 5 below. |
+| **Cross-references** | **yes (each may be empty)** | The seven `linked_*` arrays. See step 4 below. |
 
 ## Steps
 
@@ -63,16 +65,17 @@ FILENAME="${ID}-${SLUG}.md"
 
 ### 4. Confront the cross-references (the heart of this SOP)
 
-Before writing the file, walk through the six reference types and decide what applies. Empty arrays are valid; the discipline is doing the walk, not finding something to put in every slot.
+Before writing the file, walk through the **seven** reference types and decide what applies. Empty arrays are valid; the discipline is doing the walk, not finding something to put in every slot. See [[GL-004-task-resource-linking]] for the one-way rule and slug formats.
 
 | Reference type | Ask yourself |
 |---|---|
 | `linked_sops` | Is there an existing procedure in `Team Knowledge/SOPs/` that governs this kind of work? List the basenames. |
 | `linked_workstreams` | Is there an active arc in `Team Knowledge/Workstreams/` that this fits inside? |
 | `linked_guidelines` | Are there standards in `Team Knowledge/Guidelines/` that constrain how this should be done? |
-| `linked_my_life` | Is there a Topic / Habit / Goal / Project / Key Element in `PKM/My Life/` that gives Tom's context for why this is happening? |
+| `linked_my_life` | Is there a Topic / Habit / Goal / Project / Key Element in `PKM/My Life/` that gives the user's context for why this is happening? |
 | `linked_session_logs` | Which session(s) birthed or touched this? At minimum, the session you're in right now. |
 | `linked_journal_entries` | Has the assignee (or anyone) written a journal entry that's relevant prior learning? Especially if the assignee is going to read this cold later. |
+| `linked_deliverables` | Does this task have working artifacts in `Deliverables/`? Workups, manifests, briefs, drafts, attachments? List every single one. If the task births new deliverables later, **append them to `linked_deliverables` mid-work, do not wait for close** — the task is the one place that owns the deliverable→workflow link. |
 
 For each, list basenames. Use grep when uncertain:
 
@@ -83,18 +86,21 @@ ls "Team Knowledge/Guidelines/"
 find "PKM/My Life" -name "*.md" | grep -i <keyword>
 find "Team Knowledge/session-logs" -name "*.md" | tail -5
 find "Team" -path "*/journal/*.md" | grep -i <keyword>
+ls "Deliverables/" | grep -i <keyword>           # for linked_deliverables
 ```
+
+Slug format for `linked_deliverables`: per [[GL-004-task-resource-linking]] — `<folder-slug>/<file-slug>` for sub-files inside a multi-file Deliverables folder, or `<folder-slug>` when pointing at the folder as a whole, or `<folder-slug>/manifest` when pointing at the manifest of a multi-file folder.
 
 ### 5. Write the file
 
 Copy `Team Knowledge/tasks/_template.md` to `Team Knowledge/tasks/open/${FILENAME}`. Fill in:
 
 - All identity, ownership, status, time, provenance fields
-- All six `linked_*` arrays (use `[]` if genuinely none — but only after walking step 4)
+- All **seven** `linked_*` arrays (use `[]` if genuinely none — but only after walking step 4)
 - Tags
 - Body: `## What this is`, `## Context one click away`, `## Success criteria`, `## Updates`
 
-The `## Context one click away` section in the body must mirror the frontmatter `linked_*` arrays as `[[wikilinks]]` — that's how the human reader gets one-click navigation. Frontmatter is for machine reading; body wikilinks are for humans. Both populated, kept in sync.
+The `## Context one click away` section in the body must mirror the frontmatter `linked_*` arrays as `[[wikilinks]]` — that's how the human reader gets one-click navigation. For `linked_deliverables`, use the `Working artifacts:` sub-bullet pattern in the template. Frontmatter is for machine reading; body wikilinks are for humans. Both populated, kept in sync.
 
 `created` and `updated` are RFC3339 UTC: `date -u +%Y-%m-%dT%H:%M:%SZ`.
 
@@ -114,10 +120,10 @@ Tell the calling user/agent:
 
 ```
 Created [[<id>-<slug>]] (priority <N>, assignee <name>).
-Cross-refs: <count of populated linked_* arrays> populated.
+Cross-refs: <count of populated linked_* arrays>/7 populated.
 ```
 
-## Worked example
+## Worked example (minimal — no deliverables yet)
 
 User to Larry: "Mack, the mux-webhook is throwing 401s — please look into MUX_WEBHOOK_SECRET drift."
 
@@ -136,9 +142,10 @@ Step 4 — Larry walks the cross-references:
 - `linked_sops` — `[SOP-claim-task]` (Mack will follow this when picking up).
 - `linked_workstreams` — `[]` (no active workstream covers this; it's a one-off fire).
 - `linked_guidelines` — `[]` (no standards apply; it's a config drift fix).
-- `linked_my_life` — `[]` (this is internal infrastructure, not Tom's life context).
+- `linked_my_life` — `[]` (this is internal infrastructure, not user life context).
 - `linked_session_logs` — `[2026-05-09-22-30_larry_video-launch-coordination]` (the session it surfaced in).
 - `linked_journal_entries` — `[]` (Mack hasn't written a webhook journal entry yet — this task may birth one).
+- `linked_deliverables` — `[]` (no working artifacts yet; this is a fix-in-place task, not a multi-file workup).
 
 File written to `Team Knowledge/tasks/open/tsk-2026-05-09-001-mux-webhook-401.md`:
 
@@ -163,6 +170,7 @@ linked_guidelines: []
 linked_my_life: []
 linked_session_logs: [2026-05-09-22-30_larry_video-launch-coordination]
 linked_journal_entries: []
+linked_deliverables: []
 tags: [infrastructure, mux, urgent]
 ---
 
@@ -187,7 +195,67 @@ The mux-webhook endpoint started returning 401 mid-launch. Suspected MUX_WEBHOOK
 _(filled when status flips to done)_
 ```
 
-Then `SOP-rebuild-task-index` and report: `Created [[tsk-2026-05-09-001-mux-webhook-401]] (priority 1, assignee mack). Cross-refs: 2 populated (linked_sops, linked_session_logs).`
+Then `SOP-rebuild-task-index` and report: `Created [[tsk-2026-05-09-001-mux-webhook-401]] (priority 1, assignee mack). Cross-refs: 2/7 populated (linked_sops, linked_session_logs).`
+
+## Worked example (with `linked_deliverables` populated)
+
+User to Larry: "Mack, install a new MCP server — there's a workup in Deliverables already, plus a security check pending."
+
+Mack identifies the task wraps four working artifacts already on disk under `Deliverables/2026-05-12-mcp-install/`. The seven-array walk produces:
+
+```yaml
+---
+id: tsk-2026-05-12-001
+title: "Install <name> MCP (workup → security check → keys → install → smoke test)"
+assignee: mack
+priority: 2
+status: open
+blocked_reason: awaiting security re-verification + user API keys
+blocked_by: null
+created: 2026-05-12T12:56:20Z
+updated: 2026-05-12T18:30:00Z
+due: null
+created_by: mack
+source: larry-brief-2026-05-12
+parent: null
+linked_sops:
+  - SOP-create-task
+  - SOP-claim-task
+  - SOP-close-task
+  - SOP-write-session-log
+linked_workstreams:
+  - WS-003-install-an-expansion
+linked_guidelines:
+  - GL-004-task-resource-linking
+linked_my_life: []
+linked_session_logs:
+  - 2026-05-12-23-15_nolan_shim-tool-allowlist-audit
+linked_journal_entries: []
+linked_deliverables:
+  - 2026-05-12-mcp-install/workup
+  - 2026-05-12-mcp-install/workup-v2
+  - 2026-05-12-mcp-install/shim-amendments
+  - 2026-05-12-mcp-install/user-checklist
+tags: [mcp, install, ws-003, blocked-on-user-keys]
+---
+```
+
+The body's `## Context one click away` block mirrors:
+
+```markdown
+- Procedure (install): [[WS-003-install-an-expansion]]
+- Procedure (task moves): [[SOP-claim-task]], [[SOP-close-task]]
+- Procedure (session-log at install): [[SOP-write-session-log]]
+- Guideline: [[GL-004-task-resource-linking]]
+- Most recent context: [[2026-05-12-23-15_nolan_shim-tool-allowlist-audit]]
+- Working artifacts:
+  - [[workup]]
+  - [[workup-v2]]
+  - [[shim-amendments]]
+  - [[user-checklist]]
+```
+
+Report back: `Created [[tsk-2026-05-12-001-install-mcp]] (priority 2, assignee mack). Cross-refs: 5/7 populated (sops, workstreams, guidelines, session_logs, deliverables).`
 
 ## Common mistakes
 
@@ -198,3 +266,5 @@ Then `SOP-rebuild-task-index` and report: `Created [[tsk-2026-05-09-001-mux-webh
 - Putting the assignee in the body instead of the frontmatter. Frontmatter is the source of truth for routing.
 - Listing wikilinks in the body but forgetting to mirror them in `linked_*` frontmatter (or vice versa). They have to match.
 - Wrapping basenames in `[[...]]` inside YAML frontmatter — Obsidian doesn't render YAML wikilinks reliably. YAML uses bare basenames; the body uses `[[basename]]`.
+- **Adding `linked_tasks` to a resource** (deliverable / journal / session log / SOP / WS / GL / My Life entry). Pre-GL-004 violation. The link is one-way: task→resource, never the reverse. See [[GL-004-task-resource-linking]].
+- **Forgetting to add a deliverable to `linked_deliverables` when you create it mid-task.** The task is the *only* place a deliverable's owning workflow is recorded. If you wrote a workup at 2pm and forgot to append it to the task's `linked_deliverables` until close, the deliverable was orphan for the entire afternoon — anyone resuming the task in between had no way to find it from frontmatter.

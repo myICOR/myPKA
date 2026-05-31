@@ -3,7 +3,7 @@
 - **Owner:** the agent picking up the task
 - **Triggered by:** an agent starting work on an open task, hitting a blocker mid-work, or recording that a blocker has cleared
 - **Output:** task file moved from `open/` to `in-progress/` (claim), or frontmatter updated in place (block/unblock)
-- **References:** [[SOP-rebuild-task-index]], [[SOP-close-task]], [[SOP-read-own-journal]]
+- **References:** [[SOP-rebuild-task-index]], [[SOP-close-task]], [[SOP-read-own-journal]], [[GL-004-task-resource-linking]]
 
 ## Purpose
 
@@ -21,13 +21,14 @@ Blocking and unblocking are not state changes — they're frontmatter edits in p
 
 ### Pre-flight: read the cross-references
 
-Before moving the file, open it and read the `linked_*` arrays. The task creator already identified the relevant SOPs, Workstreams, Guidelines, my-life entries, session logs, and journal entries. Read at least:
+Before moving the file, open it and read the seven `linked_*` arrays. The task creator already identified the relevant SOPs, Workstreams, Guidelines, my-life entries, session logs, journal entries, and deliverables. Read at least:
 
 - The first entry in `linked_sops` if any (the procedure that governs this work).
 - All `linked_journal_entries` (your prior learning that applies).
 - The most recent `linked_session_logs` (where this came up and why).
+- Every `linked_deliverables` entry (the working artifacts already in flight — workups, drafts, manifests). These are where the work-in-progress lives; skipping them means re-doing what's already done.
 
-This is the resumption move. Skip it and you start cold.
+This is the resumption move. Skip it and you start cold. See [[GL-004-task-resource-linking]] for the slug format.
 
 ### Steps
 
@@ -73,7 +74,7 @@ You're working a task in `in-progress/` and hit something you can't resolve righ
 
 2. **Edit frontmatter:**
    ```yaml
-   blocked_reason: "Waiting on Vercel env var rotation by Tom — unblock when MUX_WEBHOOK_SECRET is set in production env"
+   blocked_reason: "Waiting on Vercel env var rotation by the user — unblock when MUX_WEBHOOK_SECRET is set in production env"
    blocked_by: null         # or a task basename if the blocker is itself a task
    updated: 2026-05-10T11:42:00Z
    ```
@@ -88,7 +89,7 @@ You're working a task in `in-progress/` and hit something you can't resolve righ
 
 4. **Append to `## Updates`:**
    ```
-   - 2026-05-10 11:42 (mack) — blocked: waiting on Vercel env var rotation by Tom; unblock condition: MUX_WEBHOOK_SECRET set in prod env
+   - 2026-05-10 11:42 (mack) — blocked: waiting on Vercel env var rotation by the user; unblock condition: MUX_WEBHOOK_SECRET set in prod env
    ```
 
 5. **Rebuild the index.** The rebuild's "BLOCKED" callout will surface this in the in-progress section.
@@ -134,7 +135,7 @@ Mack runs [[SOP-list-open-tasks]] and sees:
 [priority 1] tsk-2026-05-09-001-mux-webhook-401 — assignee: mack
 ```
 
-Pre-flight: opens the file, reads `linked_sops: [SOP-claim-task]`, `linked_session_logs: [2026-05-09-22-30_larry_video-launch-coordination]`, `linked_journal_entries: []`. Walks the session log to recover the launch context.
+Pre-flight: opens the file, reads `linked_sops: [SOP-claim-task]`, `linked_session_logs: [2026-05-09-22-30_larry_video-launch-coordination]`, `linked_journal_entries: []`, `linked_deliverables: []`. Walks the session log to recover the launch context.
 
 Claims:
 
@@ -154,7 +155,7 @@ Runs [[SOP-rebuild-task-index]]. Reports back: `Claimed [[tsk-2026-05-09-001-mux
 ## Common mistakes
 
 - Using `mv` instead of `git mv`. Loses history attribution.
-- Skipping pre-flight and reading the cross-references. The whole point of `linked_*` is to be read at claim time, not at create time only.
+- Skipping pre-flight and reading the cross-references. The whole point of `linked_*` is to be read at claim time, not at create time only. **Including `linked_deliverables`** — skipping it means re-discovering working artifacts that already exist.
 - Editing `status:` in frontmatter without moving the file. Now folder and frontmatter disagree. Validation script catches it but agents downstream see stale data.
 - Setting `blocked_reason` without a concrete unblock condition. If the unblock isn't concrete, the task should be cancelled instead.
 - Moving a blocked task into a separate `blocked/` folder. There is no `blocked/` folder. Blocking is a frontmatter edit; the file stays in `in-progress/`.

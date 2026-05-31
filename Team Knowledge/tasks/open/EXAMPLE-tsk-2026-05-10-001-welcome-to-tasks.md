@@ -25,10 +25,11 @@ parent: null
 # Cross-references — three populated to show the pattern
 linked_sops: [SOP-create-task, SOP-claim-task, SOP-close-task, SOP-rebuild-task-index]
 linked_workstreams: []
-linked_guidelines: [GL-001-file-naming-conventions]
+linked_guidelines: [GL-001-file-naming-conventions, GL-004-task-resource-linking]
 linked_my_life: []
 linked_session_logs: []
 linked_journal_entries: []
+linked_deliverables: []
 
 # Tagging
 tags: [scaffold, onboarding]
@@ -45,6 +46,7 @@ This is a seed task included with the scaffold so you can see what a real task f
 - Procedure for closing this: [[SOP-close-task]]
 - Procedure for keeping the index fresh: [[SOP-rebuild-task-index]]
 - Naming standards: [[GL-001-file-naming-conventions]]
+- Linking rule: [[GL-004-task-resource-linking]]
 
 ## Success criteria
 - You read this file and understand the resumption-point principle: a task is a place to pick up from, with all relevant context one wikilink away.
@@ -55,7 +57,7 @@ This is a seed task included with the scaffold so you can see what a real task f
 - Task ids follow `tsk-YYYY-MM-DD-NNN`. NNN is a per-day counter.
 - Filename is `<id>-<kebab-slug>.md`. The id is canonical; the slug is human-helpful.
 - Cross-reference any task with a basename wikilink: `[[tsk-2026-05-09-001-mux-webhook-401]]`. Never include the path — folders change as tasks move.
-- The six `linked_*` arrays in frontmatter are required. Empty arrays are valid. The discipline of confronting "is there a relevant SOP/workstream/guideline/my-life-entry/session-log/journal-entry?" at creation is the whole design.
+- The seven `linked_*` arrays in frontmatter are required. Empty arrays are valid. The discipline of confronting "is there a relevant SOP / workstream / guideline / my-life-entry / session-log / journal-entry / deliverable?" at creation is the whole design. See [[GL-004-task-resource-linking]] for the one-way Task → Resource rule.
 - The `INDEX.md` in this folder is auto-generated. Don't edit it by hand.
 
 ## Updates

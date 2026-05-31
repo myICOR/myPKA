@@ -2,6 +2,38 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [2.2.0] - 2026-05-26
+
+**Adds the one-way Task → Resource linking rule and its `linked_deliverables` slot.** A task now carries seven `linked_*` arrays in its frontmatter — the new `linked_deliverables` joins `linked_sops`, `linked_workstreams`, `linked_guidelines`, `linked_my_life`, `linked_session_logs`, `linked_journal_entries` — and the task is the one place that records which deliverable folder a workflow owns. When a task closes (done or cancelled), every deliverable in its `linked_deliverables` cascades into `Deliverables/_archive/<YYYY>/<MM>/`. Resources (deliverables, journal entries, session logs, SOPs, Workstreams, Guidelines, My Life entries) never carry a back-pointer to a task — the link is one-way. Additive, non-breaking; existing tasks need a one-line frontmatter addition (see Migration).
+
+### Added
+
+- **`GL-004-task-resource-linking.md`** in `Team Knowledge/Guidelines/`. The canonical rule: task → resource, never the reverse. Defines what counts as a resource, the seven-array frontmatter contract, the `linked_deliverables` slug format (`<folder-slug>/<file-slug>` or `<folder-slug>`), the archive-on-close cascade, the sharing escape hatch for deliverables referenced by multiple tasks, and the orphan-deliverable rule.
+- **`linked_deliverables: []`** field in `Team Knowledge/tasks/_template.md`. The seventh `linked_*` array. The template's `## Context one click away` body section gains a `Working artifacts:` sub-bullet group that mirrors the array.
+- **`Deliverables/_archive/.gitkeep`** — seeds the archive folder so it ships in the scaffold on first clone.
+- **Lifecycle section in `Deliverables/README.md`** — documents the archive-on-close cascade, the orphan-deliverable rule, and the shared-deliverable behavior. Wikilinks to GL-004 and SOP-close-task.
+
+### Changed
+
+- **`Team Knowledge/SOPs/SOP-create-task.md`** bumped to v1.1. Step 4's cross-reference walk table gains a `linked_deliverables` row. "Six linked_* arrays" copy bumps to "seven" throughout (inputs table, step 4 paragraph, step 5 bullet, common-mistakes section). A second worked example shows a task with `linked_deliverables` populated (the minimal mux-webhook example stays as-is for the empty-arrays case). References list adds `[[GL-004-task-resource-linking]]`.
+- **`Team Knowledge/SOPs/SOP-close-task.md`** bumped to v1.1. New §A.3 pre-flight step: check deliverable sharing across other open/in-progress tasks before archiving. New §A.8 / §B.5 archive steps: move each `linked_deliverables` folder to `Deliverables/_archive/<YYYY>/<MM>/`. The "move the folder, not the file" rule is documented. The `## Outcome` shape gains an `Archived deliverables:` line. A second worked example walks the archive-on-close path; the original mux-webhook example stays as the no-deliverables case. References list adds `[[GL-004-task-resource-linking]]` and `[[SOP-002-convert-mypka-to-sqlite]]`.
+- **`Team Knowledge/SOPs/SOP-claim-task.md`** — small update. Pre-flight read list adds `linked_deliverables` ("the working artifacts already in flight — skipping them means re-doing what's already done"). References list adds `[[GL-004-task-resource-linking]]`. Common-mistakes section notes that skipping `linked_deliverables` in pre-flight is a resumption hazard.
+- **`Team Knowledge/tasks/open/EXAMPLE-tsk-2026-05-10-001-welcome-to-tasks.md`** — seeded teaching task updated to the seven-array shape (`linked_deliverables: []` added; `GL-004` added to `linked_guidelines`; "six arrays" copy in the body bumped to "seven"; an additional `Linking rule: [[GL-004-task-resource-linking]]` bullet appears in `## Context one click away`).
+- **`Team Knowledge/Guidelines/INDEX.md`** — gains a row for GL-004 between GL-002 and the reserved-GL-003 note. The reserved note for GL-003 (Designer Expansion Pack) is unchanged.
+
+### Migration
+
+**Existing scaffold users with active tasks need a one-line frontmatter addition per task** to bring them up to the seven-array shape. A one-shot grep + sed pattern is suggested in the migration prompt exposed as the "upgrade" button in the myPKA course at https://myicor.com.
+
+Tasks already in `done/` or `cancelled/` are historical record and do not need migration. The walk in [[SOP-create-task]] step 4 starts using all seven slots immediately from v2.2.0 onward.
+
+Resources written before v2.2.0 may carry a pre-GL-004 `linked_tasks` field. Per the new one-way rule, that field is retired — remove it on touch. New writes never add it.
+
+### Version files
+
+- `VERSION` → `2.2.0`
+- `.scaffold-version` → `2.2.0`
+
 ## [2.1.2] - 2026-05-20
 
 **Repository moved to myICOR org for corporate ownership; remains public and free.** The canonical home of the myPKA scaffold is now `https://github.com/myICOR/myPKA` (transferred from `TomSolid/myPKA`). The repo stays public under CC BY-NC-SA 4.0 and continues to be the free distribution channel; the myicor.com SaaS layer remains the paid product. Stars, forks, issues, and the old URL are preserved by GitHub's transfer redirects, so existing clones and bookmarks keep working. No code or content changes vs 2.1.0 — this release exists solely to publish the org-owned canonical artifact at `releases/latest/download/mypka-scaffold-latest.zip`. (AUTO-175)
