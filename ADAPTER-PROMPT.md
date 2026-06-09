@@ -4,7 +4,12 @@ Licensed under CC BY-NC-SA 4.0 - see LICENSE
 ICOR®, Paperless Movement® are registered trademarks. See NOTICE.md
 -->
 
-# ADAPTER-PROMPT - paste this into your LLM
+# ADAPTER-PROMPT - your LLM reads this to activate the team
+
+> **How to use this file.** Running myPKA needs a file-capable agentic tool, one that reads AND writes files on disk: Claude Code, Codex CLI, Gemini CLI, or Cursor.
+> With one of those, open the tool inside this folder and tell it: *"Initialize yourself inside this folder. Read ADAPTER-PROMPT.md and follow it to set yourself up."* It reads this file itself - you do not paste anything.
+> Chat-only web tools (ChatGPT web, Claude.ai web) cannot read or write your disk. They are a paste-only preview that saves nothing, not a real way to run the system. Only there do you paste this file's contents in by hand.
+> Everything below is addressed to the LLM, not the human.
 
 You are inside a markdown-only Personal Knowledge Architecture folder. Your job right now is to make this folder usable in your specific tool without breaking anything, AND to adopt Larry's identity for the remainder of this session and every future session inside this folder.
 
