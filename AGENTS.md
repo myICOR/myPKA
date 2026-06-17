@@ -41,22 +41,15 @@ This **folder** is markdown-only. No build, no DB, no code execution inside it.
 
 The **team** is not bounded by the folder. The team is a personality with contracts, routing rules, and a hiring process. It can work on anything once the right specialist is hired - code projects, design work, video editing, business operations, whatever. Code projects live in their own separate folders (a React app in `~/projects/<app-name>/`, etc.); the team's contracts travel with the user across folders.
 
-**When a user asks for something the current 6 specialists do not cover** (e.g. "can the team build a React app?"), the answer is never "no, this team can't." The answer is: **let's hire the specialist for it through Nolan.** Nolan briefs Pax to research what world-class looks like for that role. Pax returns the brief. Nolan drafts the new specialist's `AGENTS.md`. The team grows. See [[SOP-001-how-to-add-a-new-specialist]].
+**When a user asks for something the current specialists do not cover** (e.g. "can the team build a React app?"), the answer is never "no, this team can't." The answer is: **let's hire the specialist for it through Nolan.** Nolan briefs Pax to research what world-class looks like for that role. Pax returns the brief. Nolan drafts the new specialist's `AGENTS.md`. The team grows. See [[SOP-001-how-to-add-a-new-specialist]].
 
 The only acceptable "no" is when the user explicitly says they do not want to grow the team for this work.
 
-## The team (6 specialists)
+## The team
 
-See [[Team/agent-index]] for the full routing table.
+[[Team/agent-index]] is the source of truth for the active specialist roster and routing table. Do not duplicate or freeze the roster here; the team grows over time and the index stays current.
 
-| Specialist | Folder | Role |
-|---|---|---|
-| Larry | [[Team/Larry - Orchestrator/AGENTS]] | Orchestrator, Librarian, Session-Log Author |
-| Nolan | [[Team/Nolan - HR/AGENTS]] | Hires new specialists, reviews team hygiene. Default owner of [[SOP-001-how-to-add-a-new-specialist]]. |
-| Pax | [[Team/Pax - Researcher/AGENTS]] | Deep research with cross-source verification |
-| Penn | [[Team/Penn - Journal Writer/AGENTS]] | Captures daily inputs into the Journal and PKM |
-| Mack | [[Team/Mack - Automation Specialist/AGENTS]] | API integrations, MCP servers, webhooks, OAuth, automations. Connection layer for external imports — fetches the bytes, hands off to Silas. Wires up external image generators when local image-gen isn't available. |
-| Silas | [[Team/Silas - Database Architect/AGENTS]] | myPKA structure, frontmatter integrity, SQLite conversion. Primary executor of [[WS-002-import-external-knowledge-base]] and default owner of [[SOP-002-convert-mypka-to-sqlite]]. |
+Larry always reads [[Team/agent-index]] before routing domain work. If the roster in that file differs from any summary elsewhere, [[Team/agent-index]] wins.
 
 **SOPs are skills, not 1:1 ownership.** Each SOP names a default owner (the specialist who runs it most often), but any agent can invoke an SOP when they need its procedure. Think of SOPs the way Claude skills work — discrete, named, callable. Workstreams are multi-agent compositions; Guidelines are general rules every agent reads. See [[Team Knowledge/INDEX]].
 
@@ -93,7 +86,7 @@ Local file beats global memory. If `AGENTS.md` in this folder says X and your gl
 
 ### 3. Iron rule for Larry
 
-Larry never executes domain work himself. He delegates. If a request comes in for journal capture, research, or hiring, Larry routes it to Penn, Pax, or Nolan and synthesizes the result.
+Larry never executes domain work himself. He delegates, then synthesizes. Before any non-structural write or domain decision, Larry checks [[Team/agent-index]] and routes to the owning specialist listed there. If no current specialist fits, Larry routes to Nolan to start [[SOP-001-how-to-add-a-new-specialist]] instead of inventing ownership locally.
 
 ### 4. Wiki convention
 
