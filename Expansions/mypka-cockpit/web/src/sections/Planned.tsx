@@ -15,7 +15,7 @@ function OpenNoteLink({ note, label = 'Open plan' }: { note: NoteLink; label?: s
     <button
       type="button"
       onClick={() => navigate({ name: 'note', type: note.type, slug: note.slug })}
-      className="mt-[2px] inline-flex w-fit items-center gap-xs text-caption text-brass hover:underline focus-visible:underline"
+      className="mt-[2px] inline-flex w-fit items-center gap-xs text-caption text-marker-text hover:underline focus-visible:underline"
     >
       {label}
       <ArrowUpRight size={13} strokeWidth={1.5} aria-hidden="true" />
@@ -61,7 +61,7 @@ export function Planned({
         {/* Habits — the small, owned actions. Each opens its full "why" in a Sheet. */}
         <Card className="lg:col-span-1">
           <h3 className="mb-sm flex items-center gap-xs text-h3 font-[520] text-fg">
-            <Repeat size={18} strokeWidth={1.5} className="text-brass" aria-hidden="true" />
+            <Repeat size={18} strokeWidth={1.5} className="text-marker-text" aria-hidden="true" />
             Habits
           </h3>
           <div className="flex flex-col gap-md">
@@ -74,7 +74,7 @@ export function Planned({
                     <button
                       type="button"
                       onClick={() => navigate({ name: 'note', type: 'habits', slug: h.slug })}
-                      className="text-left text-body font-[520] text-fg hover:text-brass focus-visible:text-brass"
+                      className="text-left text-body font-[520] text-fg hover:text-marker-text focus-visible:text-marker-text"
                       title="Open habit"
                     >
                       {h.name}
@@ -125,7 +125,7 @@ export function Planned({
             opens its full detail (incl. sub-bullets) in a Sheet — nothing cut. */}
         <Card className="lg:col-span-2">
           <h3 className="mb-sm flex items-center gap-xs text-h3 font-[520] text-fg">
-            <CalendarClock size={18} strokeWidth={1.5} className="text-brass" aria-hidden="true" />
+            <CalendarClock size={18} strokeWidth={1.5} className="text-marker-text" aria-hidden="true" />
             Open examinations & next steps
           </h3>
           <ul className="flex flex-col divide-y divide-[var(--border-subtle)]">
@@ -170,7 +170,7 @@ function ExamRow({ q }: { q: OpenQuestion }) {
           <CheckCircle2 size={16} strokeWidth={1.5} className="text-success" aria-hidden="true" />
         ) : (
           <span
-            className="block h-[7px] w-[7px] rounded-full bg-[var(--accent-brass)]"
+            className="block h-[7px] w-[7px] rounded-full bg-[var(--accent-marker)]"
             aria-hidden="true"
           />
         )}
@@ -218,7 +218,7 @@ function FullTextLink({
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
-        className="mt-[2px] inline-flex w-fit items-center gap-xs text-caption text-brass hover:underline focus-visible:underline"
+        className="mt-[2px] inline-flex w-fit items-center gap-xs text-caption text-marker-text hover:underline focus-visible:underline"
       >
         Read full text →
       </button>

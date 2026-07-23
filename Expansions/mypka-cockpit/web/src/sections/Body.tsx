@@ -97,7 +97,7 @@ export function Body({
             {v.plan && (
               <span
                 className={`mt-xs inline-flex items-center gap-xs text-caption ${
-                  v.severity === 'red' ? 'font-[500] text-error' : 'text-brass'
+                  v.severity === 'red' ? 'font-[500] text-error' : 'text-marker-text'
                 }`}
               >
                 <ArrowRight size={13} strokeWidth={1.5} aria-hidden="true" />
@@ -192,7 +192,7 @@ function ExpandableLink({ title, blocks }: { title: string; blocks: ReadableBloc
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
-        className="mt-xs inline-flex items-center gap-xs text-caption text-brass hover:underline focus-visible:underline"
+        className="mt-xs inline-flex items-center gap-xs text-caption text-marker-text hover:underline focus-visible:underline"
       >
         Read full text →
       </button>

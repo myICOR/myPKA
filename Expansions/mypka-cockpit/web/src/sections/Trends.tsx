@@ -7,10 +7,10 @@ import { Card, Section, ModuleEmptyState } from '../components/ui';
 import { trendsSummary } from '../lib/summaries';
 import type { SleepPoint, StepPoint, WeightPoint } from '../lib/types';
 
-const BRASS = 'oklch(0.72 0.13 60)';
-const BRASS_DEEP = 'oklch(0.63 0.12 60)';
-const MUTED = 'oklch(0.66 0.016 71)';
-const GRID = 'oklch(0.30 0 0 / 0.6)';
+const MARKER = 'var(--accent-marker)';
+const MARKER_DEEP = 'var(--accent-marker-muted)';
+const MUTED = 'var(--fg-subtle)';
+const GRID = 'var(--border)';
 
 const axis = { fontSize: 11, fill: MUTED } as const;
 
@@ -93,8 +93,8 @@ export function Trends({
             <AreaChart data={weight} margin={{ top: 6, right: 8, bottom: 0, left: -12 }}>
               <defs>
                 <linearGradient id="weightFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={BRASS} stopOpacity={0.28} />
-                  <stop offset="100%" stopColor={BRASS_DEEP} stopOpacity={0.02} />
+                  <stop offset="0%" stopColor={MARKER} stopOpacity={0.28} />
+                  <stop offset="100%" stopColor={MARKER_DEEP} stopOpacity={0.02} />
                 </linearGradient>
               </defs>
               <CartesianGrid stroke={GRID} vertical={false} />
@@ -105,7 +105,7 @@ export function Trends({
                 labelStyle={{ color: MUTED }}
                 formatter={(v: number) => [`${v.toFixed(1)} kg`, 'Weight']}
               />
-              <Area type="monotone" dataKey="kg" stroke={BRASS} strokeWidth={1.75} fill="url(#weightFill)" />
+              <Area type="monotone" dataKey="kg" stroke={MARKER} strokeWidth={1.75} fill="url(#weightFill)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -126,7 +126,7 @@ export function Trends({
                   labelStyle={{ color: MUTED }}
                   formatter={(v: number) => [v.toLocaleString('en-US'), 'Steps']}
                 />
-                <Bar dataKey="steps" fill={BRASS} radius={[2, 2, 0, 0]} />
+                <Bar dataKey="steps" fill={MARKER} radius={[2, 2, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -153,7 +153,7 @@ export function Trends({
                   labelStyle={{ color: MUTED }}
                   formatter={(v: number, name) => [`${Number(v).toFixed(1)} h`, name === 'total_hr' ? 'Total' : name === 'deep_hr' ? 'Deep' : 'REM']}
                 />
-                <Line type="monotone" dataKey="total_hr" stroke={BRASS} strokeWidth={1.75} dot={false} />
+                <Line type="monotone" dataKey="total_hr" stroke={MARKER} strokeWidth={1.75} dot={false} />
                 <Line type="monotone" dataKey="deep_hr" stroke={MUTED} strokeWidth={1.25} strokeDasharray="3 3" dot={false} />
               </LineChart>
             </ResponsiveContainer>

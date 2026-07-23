@@ -197,10 +197,10 @@ in the block.
 
 ## Ported-from (myICOR, read-only reference)
 
-- `/Users/tom/myicor Repo/src/components/editor/tiptap/markdownRender.ts` —
+- myICOR codebase (private), `src/components/editor/tiptap/markdownRender.ts` —
   `classifyEmbedUrl`, `EmbedClassification`, `matchVideoUrl`, `DIRECT_IMAGE_RE`,
   and the X/TikTok/LinkedIn/Instagram regexes.
-- `/Users/tom/myicor Repo/supabase/functions/fetch-link-preview/index.ts` —
+- myICOR codebase (private), `supabase/functions/fetch-link-preview/index.ts` —
   `getMeta` precedence, `extractBestImage` ladder, `isValidImageUrl` filter,
   title/description caps, multi-UA retry, YouTube/Loom oEmbed handling.
 

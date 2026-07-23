@@ -52,7 +52,7 @@ export function ReadableBlocks({ blocks }: { blocks: ReadableBlock[] }) {
             return (
               <p
                 key={i}
-                className="border-l-2 border-brass pl-md text-fg-muted italic"
+                className="border-l-2 border-marker pl-md text-fg-muted italic"
               >
                 {renderInline(b.text)}
               </p>

@@ -34,7 +34,7 @@
   overflow: hidden;
   transition: border-color 150ms ease, background-color 150ms ease;
 }
-.ow-card:hover { border-color: var(--accent-brass); background: var(--surface-2); }
+.ow-card:hover { border-color: var(--border-emphasis); background: var(--surface-2); }
 
 .ow-card-main {
   display: flex;
@@ -43,7 +43,7 @@
   color: inherit;
 }
 .ow-card-main:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: -2px;
   border-radius: 10px;
 }
@@ -84,10 +84,10 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   backdrop-filter: blur(2px);
-  border: 1px solid var(--accent-brass);
+  border: 1px solid var(--accent-marker);
 }
 .ow-play-badge--lg { height: 56px; width: 56px; }
 .ow-card-media--video .ow-card-img { filter: brightness(0.82); }
@@ -114,8 +114,8 @@
   font-size: 0.6875rem;
   padding: 2px 8px;
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   white-space: nowrap;
 }
 .ow-card-domain {
@@ -128,7 +128,7 @@
 }
 .ow-favicon {
   flex-shrink: 0;
-  border-radius: 3px;
+  border-radius: 4px;
   object-fit: cover;
 }
 
@@ -155,9 +155,9 @@
 .ow-card-note {
   margin: 2px 0 0;
   padding: 8px 10px;
-  border-left: 2px solid var(--accent-brass);
-  background: var(--accent-soft);
-  border-radius: 0 6px 6px 0;
+  border-left: 2px solid var(--accent-marker);
+  background: var(--accent-marker-soft);
+  border-radius: 0 10px 10px 0;
   font-size: 0.75rem;
   line-height: 1.5;
   color: var(--fg-muted);
@@ -199,9 +199,9 @@
   text-decoration: none;
   white-space: nowrap;
 }
-.ow-card-out:hover { color: var(--accent-brass); }
+.ow-card-out:hover { color: var(--accent-marker-text); }
 .ow-card-out:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -258,23 +258,23 @@
   margin-top: 2px;
   padding: 7px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--surface-1);
   color: var(--fg);
   font-size: 0.8125rem;
   text-decoration: none;
   transition: border-color 150ms ease, background-color 150ms ease;
 }
-.ow-detail-out:hover { border-color: var(--accent-brass); background: var(--surface-2); }
-.ow-detail-out:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.ow-detail-out:hover { border-color: var(--border-emphasis); background: var(--surface-2); }
+.ow-detail-out:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 /* tom_context as the highlighted annotation atop the body. */
 .ow-detail-context {
   margin: 0 0 18px;
   padding: 14px 16px;
-  border-left: 3px solid var(--accent-brass);
-  background: var(--accent-soft);
-  border-radius: 0 8px 8px 0;
+  border-left: 3px solid var(--accent-marker);
+  background: var(--accent-marker-soft);
+  border-radius: 0 10px 10px 0;
   font-size: 0.9375rem;
   line-height: 1.6;
   color: var(--fg);
@@ -309,8 +309,8 @@
   text-decoration: none;
   transition: background-color 150ms ease, color 150ms ease;
 }
-.ow-linked-chip:hover { background: var(--accent-soft); color: var(--accent-brass); }
-.ow-linked-chip:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.ow-linked-chip:hover { background: var(--accent-marker-soft); color: var(--accent-marker-text); }
+.ow-linked-chip:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 /* The back-button is shared chrome originally on a <button>; suppress the anchor
    underline when reused on an <a> here (same nicety as library.css). */

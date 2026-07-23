@@ -8,7 +8,7 @@
   margin: 0 0 8px;
   font-size: 1.5rem; font-weight: 560; letter-spacing: -0.015em; color: var(--fg);
 }
-.cnx-title svg { color: var(--accent-brass); }
+.cnx-title svg { color: var(--accent-marker-text); }
 .cnx-sub { margin: 0; max-width: 64ch; font-size: 0.875rem; line-height: 1.55; color: var(--fg-muted); }
 
 .cnx-grid {
@@ -20,7 +20,7 @@
 .cnx-card {
   display: flex; flex-direction: column; gap: 10px;
   padding: 18px;
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid var(--border-subtle);
   background: var(--surface-1);
 }
@@ -33,7 +33,7 @@
 .cnx-badge {
   display: inline-flex; align-items: center; gap: 4px;
   margin-left: auto;
-  padding: 2px 8px; border-radius: 99px;
+  padding: 2px 8px; border-radius: 999px;
   font-size: 0.6875rem;
   color: var(--status-success); background: var(--status-success-soft);
 }
@@ -49,40 +49,40 @@
 .cnx-input {
   flex: 1;
   padding: 7px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-bg);
   color: var(--fg);
   font-size: 0.875rem;
 }
 .cnx-input::placeholder { color: var(--fg-subtle); }
-.cnx-input:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 1px; }
+.cnx-input:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 1px; }
 
 .cnx-save {
   padding: 7px 14px;
-  border-radius: 8px;
-  border: 1px solid color-mix(in oklch, var(--accent-brass) 50%, var(--border));
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  border-radius: 10px;
+  border: 1px solid color-mix(in oklch, var(--accent-marker) 50%, var(--border));
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   font-size: 0.8125rem; font-weight: 520;
   cursor: pointer;
 }
 .cnx-save:disabled { opacity: 0.45; cursor: default; }
-.cnx-save:not(:disabled):hover { background: color-mix(in oklch, var(--accent-brass) 20%, transparent); }
-.cnx-save:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.cnx-save:not(:disabled):hover { background: color-mix(in oklch, var(--accent-marker) 20%, transparent); }
+.cnx-save:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 .cnx-keystored { font-size: 0.8125rem; color: var(--status-success); }
 .cnx-clear {
   display: inline-flex; align-items: center; gap: 4px;
-  border: 0; background: none; padding: 4px 6px; border-radius: 6px;
+  border: 0; background: none; padding: 4px 6px; border-radius: 10px;
   font-size: 0.75rem; color: var(--fg-subtle); cursor: pointer;
 }
-.cnx-clear:hover { color: var(--status-error); background: var(--status-error-soft); }
-.cnx-clear:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.cnx-clear:hover { color: var(--status-error-text); background: var(--status-error-soft); }
+.cnx-clear:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 .cnx-hint { margin: 0; font-size: 0.75rem; color: var(--fg-subtle); }
 .cnx-ok { margin: 0; font-size: 0.8125rem; color: var(--status-success); }
-.cnx-error { margin: 0; font-size: 0.8125rem; color: var(--status-error); }
+.cnx-error { margin: 0; font-size: 0.8125rem; color: var(--status-error-text); }
 
 /* ---- Generic connect flow (v1.2.1) -------------------------------------------- */
 .cnx-section { display: flex; flex-direction: column; gap: 12px; }
@@ -106,7 +106,7 @@
 .cnx-conn-name { font-size: 0.9375rem; color: var(--fg); }
 .cnx-conn-meta { font-size: 0.75rem; color: var(--fg-subtle); overflow: hidden; text-overflow: ellipsis; }
 .cnx-conn .cnx-badge { margin-left: auto; flex: 0 0 auto; }
-.cnx-badge--pending { color: var(--status-warning); background: var(--status-warning-soft); }
+.cnx-badge--pending { color: var(--fg-muted); background: var(--status-warning-soft); } /* A162: tint stays, text goes quiet */
 .cnx-toolrow { display: flex; }
 .cnx-toolrow .cnx-input { width: 100%; }
 .cnx-hint--ready { display: flex; align-items: baseline; gap: 6px; color: var(--status-success); }
@@ -146,7 +146,7 @@
 .cnx-wire-code {
   flex: 1 1 auto; min-width: 0;
   padding: 8px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border-subtle);
   background: var(--surface-1);
   color: var(--fg-muted);
@@ -158,7 +158,7 @@
   flex: 0 0 auto;
   display: inline-flex; align-items: center; justify-content: center;
   width: 32px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border-subtle);
   background: var(--surface-1);
   color: var(--fg-subtle);

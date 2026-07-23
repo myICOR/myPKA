@@ -35,7 +35,7 @@ export function SectionHeader({
 }) {
   return (
     <div className="mb-md flex items-baseline gap-sm">
-      <span className="text-brass" aria-hidden="true">
+      <span className="text-marker-text" aria-hidden="true">
         {icon}
       </span>
       <h2 className="text-h2 font-[520] tracking-tight text-fg">{title}</h2>
@@ -74,7 +74,7 @@ export function Section({
         id={`section-${id}`}
         summary={
           <div className="flex flex-wrap items-baseline gap-x-sm gap-y-[2px]">
-            <span className="text-brass" aria-hidden="true">
+            <span className="text-marker-text" aria-hidden="true">
               {icon}
             </span>
             <h2 className="text-h2 font-[520] tracking-tight text-fg">{title}</h2>
@@ -93,21 +93,21 @@ export function Section({
 const TONE_CLASS: Record<Tone, string> = {
   good: 'text-success',
   watch: 'text-warning',
-  attn: 'text-brass',
+  attn: 'text-marker-text',
   neutral: 'text-fg-muted',
 };
 
 const TONE_DOT: Record<Tone, string> = {
   good: 'bg-[var(--status-success)]',
   watch: 'bg-[var(--status-warning)]',
-  attn: 'bg-[var(--accent-brass)]',
+  attn: 'bg-[var(--accent-marker)]',
   neutral: 'bg-[var(--fg-muted)]',
 };
 
 const TONE_CHIP_BG: Record<Tone, string> = {
   good: 'bg-[var(--status-success-soft)]',
   watch: 'bg-[var(--status-warning-soft)]',
-  attn: 'bg-[var(--accent-soft)]',
+  attn: 'bg-[var(--accent-marker-soft)]',
   neutral: 'bg-surface-2',
 };
 

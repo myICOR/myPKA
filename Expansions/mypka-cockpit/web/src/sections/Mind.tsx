@@ -9,8 +9,8 @@ import { useCollapsed } from '../lib/useCollapsed';
 import { patternValence } from '../lib/valence';
 import type { JournalEntry, PsycheState, TopicCard, ValencePoint } from '../lib/types';
 
-const BRASS = 'oklch(0.72 0.13 60)';
-const MUTED = 'oklch(0.66 0.016 71)';
+const MARKER = 'var(--accent-marker)';
+const MUTED = 'var(--fg-subtle)';
 
 // ---- Mood colour signal ----------------------------------------------------
 // PRIMARY: `mood_valence` (1..5 integer, LANGUAGE-NEUTRAL — Silas added it to the
@@ -19,7 +19,7 @@ const MUTED = 'oklch(0.66 0.016 71)';
 //   1–2 → low      → text-warning (soft amber, "straining", not red)
 //   3   → neutral  → text-fg-muted (mixed / steady, no colour)
 //   4–5 → good     → text-success (calm green)
-// Works for ANY language Tom journals in, because it reads the number, not the word.
+// Works for ANY language the user journals in, because it reads the number, not the word.
 function valenceTone(v: number | null | undefined): string {
   if (typeof v !== 'number') return 'text-fg-muted';
   if (v <= 2) return 'text-warning';
@@ -28,16 +28,15 @@ function valenceTone(v: number | null | undefined): string {
 }
 
 // FALLBACK ONLY (legacy/edge): for entries where mood_valence is NULL/absent, fall
-// back to the German free-text word-matcher. The German mood words are ON PURPOSE —
-// they match the German mood values in Tom's older journal frontmatter (e.g.
-// "aufgewuehlt", "erschöpft", "panik", "ruhig"). Do not translate them or the
-// classification stops matching his data. Kept as a safety net; mood_valence is
-// primary and covers 836/839 rows.
+// back to a free-text word-matcher over common English mood words. This is a
+// best-effort safety net for journals that predate mood_valence; unmatched words
+// simply stay neutral (muted, no colour). mood_valence is primary — extend these
+// lists locally if your journal uses another language's mood vocabulary.
 function moodToneFromWord(mood: string | null): string {
   if (!mood) return 'text-fg-muted';
   const m = mood.toLowerCase();
-  if (/(focus|confident|clear|happy|calm|ruhig|gut|high)/.test(m)) return 'text-success';
-  if (/(aufgewuehlt|anxious|angst|low|erschöpft|müde|stress|panik)/.test(m)) return 'text-warning';
+  if (/(focus|confident|clear|happy|calm|content|good|great|high|energi[sz]ed)/.test(m)) return 'text-success';
+  if (/(anxious|worried|low|exhausted|tired|drained|stress|overwhelmed|panic|frustrated)/.test(m)) return 'text-warning';
   return 'text-fg-muted';
 }
 
@@ -162,7 +161,7 @@ export function Mind({
                       labelStyle={{ color: MUTED }}
                       formatter={(v: number) => [v.toFixed(2), 'valence']}
                     />
-                    <Line type="monotone" dataKey="valence" stroke={BRASS} strokeWidth={1.5} dot={false} />
+                    <Line type="monotone" dataKey="valence" stroke={MARKER} strokeWidth={1.5} dot={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

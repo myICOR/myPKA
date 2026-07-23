@@ -3,136 +3,176 @@
 @tailwind utilities;
 
 /* ===========================================================================
-   GL-003 v4 "GRAPHITE" design tokens — dark mode (canonical / DEFAULT).
-   OKLCH-canonical. "Calm operator, precise instrument."
+   GL-003 v5 "INKLINE" design tokens - the ink room (dark, canonical DEFAULT).
+   "A calm teacher's blackboard at dusk."
 
-   Cool graphite, near-black canvas (hue 250, near-zero chroma — reads neutral,
-   never pure black so hairlines + gradients have somewhere to sit). Cool
-   near-white text ramp (hue 250, not warm cream). BRASS (#C99A4F, hue 60) is
-   the single retained signature accent, recontextualised on the cool field —
-   the ONE colour that points. Every reference brand (Vercel/Linear blue,
-   Raycast red, Resend green) runs a cool/loud accent; brass-on-graphite is what
-   makes us unique while we adopt their structure. Source of truth:
-   /mypka-redesign/DESIGN-LANGUAGE.md + tokens.css (Iris, v4 Graphite).
+   One continuous line on ink-dark paper, drawn by the teacher's marker.
+   The room is ink (#0C0E12, deep blue-tinted black, never pure black). The
+   type is paper (warm cream, never clinical white). The pen is the marker
+   (#FF5A2D) - THE one accent, at most one loud marker moment per view
+   (GL-003 §2.3). Hairlines are paper at low alpha, never gray hexes.
+   Source of truth: Team Knowledge/Guidelines/GL-003-design-system.md v5.32
+   (Iris). Every value below cites its GL-003 section.
 
-   THEMING: the dark set is the default and is also bound to [data-theme="dark"].
-   The light set ([data-theme="light"], far below) OVERRIDES only the colour
-   tokens — geometry, motion, springs, and structural tokens are mode-agnostic
-   and inherited. The active set is chosen by the data-theme attribute on <html>
-   (Light · Dark · System; System resolves via prefers-color-scheme, live). See
-   src/lib/theme.ts + the index.html pre-paint bootstrap.
+   THEMING (mechanism unchanged from the Graphite era): the dark set is the
+   default and is also bound to [data-theme="dark"]. The paper room
+   ([data-theme="light"], §2.2, far below) OVERRIDES only the colour tokens -
+   geometry, motion, springs, and structural tokens are mode-agnostic and
+   inherited. The active set is chosen by the data-theme attribute on <html>
+   (Light · Dark · System; System resolves via prefers-color-scheme, live).
+   See src/lib/theme.ts + public/theme-bootstrap.js (pre-paint, CSP-safe).
    =========================================================================== */
 :root,
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  /* Spacing ramp (GL-003 §4, 4px base) — root-cause fix for the no-op tokens.
-     Tailwind owns the spacing UTILITY scale, so the cockpit never defined these
-     custom properties; any stray `var(--space-*)` silently no-op'd (this is what
-     broke the divider margin / group gaps — see the literalised planner tokens
-     below). Defining the ramp here makes future `var(--space-*)` references
-     resolve. Already-literalised planner values are intentionally left as-is. */
+  /* Spacing ramp (4px base) - kept from the Graphite root-cause fix so any
+     `var(--space-*)` reference keeps resolving. Tailwind owns the spacing
+     UTILITY scale; these exist for plain-CSS consumers. */
   --space-xs: 4px;   /* base × 1 */
   --space-sm: 8px;   /* base × 2 */
   --space-md: 16px;  /* base × 4 */
   --space-lg: 24px;  /* base × 6 */
 
-  /* Surface (the room) — cool graphite, near-black, NEVER pure black. Hue 250,
-     chroma 0.004 so it reads neutral. The ramp climbs: bg(canvas) → 1(raised)
-     → 2(raised-high) → 3. A faint extra step gives cards room to lift and edges
-     a hairline to live on. (Graphite §2.1.) */
-  --surface-bg: oklch(0.155 0.004 250);  /* #0B0B0D  page shell — the deepest plane */
-  --surface-1: oklch(0.195 0.004 250);   /* #131316  cards, panels, default elevated plane */
-  --surface-2: oklch(0.225 0.004 250);   /* #18181C  hover-elevated, active tab, segmented control */
-  --surface-3: oklch(0.255 0.004 250);   /* one step higher — popovers, nested raised chrome */
-  --border: oklch(0.30 0.005 250);       /* #2A2A2F  default 1px hairline (cool, low-chroma) */
-  --border-subtle: oklch(0.30 0.005 250 / 0.55); /* the quietest divider / list separator */
+  /* Surface (the room) - GL-003 §2.1 ink grounds. The ramp climbs:
+     ink (page) → ink_2 (card) → ink_3 (muted/hover) → ink_overlay (popover). */
+  --surface-bg: #0C0E12;      /* ink - the page / the room */
+  --surface-1: #12151B;       /* ink_2 - raised panel / card */
+  --surface-2: #181C24;       /* ink_3 - highest panel, hover, muted surface */
+  --surface-3: #1C212B;       /* ink_overlay - popover-above-popover */
+  --surface-deep: #0A0C0F;    /* ink_deep - the deepest ink: the sidebar/rail */
+  --surface-input: #10131A;   /* ink_input - input wells */
 
-  /* Foreground (the voice) — cool near-white, NOT warm cream. Hue 250. */
-  --fg: oklch(0.97 0.003 250);           /* #F4F5F7  primary copy, headlines */
-  --fg-muted: oklch(0.66 0.005 250);     /* #8E9099  helper text, metadata, captions (AA on raised) */
-  --fg-subtle: oklch(0.50 0.005 250);    /* #696B73  disabled, placeholder, faded edge labels */
+  /* Hairlines (§2.1) - paper at low alpha, never gray hexes. */
+  --border: rgba(246, 243, 236, 0.14);          /* hairline - divider, card edge, input border */
+  --border-subtle: rgba(246, 243, 236, 0.09);   /* hairline_subtle - quietest separation */
+  --border-emphasis: rgba(246, 243, 236, 0.22); /* hairline_emphasis - hover borders */
 
-  /* Accent — THE single signature "signal": brass (#C99A4F, hue 60), retained
-     and recontextualised on the cool graphite field. At most ONE prominent
-     moment per view. Text painted ON a brass fill is near-black (brass is a
-     light fill → near-black foreground for AAA contrast; never white-on-brass). */
-  --accent-brass: oklch(0.72 0.13 60);   /* #C99A4F  CTAs, active state, one called-out word */
-  --accent-deep: oklch(0.64 0.135 58);   /* #A07A3A  pressed / high-emphasis (deep brass) */
-  --accent-soft: oklch(0.72 0.13 60 / 0.14); /* tinted chip background behind signal text */
-  --text-on-brass: oklch(0.16 0.01 250); /* #0C0D10  near-black text on a brass fill (AAA) */
+  /* Foreground (the voice) - §2.1 paper ladder. Quiet is a TOKEN STEP, never
+     an opacity dial (§2.8, ruling A133/A151): --fg-subtle at FULL alpha is the
+     terminal quiet step; nothing quieter exists for persistent text. */
+  --fg: #F6F3EC;        /* paper - primary type, headlines */
+  --fg-muted: #C9C4B8;  /* paper_dim - secondary type, body */
+  --fg-subtle: #8E897D; /* paper_faint - muted captions, mono micro-labels (AA at full alpha) */
 
-  /* Theme-adaptive chrome tokens (root-cause the few oklch literals in
-     cockpit.css so they flip with the theme). DARK Graphite values here. */
-  --atmos-glow: oklch(0.22 0.006 250 / 0.85);         /* cool upper-light atmosphere on body (was warm lamp) */
-  --topbar-bg: oklch(0.20 0.004 250 / 0.55);          /* frosted sticky/reopen-bar wash (glass, blurred) */
-  --scrim: oklch(0.10 0.004 250 / 0.60);              /* mobile drawer / sheet scrim (cool, near-black) */
-  --focus-ring: oklch(0.72 0.13 60 / 0.70);           /* the brass :focus-visible halo (single signal stroke) */
+  /* Accent - THE marker (§2.1). The teacher's pen. Buttons, active nav, focus,
+     links, the teaching stroke. ONE loud marker moment per view (§2.3). */
+  --accent-marker: #FF5A2D;                       /* marker - the accent */
+  --accent-marker-up: #FF7248;                    /* marker_up - hover / active-on-dark */
+  --accent-marker-muted: #C2492A;                 /* marker_muted - de-emphasized marker */
+  --accent-marker-soft: rgba(255, 90, 45, 0.13);  /* marker_soft - the only tinted fill */
+  --accent-marker-bg: rgba(255, 90, 45, 0.10);    /* marker_bg app alpha step */
+  --accent-marker-bg-emphasis: rgba(255, 90, 45, 0.16); /* marker_bg_emphasis */
+  --accent-marker-border: rgba(255, 90, 45, 0.38);/* marker_border app alpha step */
+  --accent-marker-text: #FF5A2D;                  /* small marker TEXT - dark: marker itself clears the §2.8 floor; light steps to marker_text_on_paper (A148) */
+  --text-on-marker: #180E08;                      /* on_marker - type on marker fills */
 
-  /* --- Graphite glass + hairline + glow + grid (v4 signature chrome) ---------
-     Glassmorphism (backdrop-blur) on overlays/nav; a precise 1px gradient
-     hairline; sparing brass glow (ONE active element, never wallpaper); the
-     blueprint dot grid + crosshair colour; the wide-card edge-fade mask. Every
-     value matches /mypka-redesign/tokens.css §8–§11. */
-  --glass-fill: oklch(0.20 0.004 250 / 0.55);         /* frosted panel fill (nav, command palette, modals) */
-  --glass-border: oklch(0.55 0.01 250 / 0.16);        /* glass hairline — a touch brighter than --border */
-  --glass-blur: 16px;                                  /* backdrop-filter blur radius */
-  --hairline: oklch(0.30 0.005 250 / 0.55);           /* the quietest divider (alias of border @ 0.55) */
-  --grad-card: linear-gradient(180deg, oklch(0.22 0.005 250) 0%, var(--surface-1) 100%); /* faint top-light on a card */
-  --grad-divider: linear-gradient(90deg, transparent, var(--border), transparent); /* gradient hairline, fades both ends */
-  --grad-signal-blob: radial-gradient(60% 60% at 30% 20%, oklch(0.72 0.13 60 / 0.40) 0%, oklch(0.72 0.13 60 / 0) 70%); /* glass-banner blob */
-  --mask-edge-fade: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); /* wide-card / row L+R dissolve */
-  --glow-signal: 0 0 1px oklch(0.72 0.13 60 / 0.5), 0 0 12px oklch(0.72 0.13 60 / 0.22), 0 0 40px oklch(0.72 0.13 60 / 0.10); /* sparing 3-layer brass glow — ONE element */
-  --grid-line: oklch(0.30 0.005 250 / 0.5);           /* blueprint hairline + crosshair "+" colour */
-  --grid-dot: radial-gradient(oklch(0.40 0.005 250 / 0.18) 1px, transparent 1px); /* faint blueprint dot grid */
-  --grid-dot-size: 28px 28px;
-  --tracking-microlabel: 0.16em;                       /* mono uppercase micro-label tracking */
+  /* Room chrome (§2.1 chrome line). */
+  --room-wash: rgba(255, 90, 45, 0.05);   /* §5.5 fixed wash, top-right marker light (alpha ceiling) */
+  --room-pool: rgba(8, 9, 12, 0.55);      /* §5.5 ink depth pool, opposite corner */
+  --rail-wash: rgba(255, 90, 45, 0.035);  /* §5.5 whisper of marker light on the rail */
+  --topbar-bg: rgba(12, 14, 18, 0.82);    /* nav scrim (glass speaks the room's own ground) */
+  --scrim: rgba(10, 12, 15, 0.72);        /* modal scrim (overlay scrim: 8,9,12 @ 0.7) */
+  --focus-ring: var(--accent-marker);     /* focus is the pen (§6.2) */
+  --scrollbar-thumb: #232833;             /* §2.1 scrollbar recipe */
+  --scrollbar-thumb-hover: #2E3442;
+  --scrollbar-border: var(--surface-bg);
 
-  /* Category hue — oxblood. NOT a second BRAND accent (brass is alone) and NOT a
-     status colour. This is a single CATEGORY hue, used ONLY to mark calendar
-     EVENTS apart from tasks on the planner. Deep, desaturated wine red: dark
-     (low L) + desaturated (low C) so it reads as a calm category marker, never
-     as alarm. It is hue 25-ish like signal-red but pulled FAR down in lightness
-     and chroma so the two can never be confused (signal red = L0.65 C0.20;
-     oxblood = L0.43 C0.07). See GL-003 §2.8 (pending) + the round-2 spec 11. */
-  --planner-event: oklch(0.43 0.07 25);            /* event left-rail + accents */
-  --planner-event-soft: oklch(0.43 0.07 25 / 0.10);/* event card surface tint   */
-  --planner-event-border: oklch(0.43 0.07 25 / 0.45);/* event card hairline tint*/
+  /* Glass (§2.2 scrim doctrine): GLASS surfaces speak the room's own ground -
+     command-glass rgba(18,21,27,0.92) with hairline @ 0.12. The Graphite
+     frosted-panel look (0.55 alpha) is retired; blur stays as sanctioned
+     backdrop treatment on nav/command chrome. */
+  --glass-fill: rgba(18, 21, 27, 0.92);
+  --glass-border: rgba(246, 243, 236, 0.12);
+  --glass-blur: 16px;
+  --hairline: var(--border-subtle);
 
-  /* Highlight / Weekly-Goal hue — oxblood's cool sibling. A single CATEGORY hue
-     (NOT a second brand accent — brass stays the rare one), the ONE sanctioned
-     stand-out: Weekly Goals / Highlights-of-the-Day must be unmistakable (Tom).
-     Cool TEAL, hue 195 — the opposite side of the wheel from the board's warm
-     vocabulary (brass 60, oxblood 25, cream 71), so the eye separates it
-     pre-attentively. Low chroma (0.11, under brass's 0.13, far under error's 0.20)
-     + rail/tint-only application keep it calm: it pops by HUE CONTRAST against the
-     warm board, never by loudness. NOT alarm-red (25), NOT a status hue (80/152/230).
-     See Iris 20 §1 + GL-003 §2 (pending). */
-  --planner-highlight: oklch(0.78 0.155 75);            /* highlight left-rail + star glyph + pinned-section head (Iris 20 §6 — brass/gold) */
-  --planner-highlight-soft: oklch(0.78 0.155 75 / 0.16);/* highlight card surface tint */
-  --planner-highlight-border: oklch(0.78 0.155 75 / 0.50);/* highlight card hairline tint */
-  /* Iris 20 §5 — PLACED weekly-goal row tint. Same teal hue as §1, energy halved:
-     the ghost tint is HALF the card tint (0.06 vs 0.12) so a placed row reads as a
-     quiet ledger line, not a draggable card. No new hue — derived alpha of -highlight. */
-  --planner-highlight-ghost: oklch(0.78 0.155 75 / 0.07); /* placed-row surface — half of -soft (Iris 20 §6) */
+  /* Flat-ink stand-ins for the retired Graphite gradient chrome (§5.3 flatness,
+     §10.3 "no gradients as decoration"). Kept as vars so legacy consumers
+     resolve; both now paint FLAT. */
+  --grad-card: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-1) 100%);
+  --grad-divider: linear-gradient(90deg, var(--border-subtle), var(--border-subtle));
+  /* Retired outright: --grad-signal-blob, --grid-dot, --grid-line (blueprint
+     dot grid + crosshairs are Graphite-only chrome; no INKLINE equivalent). */
+  --mask-edge-fade: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); /* legacy; only sanctioned CONDITIONAL on real overflow (§6.10) */
 
-  /* Status semantics — functional only, never decorative */
-  --status-success: oklch(0.68 0.13 152);
-  --status-warning: oklch(0.78 0.13 80);
-  --status-error: oklch(0.65 0.20 25);
-  --status-info: oklch(0.70 0.10 230);
+  /* Marker glow - §6.2 primary hover recipe. INK-ROOM device only (ruling
+     A154): the paper room overrides this to `none`. ONE element per view. */
+  --glow-signal: 0 0 0 1px rgba(255, 90, 45, 0.4), 0 0 22px rgba(255, 90, 45, 0.22);
 
-  /* soft status tints for calm chips (low alpha, same hue) */
-  --status-success-soft: oklch(0.68 0.13 152 / 0.14);
-  --status-warning-soft: oklch(0.78 0.13 80 / 0.14);
-  --status-error-soft: oklch(0.65 0.20 25 / 0.13);
+  /* Voice-orb LISTENING glow (§6.13 / A163): the room listens in PAPER, the pen
+     speaks in marker. A functional state instrument, sanctioned in BOTH rooms
+     (the A154 hover-glow fence is a different device and stays intact); always
+     var-driven at the room's own alphas - never a hardcoded rgba in cockpit.css. */
+  --orb-listen-glow: rgba(246, 243, 236, 0.10); /* paper whisper on ink */
+
+  --tracking-microlabel: 0.16em; /* §3.4 mono kicker tracking (0.14-0.2em band) */
+
+  /* Floating-shadow family (§5.3 flatness law): cards carry NO shadow in the
+     room; only floating chrome that truly leaves the surface (drawers, modals,
+     toasts, drag-lift) shadows. Per-room (ruling A150): dark = black-based,
+     paper = warm-ink at paper alphas. Consumers keep their own geometry and
+     take the COLOUR from these. */
+  --shadow-strong-color: rgba(0, 0, 0, 0.45);
+  --shadow-soft-color: rgba(0, 0, 0, 0.22);
+  --shadow-inset-color: rgba(0, 0, 0, 0.55); /* pressed-well inset */
+
+  /* Rail composites (§6.1, ruling A122 as amended): stops ground OPAQUE on the
+     rail's own background; hover/active fills are opaque COMPOSITES of the
+     sanctioned recipe over the rail ground, never translucent fills.
+     Dark: hover = paper 0.05 over ink_deep; well = black 0.45 over ink_deep. */
+  --rail-hover-bg: #16181A;
+  --rail-well-bg: #060708;
+  --rail-well-inset: inset 0 2px 6px rgba(0, 0, 0, 0.55);
+
+  /* Motion (§7 vocabulary). THE house curve + the duration ladder. The line is
+     the only element allowed long choreography; everything else small fades. */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1); /* THE house curve */
+  --dur-fast: 140ms;   /* hover colour/background shifts */
+  --dur-base: 340ms;   /* standard transitions */
+  --dur-slow: 600ms;   /* large moves */
+
+  /* Category hue - planner EVENTS. Graphite oxblood retired; events ride the
+     §2.6 muted-plum lens (#A87795) - a lens, never a brand accent. */
+  --planner-event: #A87795;
+  --planner-event-soft: rgba(168, 119, 149, 0.10);
+  --planner-event-border: rgba(168, 119, 149, 0.45);
+
+  /* Highlight / Weekly-Goal hue - Graphite teal/gold retired; highlights ride
+     the §2.6 muted-amber lens (#C2A35C, the calm amber family that §12.4
+     sanctions as the folder yellow / warning voice). Category coding, not a
+     second accent. */
+  --planner-highlight: #C2A35C;
+  --planner-highlight-soft: rgba(194, 163, 92, 0.16);
+  --planner-highlight-border: rgba(194, 163, 92, 0.50);
+  --planner-highlight-ghost: rgba(194, 163, 92, 0.07);
+
+  /* Status semantics - functional only, never decorative (§2.5).
+     - error/destructive keeps its red (#D64545); small destructive TEXT steps
+       to --status-error-text (rulings A146/A147).
+     - warning is a STATE (A152): the amber lives on the ICON/countdown only;
+       warning TEXT rides the quiet ink voice.
+     - success speaks the quiet ink voice (A127): text = paper_dim; identity
+       rides the glyph. --status-success-dot is the ONE green carve-out (a
+       small, singular completion dot where completion is the literal meaning).
+     - info is calm paper (§2.4), never a fourth accent. */
+  --status-success: #C9C4B8;
+  --status-success-dot: #7D9A7F;
+  --status-warning: #C2A35C;
+  --status-error: #D64545;
+  --status-error-text: #E36350;
+  --status-info: #C9C4B8;
+
+  /* soft status tints for calm chips (low alpha, same hue; success/info chips
+     are neutral ink chips per the §2.4 de-blue/neutral-chip doctrine) */
+  --status-success-soft: rgba(246, 243, 236, 0.07);
+  --status-warning-soft: rgba(194, 163, 92, 0.14);
+  --status-error-soft: rgba(214, 69, 69, 0.13);
 
   /* =========================================================================
-     KNOWLEDGE-GRAPH MINI-GRAPH — GL-003 §8.9 / §8.9.9 (Iris, v3.0, 2026-06-03).
-     The 13 tokens, copied verbatim from the GL-003 §8.9.9 SSOT block. No hue;
-     generation reads from size + weight + opacity + the single Gen-0 brass
-     moment. Every COLOUR value resolves to an existing §2 token above; only the
-     geometry/opacity/dash-array values are literals (the layout needs them).
+     KNOWLEDGE-GRAPH MINI-GRAPH - geometry + structure tokens carried over
+     verbatim (they are var()-anchored and re-ground automatically); the one
+     accent moment now rides the marker.
      ========================================================================= */
   /* geometry */
   --graph-node-w-0: 200px;   /* Gen-0 focus  */
@@ -140,440 +180,275 @@
   --graph-node-w-2: 132px;   /* Gen-2 grandchild + "+N more" */
   --graph-node-h-2: 32px;    /* Gen-2 / compact-LOD single line */
 
-  /* Gen-2 recede + contrast pass — GL-003 v3.1 §8.9.9 (replaces the retired
-     --graph-gen2-opacity approach; opacity dimming failed WCAG on the title at
-     0.78, so Gen-2 now recedes via fill/border tokens at full opacity). */
   --graph-gen2-recede: 0.22;
   --graph-gen2-fill:   color-mix(in oklch, var(--surface-1) 78%, var(--surface-bg));
   --graph-gen2-border: color-mix(in oklch, var(--border-subtle) 78%, transparent);
   --graph-dim-opacity: 0.35;
 
-  /* the single brass moment — Gen-0 only */
-  --graph-focus-edge: var(--accent-brass);
-  --graph-focus-glow: 0 0 0 1px oklch(0.72 0.13 60 / 0.30); /* decorative only */
-  --graph-focus-ring: 0 0 0 2px var(--accent-brass);        /* :focus-visible ONLY */
+  /* the single marker moment - Gen-0 only */
+  --graph-focus-edge: var(--accent-marker);
+  --graph-focus-glow: 0 0 0 1px rgba(255, 90, 45, 0.30); /* decorative only */
+  --graph-focus-ring: 0 0 0 2px var(--accent-marker);    /* :focus-visible ONLY */
 
-  /* GL-003 §8.9.18–§8.9.20 — My Life explorer OPENED-state brass left-edge (calm
-     register). Pairs with the --accent-soft fill-tint; named distinctly from
-     --graph-focus-edge (mini-graph resting-focus) so the explorer's multi-instance
-     opened mark stays separately addressable. Zero new chroma — resolves to brass. */
-  --graph-open-edge: var(--accent-brass);
+  /* My Life explorer OPENED-state left-edge (calm register). */
+  --graph-open-edge: var(--accent-marker);
 
-  /* GL-003 §8.9.21–§8.9.23 — My Life concept-color palette. The ONE sanctioned
-     bucket-keyed hue exception (§9.5): exactly five fixed, semantically-loaded
-     framework concepts. Applied as ACCENT (glyph + ≤12% tint), NEVER a flooded
-     fill. Fenced to the explorer surface. Light mode steps lightness below. */
-  --concept-key-element: oklch(0.66 0.045 70);   /* warm taupe/stone — foundational anchor */
-  --concept-project:     oklch(0.67 0.10  35);   /* terracotta/clay — the built thing */
-  --concept-goal:        oklch(0.72 0.085 150);  /* sage/moss — the aim, becoming */
-  --concept-topic:       oklch(0.70 0.060 235);  /* muted slate-blue — knowledge/reference */
-  --concept-habit:       oklch(0.68 0.078 305);  /* heather/mauve — the recurring rhythm */
+  /* My Life concept-colour palette - the five framework concepts, remapped
+     onto the §2.6 calmed-lens / folder families (Graphite hue wheel retired).
+     Applied as ACCENT (glyph + ≤12% tint), NEVER a flooded fill, never a text
+     ink. Canonized GL-003 v5.33 (A159): an ASSIGNED category palette never
+     hands out the gold or the pen - key-element rides dusty indigo, not brass. */
+  --concept-key-element: #8087A6;  /* dusty indigo - foundational anchor (A159) */
+  --concept-project:     #B57A86;  /* calmed rose - the built thing */
+  --concept-goal:        #7D9A7F;  /* calmed green - the aim, becoming */
+  --concept-topic:       #7A99A1;  /* steel sage - knowledge/reference */
+  --concept-habit:       #A87795;  /* muted plum - the recurring rhythm */
 
-  /* Fleeting-Notes sticky palette (v1.1 hub + whiteboards). Six muted post-it
-     hues, applied as card TINTS via color-mix (<=16% over surface), never
-     flooded fills. The server validates color names against this token set. */
-  --sticky-sun:   oklch(0.78 0.13 85);
-  --sticky-moss:  oklch(0.68 0.10 145);
-  --sticky-sky:   oklch(0.68 0.10 230);
-  --sticky-plum:  oklch(0.64 0.11 310);
-  --sticky-clay:  oklch(0.66 0.11 40);
-  --sticky-paper: oklch(0.75 0.02 90);
+  /* Fleeting-Notes sticky palette - six muted post-it hues remapped onto the
+     §2.6 calmed bookmark-folder palette (user colour choice survives, calmed -
+     §12.6). Applied as card TINTS via color-mix (<=16% over surface), never
+     flooded fills. Names are validated server-side; values re-skinned only. */
+  --sticky-sun:   #C2A35C;  /* folder yellow  */
+  --sticky-moss:  #7D9A7F;  /* folder green   */
+  --sticky-sky:   #7A99A1;  /* folder cyan    */
+  --sticky-plum:  #A87795;  /* folder burgundy*/
+  --sticky-clay:  #C99A4F;  /* folder brass   */
+  --sticky-paper: #8E897D;  /* paper_faint neutral */
 
-  /* edges — direction by arrow + dash, never hue */
+  /* edges - direction by arrow + dash, never hue */
   --graph-edge: var(--border);
   --graph-edge-far: var(--border-subtle);
-  --graph-edge-hover: var(--fg-muted);     /* Vivi-driven hover brighten */
-  --graph-edge-dash: 4 3;                   /* backlink (incoming) dashed */
+  --graph-edge-hover: var(--fg-muted);
+  --graph-edge-dash: 4 3;
 
-  /* non-brass hover border on Gen-1/Gen-2 */
+  /* non-marker hover border on Gen-1/Gen-2 */
   --graph-node-hover-border: var(--fg-subtle);
 
-  /* motion — Vivi spec 2026-06-03 (Iris-approved §8.9.9 v3.1). Camera/reflow
-     tweens are graph-scoped; the §6 component ladder has no row for them. */
+  /* motion - graph-scoped tweens (Vivi spec, carried over; the fit curve IS
+     the house ease). */
   --graph-fit-duration: 520ms;
   --graph-fit-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --graph-reflow-duration: 380ms;
-  /* Motion Studio MCP springs (Vivi §0 — reproduce, never type from memory):
+  /* Motion Studio MCP springs (Vivi - reproduce, never type from memory):
      graphEntrance = generate-css-spring({bounce:0.18, duration:0.42})
      graphHover    = generate-css-spring({bounce:0.05, duration:0.18}) */
   --mg-enter-spring: 400ms linear(0, 0.3107, 0.7717, 1.0407, 1.1068, 1.0724, 1.0235, 0.9953, 0.9886, 0.9924, 0.9976, 1.0005, 1);
   --mg-hover-spring: 100ms linear(0, 1.0107, 1);
 
-  /* --- GL-003 §6.1 spring tokens, as CSS linear() strings -------------------
-     MCP provenance: the Motion Studio MCP was NOT callable this session (cf. Vivi
-     motion-spec §0 + closed task tsk-2026-05-31-005). Per the disciplined path
-     Vivi established, these are NOT typed from memory — each reuses an EXISTING,
-     already-MCP-derived linear() curve locked in this codebase:
-       --spring-snappy   = the cockpit.css:3570 press spring (450ms, ~5% overshoot)
-       --spring-gentle   = plannerMotion.ts SPRING_SETTLE (320ms, single ~5.4% OS)
-       --spring-punctuate = the same SPRING_SETTLE curve at its 320ms settle — the
-                            §6.1 "single ~5% overshoot, ~320ms" punctuate beat is
-                            that curve by definition (reused, not re-derived).
-     If Iris/Vivi want any re-validated, that needs a LIVE Motion Studio MCP
-     session (Mack to confirm the server exposes its tools). */
+  /* Spring tokens (provenance unchanged - already-MCP-derived curves locked in
+     this codebase; see the Graphite-era note in git history). */
   --spring-snappy: 450ms linear(0, 0.2792, 0.6895, 0.9476, 1.0441, 1.0508, 1.0293, 1.0098, 0.9998, 0.9971, 0.9977, 0.9989, 0.9998, 1, 1);
   --spring-gentle: 320ms linear(0, 0.5183, 0.9652, 1.0541, 1.0243, 1.0012, 0.9971, 0.9988, 1, 1);
   --spring-punctuate: 320ms linear(0, 0.5183, 0.9652, 1.0541, 1.0243, 1.0012, 0.9971, 0.9988, 1, 1);
 
   /* =========================================================================
-     GLOBAL "MY LIFE" GRAPH — GL-003 §8.9.10–§8.9.17 (Iris, v3.5, 2026-06-03).
-     Copy-paste token block from §8.9.17. Extends the §8.9.9 mini-graph block
-     above; the global graph reuses every §8.9.9 token and adds only the below.
-     No hue: the spine reads from SIZE + WEIGHT + SILHOUETTE + structural chrome;
-     the four edges from WEIGHT + DASH + ARROWHEAD + DIRECTION; the flag/panel
-     reuse the existing --status-warning STATUS token (not a new accent); the one
-     brass moment is the focus ring + the panel's primary button. Every colour
-     value is a var() to a mode-adapting §2 token — light mode inherits.
+     GLOBAL "MY LIFE" GRAPH - structure via SIZE + WEIGHT + SILHOUETTE, edges
+     via WEIGHT + DASH + ARROWHEAD; every colour var()-anchored (re-grounds).
      ========================================================================= */
-  /* KeyElementNode — the anchor / spine (NO brass; ~17 of them) */
-  --graph-node-w-ke:      184px;                       /* wider than Gen-1, narrower than Gen-0 */
-  --graph-ke-frame:       1.5px solid var(--fg-subtle);/* heavy structural full-frame (rest) */
-  --graph-ke-frame-hover: var(--fg-muted);             /* neutral brighten on hover/expanded — NOT brass */
-  --graph-ke-chamfer:     10px;                        /* clipped top-left corner (keystone silhouette) */
-  --graph-ke-base:        2px;                          /* pinned-anchor double-hairline plinth */
+  --graph-node-w-ke:      184px;
+  --graph-ke-frame:       1.5px solid var(--fg-subtle);
+  --graph-ke-frame-hover: var(--fg-muted);
+  --graph-ke-chamfer:     10px;
+  --graph-ke-base:        2px;
 
-  /* the four typed edges — geometry only, no hue */
-  --graph-edge-anchor:        var(--border);           /* D1 spine edge color (neutral) */
-  --graph-edge-anchor-w:      1.5px;                   /* D1 — heaviest, matches KE frame */
-  --graph-edge-carry-w:       1px;                     /* D2 carrier edge (color reuses --graph-edge) */
-  --graph-edge-promotion:     var(--border);           /* D3 promotion color (neutral) */
-  --graph-edge-promotion-dash: 2 4;                    /* D3 long-gap dash (distinct from backlink 4 3) */
-  --graph-edge-promotion-w:   1px;                     /* D3 stroke; arrowhead is OPEN/hollow + INWARD */
-  --graph-edge-resonance-w:   0.75px;                  /* recessive cross-link (color reuses --graph-edge-far, no marker) */
+  --graph-edge-anchor:        var(--border);
+  --graph-edge-anchor-w:      1.5px;
+  --graph-edge-carry-w:       1px;
+  --graph-edge-promotion:     var(--border);
+  --graph-edge-promotion-dash: 2 4;
+  --graph-edge-promotion-w:   1px;
+  --graph-edge-resonance-w:   0.75px;
 
-  /* unfilled-carrier ghost slot — calm pending affordance, no status/brass */
-  --graph-ghost-fill:      var(--graph-gen2-fill);     /* receded plane */
+  --graph-ghost-fill:      var(--graph-gen2-fill);
   --graph-ghost-border:    1px dashed var(--border-subtle);
-  --graph-ghost-edge-dash: 4 4;                         /* Goal→ghost dashed carry-slot + ghost border */
+  --graph-ghost-edge-dash: 4 4;
 
-  /* dual-carrier doctrine-smell pip — a real model-violation STATE (status, §8.6),
-     NOT a category color and NOT a new accent. 6px, quiet. */
   --graph-flag-warning:    var(--status-warning);
   --graph-flag-size:       6px;
 
-  /* budget-warning panel — calm guardrail: honey HAIRLINE (not a fill), one brass button */
   --graph-panel-border:    1px solid var(--status-warning);
-  /* panel surface = var(--surface-3); primary action = var(--accent-brass) w/ surface-color label */
 
   /* =========================================================================
-     DAY-PLANNER (kanban) tokens — Iris spec 04, 2026-06-02.
-     ZERO new colours, ZERO new spacing values: every value below resolves to
-     an existing locked token, a 4px-scale step, or the established radius
-     ladder. The single fixed-px exception is --planner-card-h (72 = 48+24,
-     itself a 4px-scale sum) so equal cards stay pixel-identical regardless of
-     content. Calm posture: no alarm-red, no anxious pulse, no countdown that
-     reads as a threat. NO capacity/meter/gauge token exists by design — Tom's
-     decision: capacity is the count of cards in a lane, not a numeric meter.
+     DAY-PLANNER (kanban) tokens - every value resolves to a locked token, a
+     4px-scale step, or the §5.2 corner ladder. Calm posture unchanged.
      ========================================================================= */
+  --planner-card-h: 72px;
+  --planner-card-radius: 10px;        /* §5.2 radius_subtle - small interactive card */
+  --planner-card-pad: 8px;
+  --planner-card-gap: 8px;
+  --planner-source-rail-w: 2px;
 
-  /* --- Equal card (the shared base — meeting & task are identical boxes) --- */
-  --planner-card-h: 72px;             /* locked equal-card height (48+24) */
-  --planner-card-radius: 8px;         /* matches .food-card / .row-button */
-  --planner-card-pad: 8px;            /* dense kanban interior (space-sm) */
-  --planner-card-gap: 8px;            /* gap between stacked cards (space-sm) */
-  --planner-source-rail-w: 2px;       /* left source rail: stroke, not fill */
+  /* Source rail: stroke-architecture differentiation via §2.6 lenses / the
+     paper ladder - never a second accent. Meetings (anchored) ride the dusty
+     indigo lens; the marker stays the pen. FLAGGED to Iris (was brass). */
+  --planner-rail-meeting: #8087A6;              /* cat_bkm dusty indigo */
+  --planner-rail-task: var(--border);
+  --planner-rail-task-todoist: var(--fg-subtle);
+  --planner-rail-task-clickup: var(--fg-muted);
 
-  /* --- Source rail: stroke-architecture differentiation, NOT a 2nd accent -- */
-  --planner-rail-meeting: var(--accent-brass);  /* anchored = brass edge */
-  --planner-rail-task: var(--border);           /* movable = neutral edge */
-  --planner-rail-task-todoist: var(--fg-subtle);/* OPTIONAL sub-source tint */
-  --planner-rail-task-clickup: var(--fg-muted); /* OPTIONAL sub-source tint */
+  --planner-source-mark: var(--fg-muted);
+  --planner-source-mark-size: 14px;
 
-  /* --- Source-tool logo mark (Iris 11 §1) ---------------------------------- */
-  /* The Todoist / ClickUp / Google Calendar mark sits in the card meta row at a
-     small size, MONOCHROME, tinted to the brand foreground ramp — NOT the loud
-     stock brand colours (red/pink/multicolour all fail §0 calm + §9.1 colour
-     bans on the dark canvas). The mark identifies the source as quiet metadata,
-     same weight as the time text it leads. Event cards override to oxblood. */
-  --planner-source-mark: var(--fg-muted);       /* default source-logo tint */
-  --planner-source-mark-size: 14px;             /* small, leads the meta row */
+  --planner-card-check-size: 20px;
 
-  /* --- Complete check (Iris 20 §7 — complete-a-task) ----------------------- */
-  /* The leading round toggle on the title row: Circle (incomplete) → filled
-     CheckCircle2 (complete). 20px touch-comfortable on the dense kanban card,
-     opposite the top-right Star. NO green: incomplete = --fg-subtle (quiet),
-     complete = --fg-muted (calm, neutral, same family as the spec-18 done mark).
-     Sticky source-done renders the same filled mark but DISABLED (read-only). */
-  --planner-card-check-size: 20px;              /* the round complete toggle */
+  --planner-lane-pad: 8px;
+  --planner-lane-gap: 4px;
+  --planner-lane-radius: 10px;                  /* §5.2 radius_subtle */
+  --planner-lane-header-tint: var(--accent-marker-soft);
+  --planner-lane-label: var(--fg-muted);
+  --planner-lane-divider: var(--border-subtle);
+  --planner-lane-empty-bg: transparent;
+  --planner-lane-min-h: 152px;
 
-  /* --- AM / PM lane (a labelled drop region, not a card) ------------------- */
-  --planner-lane-pad: 8px;                      /* space-sm */
-  --planner-lane-gap: 4px;                      /* space-xs label-to-cards */
-  --planner-lane-radius: 8px;                   /* space-sm rounding */
-  --planner-lane-header-tint: var(--accent-soft);   /* faint brass band */
-  --planner-lane-label: var(--fg-muted);        /* "AM" / "PM" label — MED-2: fg-muted (≥5:1), NOT fg-subtle (2.45:1, GL-003 §2.2 display-only) */
-  --planner-lane-divider: var(--border-subtle); /* hairline AM-PM separator */
-  --planner-lane-empty-bg: transparent;         /* empty lane is NOT a box */
-  /* FIX 3 (Iris 16): a comfortable drop-target floor so an empty/short lane is still an
-     easy target, WITHOUT the lane stretching to fill half the viewport. ~2 card rows +
-     gaps: 2×72 + 8 gap = 152px. Content above this grows the lane; below it the lane
-     holds this floor. Stops the AM/PM bands stretching tall (the big red empty gaps); any
-     leftover board height now falls BELOW the PM band, not between the bands. */
-  --planner-lane-min-h: 152px;                  /* ~2 card rows + gap — drop-target floor */
+  --planner-split-rule: var(--border);
+  --planner-split-label: var(--fg-muted);
+  --planner-split-label-bg: var(--surface-bg);
+  --planner-split-gap: 8px;
+  --planner-split-breathe: 16px;
 
-  /* --- AM/PM split divider (Iris 11 §4): the labelled hairline that splits the
-     day box. The rule is --border (one step up from the existing subtle lane
-     border so the split reads as a deliberate boundary, not just a list gap);
-     the centred time label (from settings.am_pm_split) is --fg-muted on a small
-     --surface-1 chip that masks the rule behind it. "The day splits here." */
-  --planner-split-rule: var(--border);          /* the hairline across the column */
-  --planner-split-label: var(--fg-muted);       /* the "12:00" time label */
-  /* Iris 12 §3.4: the divider was promoted from a per-column hairline to ONE
-     board-wide rule (full-width AM/PM split). The masking chip now crosses the board
-     GROUND, not a column fill, so it must match --surface-bg (was --surface-1). Still
-     an existing locked GL-003 colour — zero new colours. */
-  --planner-split-label-bg: var(--surface-bg);  /* chip masks the board ground (full-width divider) */
-  /* Iris 12 §3.5: band→divider→band vertical rhythm for the board grid row-gap. The
-     8px (space-sm) spacing step from GL-003 §4 — same literal idiom as the sibling
-     planner tokens (--planner-col-gap/-pad), since the spacing scale is a Tailwind
-     theme scale, not a CSS custom property. No new value. */
-  --planner-split-gap: 8px;                      /* space-sm — band/divider breathing room */
-  /* Iris spec 18: extra air around the WHOLE divider slot (row 3) so the AM boxes and
-     PM boxes don't crowd the single split line / lunch band. Applied as margin-block on
-     the .planner-divider-slot wrapper — distinct from --planner-split-gap (the internal
-     band↔rule rhythm) and from the board row-gap (the align-content fix, untouched).
-     = --space-md (16px); no new value. */
-  --planner-split-breathe: 16px;                 /* space-md (16px) — air around the divider slot. WAS var(--space-md): undefined in the cockpit (Tailwind owns the spacing scale; there is no --space-* custom property), so it no-op'd and the margin never rendered (Iris 20 §0 bug fix). Literal now. */
-
-  /* --- Lunch-break band (Iris 14): when planner_settings.lunch_break.enabled,
-     the single AM/PM divider becomes a BAND — a top rule at lunch.start, a bottom
-     rule at lunch.end, and a patterned "blocked / break time" fill between them.
-     When disabled, the single .planner-split-row stays exactly as now (the band
-     tokens go unused). The fill is ONE swappable background token so Tom can change
-     the texture in one place. PRIMARY = faint diagonal hatch — the universal
-     calendar "busy / out-of-office / unavailable" convention; reads instantly as
-     blocked time without a new hue. Built from --border (zero-chroma neutral, the
-     same hairline the divider uses) at low opacity over the board ground, so it is
-     whisper-quiet and never competes with the cards. Zero new colours, zero new hues. */
+  /* Lunch-break band hatch - the stroke is the room's own hairline family
+     (paper at low alpha), never a gray hex. */
   --planner-break-fill:
     repeating-linear-gradient(
       -45deg,
       transparent 0,
       transparent 5px,
-      oklch(0.30 0 0 / 0.22) 5px,   /* = --border @ 0.22 — the hatch stroke */
-      oklch(0.30 0 0 / 0.22) 6px,
+      rgba(246, 243, 236, 0.10) 5px,
+      rgba(246, 243, 236, 0.10) 6px,
       transparent 6px,
       transparent 11px
     );
-  /* ALT-A (dot grid): a 2px neutral dot on a 10px lattice — calmer, more "spacer"
-     than "blocked". Swap --planner-break-fill to this one line to switch.
-       radial-gradient(oklch(0.30 0 0 / 0.30) 1px, transparent 1.5px) 0 0 / 10px 10px;
-     ALT-B (gradient wash): no texture, just a faint recessed band — quietest of all,
-     but loses the "unavailable" read.
-       linear-gradient(0deg, var(--surface-1), var(--surface-1)); */
-  --planner-break-fill-bg: var(--surface-bg);    /* ground UNDER the hatch = board ground, matches the divider chip */
-  --planner-break-min-h: 28px;                   /* min band height when lunch is short; grows with content/time */
-  --planner-break-pad: 8px;                      /* space-sm (8px) inner breathing room top+bottom of the fill. WAS var(--space-sm): undefined → no-op (Iris 20 §0). Literal now. */
+  --planner-break-fill-bg: var(--surface-bg);
+  --planner-break-min-h: 28px;
+  --planner-break-pad: 8px;
 
-  /* --- Day column (the cockpit's first multi-column board) ----------------- */
-  --planner-col-min: 220px;            /* matches .food-grid minmax floor */
-  --planner-col-gap: 16px;             /* space-md between day columns */
-  --planner-col-pad: 8px;              /* space-sm column interior */
-  --planner-col-bg: var(--surface-1);  /* day column = house panel surface (.side-panel/.food-card); Iris 10 §3.1 */
-  --planner-col-head-h: 40px;          /* day-name header band */
-  --planner-col-today-edge: var(--accent-brass);  /* today's column marker */
+  --planner-col-min: 220px;
+  --planner-col-gap: 16px;
+  --planner-col-pad: 8px;
+  --planner-col-bg: var(--surface-1);
+  --planner-col-head-h: 40px;
+  --planner-col-today-edge: var(--accent-marker);
 
-  /* --- Timer chip + calm low-time state (the calm-posture centrepiece) -----
-     CALM DOCTRINE: low time DIMS (brass -> muted); it NEVER reddens, brightens,
-     blinks, or scales. There is no "danger" state. A countdown is information,
-     not a threat. Banned: --status-error / any red, pulse, scale-up, siren. */
-  --timer-chip-bg: var(--accent-soft);     /* rest: faint brass wash */
-  --timer-chip-fg: var(--accent-brass);    /* rest: brass digits */
-  --timer-chip-border: transparent;        /* rest: borderless pill */
-  --timer-ample-fg: var(--accent-brass);   /* plenty of time: full brass */
-  --timer-ample-bg: var(--accent-soft);
-  --timer-low-fg: var(--fg-muted);         /* low: digits dim toward neutral */
-  --timer-low-bg: var(--surface-2);        /* low: chip recedes into board */
-  --timer-elapsed-fg: var(--fg-subtle);    /* over: faintest, no shame */
+  /* Timer chip + calm low-time state - low time DIMS, never reddens. */
+  --timer-chip-bg: var(--accent-marker-soft);
+  --timer-chip-fg: var(--accent-marker-text);
+  --timer-chip-border: transparent;
+  --timer-ample-fg: var(--accent-marker-text);
+  --timer-ample-bg: var(--accent-marker-soft);
+  --timer-low-fg: var(--fg-muted);
+  --timer-low-bg: var(--surface-2);
+  --timer-elapsed-fg: var(--fg-subtle);
   --timer-elapsed-bg: var(--surface-1);
 
-  /* --- Drop-insertion indicator (cockpit's first drag-drop visual language) */
-  --planner-drop-line: var(--accent-brass);     /* transient drop intent */
+  /* Drop-insertion indicator - transient drag intent is teaching ink (§4.4):
+     the pen marks where the card lands. */
+  --planner-drop-line: var(--accent-marker);
   --planner-drop-line-h: 2px;
-  --planner-drop-line-radius: 999px;            /* rounded = "slot", not cut */
-  --planner-drop-target-border: var(--accent-brass); /* dashed, on valid hover */
-  --planner-drop-target-bg: var(--accent-soft);      /* faint wash, valid hover */
-  --planner-drop-ghost-h: var(--planner-card-h);     /* receiving gap = 1 card */
-  --planner-drop-ghost-bg: var(--surface-bg);        /* quiet recessed gap */
+  --planner-drop-line-radius: 999px;
+  --planner-drop-target-border: var(--accent-marker);
+  --planner-drop-target-bg: var(--accent-marker-soft);
+  --planner-drop-ghost-h: var(--planner-card-h);
+  --planner-drop-ghost-bg: var(--surface-bg);
 
-  /* --- Collapse / resize layout motion (Vivi motion audit 2026-06-03 §0) -----
-     ONE calm, overshoot-free decelerate curve for EVERY height/width/spacing
-     collapse+expand in the app (AM-band collapse, source-group fold, lunch-band
-     swap, sidebar collapse-to-rail, Collapsible primitive, chat-artifact diff).
-     MCP provenance: mcp__motion__visualise-cubic-bezier x1=0.22 y1=1 x2=0.36 y2=1
-     — pure no-overshoot decelerate, settles exactly at 1.0, never crosses it.
-     Spring alternatives (generate-css-spring bounce=0 duration=0.32) REJECTED for
-     layout: even bounce=0 carries ~5.4% overshoot that reads as wobble. Springs
-     are correct only for drag drop-settle, never for a height/width change.
-     De-facto already in cockpit.css:26/96/1843 + disclosure.tsx — naming it here
-     stops every future collapse re-inventing a curve. Close is ~15% faster than
-     open (content clears just ahead of the space).
-     PENDING IRIS BLESS into GL-003 §6 as the layout-easing companion to the §6.1
-     springs (see Vivi audit §5). Until then these literals = the proven curve. */
-  --ease-collapse: cubic-bezier(0.22, 1, 0.36, 1);  /* easeCollapse — no overshoot */
-  --dur-collapse-open: 260ms;                        /* durCollapse open  */
-  --dur-collapse-close: 220ms;                       /* durCollapse close (faster) */
+  /* Collapse / resize layout motion - the proven no-overshoot decelerate is
+     the SAME curve as the §7 house ease. */
+  --ease-collapse: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-collapse-open: 260ms;
+  --dur-collapse-close: 220ms;
 
-  /* --- Save-status dwell (Vivi motion-spec Spec 3 §3.2-D; proposed to Iris) ---
-     The dwell the "Saved" state HOLDS before fading. A duration, not a curve, so
-     the absent live Motion Studio MCP does not gate it (Vivi §3.4). Iris owns
-     whether 1400ms is the house value (Things 3 ≈1000–1500, Linear ≈1500). The
-     SaveStatus component reads THIS var so JS + CSS share one dwell source. */
   --dur-save-settle: 1400ms;
 
-  /* --- Outliner primitives (Iris GL-003 §8.12 — eight --outliner-* aliases, zero
-     new hue/chroma; each resolves to an existing §2 ladder token) + the drag-lift
-     elevation (Vivi Spec 2 §2.5 / Iris §6.3 Layer-4 grounding-shadow idiom). The
-     ONLY pinned geometry is the 1px indent-guide width (a wrong rail weight is a
-     brand error, §8.12); everything else Felix sizes in rem against §3.2.1/§4. */
-  --outliner-indent-guide: var(--border-subtle);     /* the 1px vertical nesting rail */
-  --outliner-bullet: var(--fg-muted);                /* resting leaf bullet */
-  --outliner-bullet-collapsed: var(--accent-brass);  /* has-collapsed-children — BRASS state marker (GL-003 v3.25): the bullet carries the "hidden content folded here" signal now that the chevron is gone; fenced to collapsed-WITH-children only */
-  /* --outliner-chevron / --outliner-chevron-hover RETIRED 2026-06-09 (Tom): the
-     disclosure chevron glyph was removed; the emphasized bullet
-     (--outliner-bullet-collapsed) is now the sole fold signal. Tokens dropped to
-     avoid orphaned vars; reinstate if a chevron ever returns. */
-  --outliner-handle: var(--border);                  /* drag handle rest */
-  --outliner-handle-active: var(--fg-subtle);        /* drag handle grabbing (never brass) */
-  --outliner-caret: var(--accent-brass);             /* THE one sanctioned brass moment */
-  --outliner-selection: var(--accent-soft);          /* ::selection wash (state tint) */
-  --shadow-row-rest: none;                              /* §6.9 — rest half of the pair */
-  --shadow-row-lifted: 0 8px 28px rgba(0, 0, 0, 0.55);  /* §6.9 (v3.24) — grounding shadow, not glow */
+  /* Outliner primitives - aliases resolve to the ink/paper ladder; the caret
+     is THE one sanctioned marker moment on the outliner surface. */
+  --outliner-indent-guide: var(--border-subtle);
+  --outliner-bullet: var(--fg-muted);
+  --outliner-bullet-collapsed: var(--accent-marker-muted); /* fold state-ink: muted marker, keeps the caret the loud moment */
+  --outliner-handle: var(--border);
+  --outliner-handle-active: var(--fg-subtle);
+  --outliner-caret: var(--accent-marker);
+  --outliner-selection: var(--accent-marker-soft);
+  --shadow-row-rest: none;
+  --shadow-row-lifted: 0 8px 28px rgba(0, 0, 0, 0.55); /* §5.3 floating exception, dark = black-based */
 
-  /* --- Task sidebar (distinct from the left nav rail) --------------------- */
-  --tasksidebar-w: 20rem;                  /* wider than 17rem nav: holds cards */
-  --tasksidebar-bg: var(--surface-1);      /* was --surface-bg; now a panel, sibling of the day columns (Iris 10 §3.5) */
-  --tasksidebar-border: var(--border);     /* left hairline vs board */
-  --tasksidebar-pad: 16px;                 /* space-md gutter */
-  --tasksidebar-gap: var(--planner-card-gap);  /* 8px between waiting cards */
-  --tasksidebar-head-fg: var(--fg-muted);  /* group label (.side-panel-title) */
+  /* Task sidebar */
+  --tasksidebar-w: 20rem;
+  --tasksidebar-bg: var(--surface-1);
+  --tasksidebar-border: var(--border);
+  --tasksidebar-pad: 16px;
+  --tasksidebar-gap: var(--planner-card-gap);
+  --tasksidebar-head-fg: var(--fg-muted);
 
-  /* --- Sidebar collapse + group-by-source (Iris 11 §3) -------------------- */
-  --tasksidebar-collapsed-w: 2.5rem;       /* thin reopen rail when collapsed */
-  --tasksidebar-toggle-fg: var(--fg-subtle);/* chevron at rest */
-  --tasksidebar-toggle-fg-hover: var(--accent-brass); /* chevron on hover */
-  --tasksidebar-group-gap: 16px; /* space-md (16px) between source groups. WAS var(--space-md): undefined → no-op, groups ran together (Iris 20 §0). Literal now. */
-  --tasksidebar-group-head-fg: var(--fg-muted);  /* "ClickUp · 23" group label */
-  --tasksidebar-group-count-fg: var(--fg-subtle);/* the count after the label */
-  /* Iris 20 §4 — pinned Weekly-Goals section header (Felix owns the section LAYOUT;
-     this is only the label tint). The group label gets the highlight teal + a leading
-     filled Star, so the pinned section visually rhymes with the highlight cards it
-     holds — distinct from the --fg-muted source-group headers above. */
-  --tasksidebar-pinned-head-fg: var(--planner-highlight); /* "Weekly Goals" label — teal, matches the cards */
+  --tasksidebar-collapsed-w: 2.5rem;
+  --tasksidebar-toggle-fg: var(--fg-subtle);
+  --tasksidebar-toggle-fg-hover: var(--accent-marker-text);
+  --tasksidebar-group-gap: 16px;
+  --tasksidebar-group-head-fg: var(--fg-muted);
+  --tasksidebar-group-count-fg: var(--fg-subtle);
+  --tasksidebar-pinned-head-fg: var(--planner-highlight);
 
-  /* Iris 20 §3 — focus-mode toolbar toggle. Active state = the established brass
-     active-pill (accent-soft bg + brass glyph), same idiom as the timer chip rest /
-     nav active. This is CHROME (a control), not board content — so brass here does NOT
-     touch the §8.1 single-brass-moment that governs the board cards. No new colour. */
-  --planner-focus-toggle-fg: var(--fg-muted);            /* idle glyph */
-  --planner-focus-toggle-fg-active: var(--accent-brass); /* engaged glyph */
-  --planner-focus-toggle-bg-active: var(--accent-soft);  /* engaged pill bg */
+  --planner-focus-toggle-fg: var(--fg-muted);
+  --planner-focus-toggle-fg-active: var(--accent-marker);
+  --planner-focus-toggle-bg-active: var(--accent-marker-soft);
 
-  /* --- Day-column header (Iris 15 §1): Sunsama-style two-line header. The FULL
-     weekday name leads (prominent), the date sits below (muted). Type comes from the
-     established §3.2 scale — 0.875rem/520 for the day name (one step above the current
-     0.75rem head), 0.75rem/--fg-muted for the date. ONE brass moment: today's day name
-     turns brass (no extra dot/edge — the existing inset brass top-edge already marks the
-     live half). Zero new colours, zero new sizes. */
-  --planner-dayname-fg: var(--fg);            /* weekday name, normal days */
-  --planner-dayname-today-fg: var(--accent-brass); /* weekday name, TODAY (the one brass moment) */
-  --planner-daydate-fg: var(--fg-muted);      /* the date line under the name */
+  --planner-dayname-fg: var(--fg);
+  --planner-dayname-today-fg: var(--accent-marker-text); /* TODAY - the one marker moment on the board header */
+  --planner-daydate-fg: var(--fg-muted);
 
-  /* --- Temporal contrast tiers (Iris 15 §2): the column-level dim that makes the eye
-     read past → now → future at a glance. Applied to the daybox CONTENT wrapper (both AM
-     + PM boxes of a day) via data-temporal. THREE tiers; today is full strength.
-     COMPOSITION NOTE: done/stale cards already carry opacity 0.6 (PlanCard `faded`). The
-     past tier is deliberately a GENTLE 0.62 (not 0.4) so a past day's faded card composes
-     to ~0.38 — dimmed-but-legible, never invisible. Future is a light 0.82 — clearly more
-     present than past, clearly less than today's 1. Calm by construction: a single opacity
-     per tier, no colour shift, no blur. */
-  /* Iris 16 §A: 0.62 → 0.78. The past-day hatch (--planner-past-hatch) now carries the
-     "past/done" signal, so the heavy dim is redundant; at 0.78 the faded done-cards (0.6)
-     compose to ~0.47 — comfortably legible (old 0.62 floored at the ~0.37 edge). Past
-     (0.78) and future (0.82) no longer rely on opacity to differ — the hatch is the
-     unambiguous past↔future differentiator now. */
-  --planner-temporal-past: 0.78;              /* past days: gentle dim; the hatch carries "done" (Iris 16 §A) */
-  --planner-temporal-today: 1;                /* today: full contrast (the focus) */
-  --planner-temporal-future: 0.82;            /* future days: mid — present but quieter */
+  --planner-temporal-past: 0.78;
+  --planner-temporal-today: 1;
+  --planner-temporal-future: 0.82;
 
-  /* --- Live day-progress rail (Iris 15 §3): a thin vertical indicator in a narrow left
-     gutter beside the board. A muted track with a brass-soft elapsed fill above a thin
-     "now" marker line that descends in real time across the work_hours span (top = day
-     start, bottom = day end; clamped before/after). CALM doctrine: the now-marker is a
-     1px line + 5px dot, NOT a loud bar; it GLIDES (the transform/top is updated live by
-     Felix, transition smooths sub-second). The single brass moment is reserved for today's
-     header, so the rail's marker uses --fg-muted (quiet, alive) and the elapsed fill uses
-     --accent-soft (the faint brass wash, not full brass) — present but never anxious.
-     Zero new colours. */
-  --planner-rail-gutter-w: 16px;              /* narrow left gutter (space-md), clears cards */
-  --planner-rail-track-w: 2px;                /* the rail line itself — a hairline, not a bar */
-  --planner-rail-track: var(--border-subtle); /* the full-span muted track */
-  --planner-rail-elapsed: var(--accent-soft); /* faint brass wash on the elapsed portion */
-  --planner-rail-now: var(--fg-muted);        /* the "now" marker line — quiet, not brass */
-  --planner-rail-now-dot: 5px;                /* the small dot at the now-line */
+  --planner-rail-gutter-w: 16px;
+  --planner-rail-track-w: 2px;
+  --planner-rail-track: var(--border-subtle);
+  --planner-rail-elapsed: var(--accent-marker-soft);
+  --planner-rail-now: var(--fg-muted);
+  --planner-rail-now-dot: 5px;
 
-  /* --- Iris 16 §A: past-box hatch — same -45° geometry as --planner-break-fill (visual
-     kinship with the lunch band — both mean "blocked/done"), but lighter so cards stay
-     legible over it. --border @ 0.12 (vs the band's 0.22). No new hue. Painted as the
-     past daybox background-IMAGE under the opaque cards. */
+  /* past-box hatch - paper-alpha stroke, half the lunch-band density */
   --planner-past-hatch:
     repeating-linear-gradient(
       -45deg,
       transparent 0,
       transparent 5px,
-      oklch(0.30 0 0 / 0.12) 5px,   /* = --border @ 0.12 — half the lunch-band density */
-      oklch(0.30 0 0 / 0.12) 6px,
+      rgba(246, 243, 236, 0.055) 5px,
+      rgba(246, 243, 236, 0.055) 6px,
       transparent 6px,
       transparent 11px
     );
 
-  /* --- Iris 16 §A: future-day daybox outline — dashed (not solid). "Not reached yet,
-     open for changes." Keeps the existing --border colour + radius; only the style
-     differs. (Felix-added per Iris's idiom; FLAGGED to Iris to bless.) */
   --planner-future-border-style: dashed;
 
-  /* --- Iris 16 §B: progress-rail "now" time label. The gutter is only 16px — too narrow
-     for an inline HH:MM chip — so the label floats just right of the marker, overhanging
-     the board's left edge, riding the same live --planner-now-pct. Quiet (NOT brass:
-     single-brass-moment is today's header). */
-  --planner-rail-label-fg: var(--fg-muted);   /* the time digits — quiet, matches the marker */
-  --planner-rail-label-bg: var(--surface-2);  /* a solid chip so the time stays legible over the board */
-  --planner-rail-label-size: 0.6875rem;       /* caption tier, one step below the 0.75rem split/date labels */
+  --planner-rail-label-fg: var(--fg-muted);
+  --planner-rail-label-bg: var(--surface-2);
+  --planner-rail-label-size: 0.6875rem;
 
-  /* --- Iris 16 §C: active-box countdown → full-width sticky bottom bar. Reuses the timer
-     state tokens (ample/low/elapsed) wholesale — same calm doctrine as .planner-timer, no
-     red, no blink. Only genuinely-new values are the band's height + horizontal padding
-     (structural, not brand). */
-  --planner-countdown-bar-h: 28px;                       /* slim band — same floor as --planner-break-min-h */
-  --planner-countdown-bar-pad-x: var(--planner-col-pad); /* aligns label x with the box interior */
+  --planner-countdown-bar-h: 28px;
+  --planner-countdown-bar-pad-x: var(--planner-col-pad);
 
-  /* --- Gear / settings panel (reuses .side-panel + drawer idiom) ----------- */
+  /* Gear / settings panel */
   --settings-panel-w: 22rem;
-  --settings-panel-bg: var(--surface-1);   /* same as .side-panel */
+  --settings-panel-bg: var(--surface-1);
   --settings-panel-border: var(--border);
-  --settings-panel-radius: 12px;           /* panel tier of radius ladder */
-  --settings-panel-pad: 16px;              /* space-md */
-  --settings-panel-row-gap: 16px;          /* space-md between setting groups */
-  --settings-panel-scrim: var(--scrim);  /* EXACT reuse of .sidebar-scrim (theme-adaptive) */
+  --settings-panel-radius: 16px;   /* §5.2 radius_standard (panel) */
+  --settings-panel-pad: 16px;
+  --settings-panel-row-gap: 16px;
+  --settings-panel-scrim: var(--scrim);
 
   /* =========================================================================
-     STOIC MENTOR MODULE — GL-003 §8.11 (Iris, v3.17, 2026-06-05). Materialised
-     verbatim from the §8.11.1/§8.11.2/§8.11.3 token tables. ZERO new hues: every
-     COLOUR resolves to an existing §2.3/§2.4 token; only geometry/duration/serif
-     values are literals. Felix implements in the cockpit repo (the spec is
-     design-system-level; this block is the cockpit's binding of it).
+     STOIC MENTOR MODULE - re-grounded on INKLINE. The no-serif law (§3.1)
+     retires the quotation serif: quotes speak the DISPLAY face. Mood tints
+     ride the §2.5 status doctrine (positive = the green completion carve-out
+     as a NON-TEXT border tint; tense = warning amber; hard = destructive).
      ========================================================================= */
-  /* §3.4 — the ONE sanctioned serif role: quotation voice only. */
-  --font-wisdom-serif: 'Source Serif 4', 'Crimson Text', Georgia, serif;
+  --font-wisdom-serif: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif; /* legacy name; §3.1 no-serif law - quotes ride the display face */
 
-  /* §8.11.1 — mood→border-tint map. Status primitives + neutral hairline ONLY. */
-  --stoic-mood-positive: var(--status-success);          /* valence 5 — clarity/calm */
-  --stoic-mood-positive-soft: oklch(0.68 0.13 152 / 0.70);/* valence 4 — gentler success */
-  --stoic-mood-neutral: var(--border);                   /* valence 3 — plain hairline */
-  --stoic-mood-tense: var(--status-warning);             /* valence 2 — honey, NOT brass */
-  --stoic-mood-hard: var(--status-error);                /* valence 1 — red stays red */
+  --stoic-mood-positive: var(--status-success-dot);
+  --stoic-mood-positive-soft: rgba(125, 154, 127, 0.70);
+  --stoic-mood-neutral: var(--border);
+  --stoic-mood-tense: var(--status-warning);
+  --stoic-mood-hard: var(--status-error);
 
-  /* §8.11.2 — orbiting field geometry */
   --stoic-orb-size: clamp(120px, 18vw, 192px);
   --stoic-ring-base-r: clamp(140px, 22vw, 260px);
   --stoic-ring-step: clamp(80px, 12vw, 150px);
@@ -582,156 +457,189 @@
   --stoic-card-ring-w: 1.5px;
   --stoic-card-gap-min: var(--space-md);
 
-  /* §8.11.2 — visible orbit ring-line stroke (Tom 2026-06-05: "see the circles
-     the memories travel on", orrery/planetarium read). FELIX→IRIS PROPOSAL: this
-     should graduate into GL-003 §8.11.2 as a named brand token `--stoic-ring-stroke`.
-     Until Iris ratifies it, it is anchored to the neutral hairline `--border` at a
-     low alpha (no new hue, no hardcoded hex) so the line is a faint orbital trace,
-     not a hard divider. */
   --stoic-ring-stroke: color-mix(in oklch, var(--border) 45%, transparent);
   --stoic-ring-stroke-w: 1px;
 
-  /* §8.11.2 — orbiting field motion (the ONE sanctioned `linear`, ambient orbit) */
-  --stoic-rot-dur-base: 240s;   /* inner ring: 1 rotation / 4 min */
-  --stoic-rot-dur-step: 90s;    /* each outer ring slower (parallax depth) */
-  --stoic-rot-ease: linear;     /* §6.6 carve-out (same as orbiting-mote) */
+  --stoic-rot-dur-base: 240s;
+  --stoic-rot-dur-step: 90s;
+  --stoic-rot-ease: linear;
 
-  /* §8.11.3.1 — virtue grid */
-  --stoic-virtue-fill: var(--accent-brass);   /* ONE hue for all four; magnitude by arc */
+  --stoic-virtue-fill: var(--accent-marker);
   --stoic-virtue-track: var(--surface-2);
 
-  /* §8.11.3.2 — mood bars (two-hue + track, never brass) */
   --stoic-bar-track: var(--surface-2);
   --stoic-bar-h: 8px;
-  --stoic-bar-positive: var(--status-success);  /* clarity/motivation/positivity */
-  --stoic-bar-negative: var(--status-error);    /* frustration/anxiety */
+  --stoic-bar-positive: var(--status-success-dot);
+  --stoic-bar-negative: var(--status-error);
 
-  /* §8.11.3.3 — Seneca's perspective panel */
   --stoic-persp-surface: var(--surface-2);
-  --stoic-persp-edge: var(--accent-brass);      /* the detail view's ONE brass moment */
+  --stoic-persp-edge: var(--accent-marker);
 }
 
 /* ===========================================================================
-   LIGHT MODE — [data-theme="light"]. A coherent warm-paper inversion of the
-   dark set: "calm operator, warm material" holds, the brass stays the ONE
-   accent, surfaces are aged-cream not stark white, ink is warm charcoal not
-   black. ONLY colour tokens are overridden — every geometry/motion/spring/
-   structural token from the dark :root above is inherited unchanged.
+   THE PAPER ROOM - [data-theme="light"] (GL-003 §2.2). The ink room inverted:
+   same marker logic, deeper marker for contrast on cream. Warm paper white,
+   never clinical white; warm ink, never pure black. ONLY colour tokens are
+   overridden - geometry/motion/spring/structural tokens inherit.
 
-   CONTRAST (WCAG AA, verified against the surfaces they sit on):
-   • --fg (0.30) on --surface-bg (0.965): ~12:1 — AAA body text.
-   • --fg-muted (0.46): ~7.5:1 on bg — AA for any text size.
-   • --fg-subtle (0.56): ~4.8:1 on bg — AA for normal text, used for hints/labels.
-   • --accent-brass darkened to 0.52 so brass-on-paper TEXT/glyphs clear AA; the
-     decorative brass-soft wash + brass fills (with --text-on-brass) are unchanged
-     in role. --text-on-brass flips to a light ink so labels on a brass fill read.
-   • Status hues drop in lightness (success/warning/info/error) so they remain
-     legible AND distinct on the light ground without going neon.
-   The mode is applied by the data-theme attribute (no @media here — System is
-   resolved to an explicit light/dark value in JS so it can react live).
+   Two-ink accent discipline (rulings A148 + A133):
+   • --accent-marker (#D43F16, marker_on_paper) = large-scale display, fills,
+     meaningful non-text. NOT a small-text ink.
+   • --accent-marker-text (#B93613, marker_text_on_paper) = every small marker
+     TEXT string (>= 4.5:1 on all five paper grounds).
+   • --fg-subtle (#67645A) is the light faint voice (A133-corrected).
+   Glow is an ink-room device (A154): --glow-signal is none here.
    =========================================================================== */
 :root[data-theme='light'] {
   color-scheme: light;
 
-  /* Surface (the room) — cool light graphite (hue 250), the daylight inversion
-     of the dark Graphite field. Dark is the design target; light stays coherent
-     and cool-neutral, never clinical white, never warm paper. Inverted ramp: bg
-     is the lightest, surfaces step DOWN as they lift toward the viewer. */
-  --surface-bg: oklch(0.975 0.003 250);
-  --surface-1: oklch(0.992 0.003 250);
-  --surface-2: oklch(0.945 0.004 250);
-  --surface-3: oklch(0.905 0.005 250);
-  --border: oklch(0.86 0.005 250);
-  --border-subtle: oklch(0.86 0.005 250 / 0.7);
+  /* Surface (the paper room) - §2.2 grounds + the A153 surface mapping. */
+  --surface-bg: #F6F3EC;      /* paper_room_bg - the page */
+  --surface-1: #FFFDF7;       /* paper_room_card - raised panel */
+  --surface-2: #EDE9DF;       /* paper_room_muted - muted surface */
+  --surface-3: #E7E2D5;       /* paper_room_secondary chip ground / deepest step */
+  --surface-deep: #F1EDE2;    /* paper_room_sidebar - the rail */
+  --surface-input: #FFFDF7;   /* input wells ride the card white (border at 0.18 does the work) */
 
-  /* Foreground (the voice) — cool graphite ink on light graphite. */
-  --fg: oklch(0.26 0.006 250);
-  --fg-muted: oklch(0.46 0.005 250);
-  --fg-subtle: oklch(0.53 0.005 250);  /* ≥4.5:1 on bg (AA for normal text) */
+  --border: rgba(23, 26, 32, 0.14);
+  --border-subtle: rgba(23, 26, 32, 0.09);
+  --border-emphasis: rgba(23, 26, 32, 0.20);
 
-  /* Accent — the brass signal, hue 60. Pulled DOWN in lightness so brass
-     text/glyphs clear AA on the light ground; the soft wash is a touch stronger
-     so the faint brass tint stays perceptible. --text-on-brass flips to a
-     near-white ink so labels on a brass fill stay legible. */
-  --accent-brass: oklch(0.52 0.13 60);
-  --accent-deep: oklch(0.46 0.12 60);
-  --accent-soft: oklch(0.52 0.13 60 / 0.13);
-  --text-on-brass: oklch(0.98 0.003 250);
+  /* Foreground - warm ink ladder (§2.2 + §2.8 light grid). */
+  --fg: #171A20;        /* paper_room_fg */
+  --fg-muted: #4D4A42;  /* light paper_dim - secondary reading / blockquote ink */
+  --fg-subtle: #67645A; /* light paper_faint (A133) - the terminal quiet step */
 
-  /* Theme-adaptive chrome — light Graphite values. A faint cool glow, a
-     translucent frosted top-bar, a cool (not warm) scrim, and a stronger brass
-     halo so the focus ring stays visible against bright surfaces. */
-  --atmos-glow: oklch(0.86 0.006 250 / 0.55);
-  --topbar-bg: oklch(0.992 0.003 250 / 0.62);
-  --scrim: oklch(0.30 0.006 250 / 0.30);
-  --focus-ring: oklch(0.52 0.13 60 / 0.55);
+  /* Accent - the marker on paper (§2.2). */
+  --accent-marker: #D43F16;                        /* marker_on_paper - display/fills/non-text */
+  --accent-marker-up: #B93613;                     /* hover */
+  --accent-marker-muted: #8F2E10;                  /* muted */
+  --accent-marker-soft: rgba(212, 63, 22, 0.08);   /* bg */
+  --accent-marker-bg: rgba(212, 63, 22, 0.08);
+  --accent-marker-bg-emphasis: rgba(212, 63, 22, 0.14);
+  --accent-marker-border: rgba(212, 63, 22, 0.35);
+  --accent-marker-text: #B93613;                   /* marker_text_on_paper (A148) */
+  --text-on-marker: #FFF6F0;
 
-  /* Graphite glass + hairline + glow + grid — light-mode overrides (the dark
-     :root defines the full set; here only the values that must flip for daylight). */
-  --glass-fill: oklch(0.99 0.003 250 / 0.62);
-  --glass-border: oklch(0.55 0.01 250 / 0.18);
-  --hairline: oklch(0.86 0.005 250 / 0.7);
-  --grad-card: linear-gradient(180deg, oklch(0.998 0.003 250) 0%, var(--surface-1) 100%);
-  --grad-divider: linear-gradient(90deg, transparent, var(--border), transparent);
-  --grad-signal-blob: radial-gradient(60% 60% at 30% 20%, oklch(0.52 0.13 60 / 0.30) 0%, oklch(0.52 0.13 60 / 0) 70%);
-  --glow-signal: 0 0 1px oklch(0.52 0.13 60 / 0.45), 0 0 12px oklch(0.52 0.13 60 / 0.18), 0 0 40px oklch(0.52 0.13 60 / 0.08);
-  --grid-line: oklch(0.86 0.005 250 / 0.7);
-  --grid-dot: radial-gradient(oklch(0.70 0.005 250 / 0.22) 1px, transparent 1px);
+  /* Room chrome, paper (ruling A150). */
+  --room-wash: rgba(212, 63, 22, 0.03);
+  --room-pool: rgba(23, 26, 32, 0.03);
+  --rail-wash: rgba(212, 63, 22, 0.02);
+  --topbar-bg: rgba(246, 243, 236, 0.9);   /* light nav glass - the room's own ground */
+  --scrim: rgba(23, 26, 32, 0.45);         /* light scrim_modal - warm ink, never #000 */
+  --focus-ring: var(--accent-marker);
+  --scrollbar-thumb: #D8D4C8;
+  --scrollbar-thumb-hover: #C9C4B8;
+  --scrollbar-border: #F6F3EC;
 
-  /* Category hues — oxblood + teal + highlight, lightness-adjusted for paper. */
-  --planner-event: oklch(0.45 0.10 25);
-  --planner-event-soft: oklch(0.45 0.10 25 / 0.10);
-  --planner-event-border: oklch(0.45 0.10 25 / 0.40);
+  --glass-fill: rgba(255, 253, 247, 0.92); /* light command-glass */
+  --glass-border: rgba(23, 26, 32, 0.12);
+  --hairline: var(--border-subtle);
 
-  --planner-highlight: oklch(0.52 0.13 75);
-  --planner-highlight-soft: oklch(0.52 0.13 75 / 0.14);
-  --planner-highlight-border: oklch(0.52 0.13 75 / 0.45);
-  --planner-highlight-ghost: oklch(0.52 0.13 75 / 0.07);
+  --grad-card: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-1) 100%);
+  --grad-divider: linear-gradient(90deg, var(--border-subtle), var(--border-subtle));
 
-  /* Status semantics — darkened so they clear AA on the light ground. */
-  --status-success: oklch(0.52 0.13 152);
-  --status-warning: oklch(0.54 0.13 80);  /* darkened to clear AA for text on paper (hue 80 is bright) */
-  --status-error: oklch(0.55 0.20 25);
-  --status-info: oklch(0.52 0.12 230);
+  /* The glow fence (A154): glow is emitted light - it reads at dusk, not in
+     daylight. Paper-room hover/CTA states step fills, never add glow. */
+  --glow-signal: none;
 
-  --status-success-soft: oklch(0.52 0.13 152 / 0.14);
-  --status-warning-soft: oklch(0.54 0.13 80 / 0.14);
-  --status-error-soft: oklch(0.55 0.20 25 / 0.13);
+  /* Voice-orb LISTENING glow (§6.13 / A163): sanctioned in both rooms as a
+     functional state instrument; here the quiet warm ink at the room's own
+     soft-shadow alpha class. Felix-derived light value, flagged to Iris. */
+  --orb-listen-glow: rgba(23, 26, 32, 0.10);
 
-  /* Knowledge-graph Gen-2 recede — recompute the color-mix anchors against the
-     light surfaces (they reference --surface-1 / --border-subtle, which already
-     flipped, so these mostly inherit correctly; restated for intent). */
+  /* Floating shadows, paper room (§5.3 / A150): warm ink at paper alphas. */
+  --shadow-strong-color: rgba(23, 26, 32, 0.16);
+  --shadow-soft-color: rgba(23, 26, 32, 0.10);
+  --shadow-inset-color: rgba(23, 26, 32, 0.18);
+
+  /* Rail composites, paper room (§6.1): hover = ink 0.06 over the light rail;
+     well = ink 0.10 over the light rail; warm-ink inset. */
+  --rail-hover-bg: #E4E0D6;
+  --rail-well-bg: #DBD8CF;
+  --rail-well-inset: inset 0 2px 6px rgba(23, 26, 32, 0.18);
+
+  /* Category lenses - §2.6 light column. */
+  --planner-event: #7C5570;                       /* muted plum, light */
+  --planner-event-soft: rgba(124, 85, 112, 0.10);
+  --planner-event-border: rgba(124, 85, 112, 0.40);
+
+  --planner-highlight: #8A6F33;                   /* muted amber, light */
+  --planner-highlight-soft: rgba(138, 111, 51, 0.14);
+  --planner-highlight-border: rgba(138, 111, 51, 0.45);
+  --planner-highlight-ghost: rgba(138, 111, 51, 0.07);
+
+  --planner-rail-meeting: #565E7E;                /* cat_bkm dusty indigo, light */
+
+  /* Status - §2.5 light column. */
+  --status-success: #67645A;
+  --status-success-dot: #5E7A60;
+  --status-warning: #8A6F33;
+  --status-error: #D64545;
+  --status-error-text: #B33A2B;
+  --status-info: #67645A;
+
+  --status-success-soft: rgba(23, 26, 32, 0.06);
+  --status-warning-soft: rgba(138, 111, 51, 0.14);
+  --status-error-soft: rgba(214, 69, 69, 0.13);
+
+  /* planner hatches - warm-ink strokes on cream */
+  --planner-break-fill:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0,
+      transparent 5px,
+      rgba(23, 26, 32, 0.10) 5px,
+      rgba(23, 26, 32, 0.10) 6px,
+      transparent 6px,
+      transparent 11px
+    );
+  --planner-past-hatch:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0,
+      transparent 5px,
+      rgba(23, 26, 32, 0.055) 5px,
+      rgba(23, 26, 32, 0.055) 6px,
+      transparent 6px,
+      transparent 11px
+    );
+
+  /* Knowledge-graph Gen-2 recede - anchors already flipped; restated for intent. */
   --graph-gen2-fill:   color-mix(in oklch, var(--surface-1) 78%, var(--surface-bg));
   --graph-gen2-border: color-mix(in oklch, var(--border-subtle) 78%, transparent);
+  --graph-focus-glow: 0 0 0 1px rgba(212, 63, 22, 0.30);
 
-  /* GL-003 §8.9.23 — concept palette: hue + chroma locked across modes, lightness
-     stepped DOWN for the paper ground (the §2.7 brass treatment). */
-  --concept-key-element: oklch(0.46 0.045 70);
-  --concept-project:     oklch(0.50 0.10  35);
-  --concept-goal:        oklch(0.50 0.095 150);
-  --concept-topic:       oklch(0.48 0.065 235);
-  --concept-habit:       oklch(0.48 0.085 305);
+  /* Concept palette - hue kept, deepened one step for the 3:1 non-text floor
+     on cream (canonized GL-003 v5.33 A159; key-element on dusty indigo). */
+  --concept-key-element: #565E7E;
+  --concept-project:     #8F5560;
+  --concept-goal:        #5E7A60;
+  --concept-topic:       #4E6B73;
+  --concept-habit:       #7C5570;
 
-  /* Fleeting-Notes sticky palette — pulled down in lightness so the post-it tints
-     read as gentle washes over cream rather than glowing over charcoal. */
-  --sticky-sun:   oklch(0.62 0.13 85);
-  --sticky-moss:  oklch(0.52 0.10 145);
-  --sticky-sky:   oklch(0.54 0.10 230);
-  --sticky-plum:  oklch(0.50 0.11 310);
-  --sticky-clay:  oklch(0.52 0.11 40);
-  --sticky-paper: oklch(0.58 0.02 90);
+  /* Sticky palette - deepened so the tints read as gentle washes over cream. */
+  --sticky-sun:   #8A6F33;
+  --sticky-moss:  #5E7A60;
+  --sticky-sky:   #4E6B73;
+  --sticky-plum:  #7C5570;
+  --sticky-clay:  #97713A;
+  --sticky-paper: #67645A;
 
-  /* Stoic mood-positive-soft — restate against the new success lightness. */
-  --stoic-mood-positive-soft: oklch(0.52 0.13 152 / 0.70);
+  /* Stoic mood-positive-soft - light completion green. */
+  --stoic-mood-positive-soft: rgba(94, 122, 96, 0.70);
 
-  /* Drag-lift grounding shadow — softer + lighter on paper (the dark value is a
-     near-black 0.55-alpha drop that reads as a hard smudge on cream). */
-  --shadow-row-lifted: 0 8px 28px oklch(0.30 0.02 71 / 0.18);
+  /* Floating-shadow family is per-room (§5.3, A150): paper-room shadows are
+     warm-ink-based at paper alphas, never the dark room's black smudge. */
+  --shadow-row-lifted: 0 8px 28px rgba(23, 26, 32, 0.16);
 }
 
 * {
   border-color: var(--border);
 }
+
+/* The 17px root (GL-003 §3.2): every rem-based size scales up ~6%. */
+html { font-size: 17px; }
 
 html,
 body {
@@ -739,36 +647,86 @@ body {
   padding: 0;
   background: var(--surface-bg);
   color: var(--fg);
-  font-family: 'Inter', system-ui, sans-serif;
-  font-feature-settings: 'cv11' 1, 'ss01' 1, 'ss03' 1, 'cv02' 1, 'calt' 1, 'liga' 1;
+  font-family: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Atmospheric depth — never flat black. Cool graphite light falling from the
-   top (Graphite §1.1 / --grad-atmosphere): brighter near-top, deepening toward
-   the canvas floor. Replaces the v3 warm upper-left lamp. */
+/* Room atmosphere - GL-003 §5.5 exact recipe, both rooms via tokens: a fixed
+   marker-light wash top-right + an ink depth pool at the opposite corner.
+   These are room light, not decoration; the alphas are ceilings and no other
+   gradients exist. */
 body {
   background:
-    radial-gradient(130% 90% at 50% -10%, var(--atmos-glow) 0%, transparent 50%),
+    radial-gradient(110% 70% at 85% -10%, var(--room-wash) 0%, transparent 55%),
+    radial-gradient(90% 60% at 10% 110%, var(--room-pool) 0%, transparent 60%),
     var(--surface-bg);
   min-height: 100vh;
 }
 
-/* Brass focus ring — single layer (GL-003 §6.3 exception). Theme-adaptive halo. */
-:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--surface-bg), 0 0 0 4px var(--focus-ring);
-  border-radius: 4px;
+/* Display voice (GL-003 §3.1): every headline rides Bricolage Grotesque at the
+   app weight 640 / -0.015em. Components that set their own family override
+   deliberately; this is the base law. */
+h1, h2, h3 {
+  font-family: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 640;
+  letter-spacing: -0.015em;
+}
+h4, h5 {
+  font-family: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
+/* Focus is the pen (GL-003 §6.2): a 2px marker outline, offset 2. The Graphite
+   double box-shadow halo is retired. */
+:focus-visible {
+  outline: 2px solid var(--accent-marker);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Selection - §2.1 / A150: the marker at 0.25 over the room's own foreground. */
 ::selection {
-  background: var(--accent-soft);
+  background: rgba(255, 90, 45, 0.25);
   color: var(--fg);
 }
+:root[data-theme='light'] ::selection {
+  background: rgba(212, 63, 22, 0.25);
+  color: #171A20;
+}
 
-/* Reduced motion — collapse all reveals to a quiet fade (GL-003 §6.4). */
+/* Scrollbars - §2.1 / A150 recipe: a slightly raised step of the room's own
+   ground, pill radius, 2px room border. Quiet instrument, both rooms. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+  border: 2px solid var(--scrollbar-border);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+/* The hand voice (GL-003 §3.6): a single Caveat line - short, earned, rotated.
+   Max ONE note per view; the sanctioned homes are empty states, loading lines,
+   day dividers (§6.5). Functional-note weight 500 (ruling A145); ink = marker
+   (dark) / marker_text_on_paper (light, via the token). */
+.hand-note {
+  font-family: 'Caveat Variable', 'Caveat', cursive;
+  font-size: 23px;           /* text_hand base rung */
+  line-height: 1;
+  font-weight: 500;          /* hand_weight_note */
+  color: var(--accent-marker-text);
+  transform: rotate(-2deg);
+  display: inline-block;
+}
+
+/* Reduced motion - the line renders fully drawn; fades become instant (§7). */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -783,13 +741,10 @@ body {
 .recharts-default-tooltip {
   background: var(--surface-3) !important;
   border: 1px solid var(--border) !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important; /* §5.2 radius_subtle */
 }
 
-/* Visually-hidden utility — content stays in the accessibility tree (screen
-   readers, document outline) but is painted off-screen. Standard a11y pattern,
-   no brand tokens involved. Used where a visible header is removed but the
-   landmark/outline must survive (e.g. the pure orbiting field, §8.11.2). */
+/* Visually-hidden utility - content stays in the accessibility tree. */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -802,9 +757,10 @@ body {
   border: 0;
 }
 
-/* FadeTruncate equivalent (GL-003 bans the hard `truncate` class).
+/* FadeTruncate equivalent (the hard `truncate` class stays banned).
    Single-line clamp with a soft fade-out at the right edge instead of an
-   abrupt cut. The text remains fully present in the DOM for screen readers. */
+   abrupt cut. The text remains fully present in the DOM for screen readers.
+   (A text-clamp mask, not a §6.10 scroller edge fade.) */
 .truncate-fade {
   overflow: hidden;
   white-space: nowrap;
@@ -812,13 +768,7 @@ body {
   mask-image: linear-gradient(to right, black 82%, transparent 100%);
 }
 
-/* Felix (Vivi motion audit B2, 2026-06-03): the generic measurement-free height:auto
-   collapse used by <CollapseRows> (chat-artifact diff, and any future async/virtualized
-   disclosure). grid-template-rows animates 0fr↔1fr; the inner is overflow:hidden so the
-   body is clipped as the track closes. Adapts to content that grows after mount (the diff
-   loads async) with no JS measurement. Shares the one calm --ease-collapse curve; close is
-   the faster durCollapse value; opacity LEADS on exit / TRAILS on enter so content fades
-   with the gap. CSS-only → reduced-motion neutralised by the global block below. */
+/* Measurement-free height:auto collapse used by <CollapseRows>. */
 .collapse-rows {
   display: grid;
   grid-template-rows: 0fr;
@@ -838,7 +788,7 @@ body {
 
 /* Recharts axis/grid text picks up the design-system font. */
 .recharts-text {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
 }
 
 /* When a Sheet/Dialog is open we lock the body scroll so the backdrop doesn't
@@ -847,23 +797,24 @@ body.overlay-open {
   overflow: hidden;
 }
 
-/* Disclosure card affordance — a faint brass edge + lift on hover/focus tells
-   the user "this opens". Uses tokens only. */
+/* Disclosure card affordance - "this opens". Hover answers with the hairline
+   stepping to emphasis + a quiet surface lift (§6.1 hover grammar); the marker
+   is NOT spent on every openable card (§2.3). */
 .disclosure-card {
   cursor: pointer;
   transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease;
 }
 .disclosure-card:hover,
 .disclosure-card:focus-visible {
-  border-color: var(--accent-brass);
+  border-color: var(--border-emphasis);
   background-color: var(--surface-2);
 }
 
-/* Readable prose inside the sheet/dialog: comfortable measure + paragraph rhythm.
-   Walls of text get broken into paragraphs by the renderer; this gives them air. */
+/* Readable prose inside the sheet/dialog: comfortable measure + paragraph
+   rhythm (§3.3 reading law: 1.68 leading). */
 .prose-readable p {
   margin: 0 0 0.85em 0;
-  line-height: 1.6;
+  line-height: 1.68;
 }
 .prose-readable p:last-child {
   margin-bottom: 0;
@@ -879,5 +830,5 @@ body.overlay-open {
 }
 .prose-readable strong {
   color: var(--fg);
-  font-weight: 520;
+  font-weight: 640; /* §3.1: strong = 640 */
 }

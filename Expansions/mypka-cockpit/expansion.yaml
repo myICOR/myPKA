@@ -1,6 +1,6 @@
 name: myPKA Cockpit
 slug: mypka-cockpit
-version: 1.2.1
+version: 1.4.0
 description: A navigable, wikilink-aware viewer over your whole myPKA — reads mypka.db read-only and renders the My Life hub, journal, note viewer with backlinks, team roster, Fleeting Notes with an outliner editor and whiteboards, finance/invoice modules, a read-only day planner, and optional health/workout packs. Runs entirely on your machine; nothing leaves it.
 category: productivity
 expansion_type: runtime

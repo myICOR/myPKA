@@ -35,7 +35,7 @@ function HabitStreakCard({ habit }: { habit: HabitTracking }) {
         <button
           type="button"
           onClick={() => navigate({ name: 'note', type: 'habits', slug: habit.slug })}
-          className="text-left text-body font-[520] text-fg hover:text-brass focus-visible:text-brass"
+          className="text-left text-body font-[520] text-fg hover:text-marker-text focus-visible:text-marker-text"
           title="Open habit"
         >
           {habit.name}
@@ -43,7 +43,7 @@ function HabitStreakCard({ habit }: { habit: HabitTracking }) {
         {/* The streak count — brass when alive, muted when at rest. No red, ever. */}
         <span
           className={`inline-flex items-center gap-xs rounded-full px-sm py-[3px] text-caption font-[500] ${
-            s && s.current > 0 ? 'bg-[var(--accent-soft)] text-brass' : 'bg-surface-2 text-fg-muted'
+            s && s.current > 0 ? 'bg-[var(--accent-marker-soft)] text-marker-text' : 'bg-surface-2 text-fg-muted'
           }`}
         >
           <Flame size={13} strokeWidth={1.5} aria-hidden="true" />

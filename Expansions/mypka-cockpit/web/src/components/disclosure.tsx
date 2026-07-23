@@ -104,7 +104,7 @@ export function Sheet({
   return createPortal(
     <div className="fixed inset-0 z-50" onKeyDown={onKeyDown}>
       <div
-        className="absolute inset-0 animate-overlay-in bg-[oklch(0.12_0_0_/_0.55)]"
+        className="absolute inset-0 animate-overlay-in bg-[var(--scrim)]"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -114,7 +114,7 @@ export function Sheet({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="absolute inset-y-0 right-0 flex h-full w-full max-w-[min(36rem,92vw)] animate-sheet-in flex-col border-l border-border bg-surface-2 shadow-[-8px_0_40px_oklch(0.1_0_0_/_0.4)] outline-none"
+        className="absolute inset-y-0 right-0 flex h-full w-full max-w-[min(36rem,92vw)] animate-sheet-in flex-col border-l border-border bg-surface-2 shadow-[-8px_0_40px_var(--shadow-strong-color)] outline-none"
       >
         <SheetHeader id={titleId} title={title} subtitle={subtitle} onClose={onClose} />
         <div className="prose-readable min-h-0 flex-1 overflow-y-auto px-lg py-md text-body text-fg-muted">
@@ -179,7 +179,7 @@ export function Dialog({
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-md" onKeyDown={onKeyDown}>
       <div
-        className="absolute inset-0 animate-overlay-in bg-[oklch(0.12_0_0_/_0.55)]"
+        className="absolute inset-0 animate-overlay-in bg-[var(--scrim)]"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -189,7 +189,7 @@ export function Dialog({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="relative flex max-h-[86vh] w-full max-w-[min(40rem,94vw)] animate-dialog-in flex-col rounded-hero border border-border bg-surface-3 shadow-[0_24px_60px_oklch(0.1_0_0_/_0.5)] outline-none"
+        className="relative flex max-h-[86vh] w-full max-w-[min(40rem,94vw)] animate-dialog-in flex-col rounded-hero border border-border bg-surface-3 shadow-[0_24px_60px_var(--shadow-strong-color)] outline-none"
       >
         <SheetHeader id={titleId} title={title} subtitle={subtitle} onClose={onClose} />
         <div className="prose-readable min-h-0 flex-1 overflow-y-auto px-lg py-md text-body text-fg-muted">
@@ -398,12 +398,12 @@ export function ExpandableCard({
             size={14}
             strokeWidth={1.5}
             aria-hidden="true"
-            className="mt-[2px] shrink-0 text-fg-subtle transition-colors group-hover:text-brass"
+            className="mt-[2px] shrink-0 text-fg-subtle transition-colors group-hover:text-marker-text"
           />
         </div>
         {preview}
         {footer}
-        <span className="mt-auto pt-xs text-caption text-brass opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+        <span className="mt-auto pt-xs text-caption text-marker-text opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
           Read full text →
         </span>
       </article>

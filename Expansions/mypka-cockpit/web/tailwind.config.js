@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-// Tailwind maps to GL-003 semantic tokens (CSS variables in index.css).
+// Tailwind maps to GL-003 v5 INKLINE semantic tokens (CSS variables in index.css).
 // No hardcoded hex / Tailwind palette colors anywhere in the app — tokens only.
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
@@ -17,19 +17,30 @@ export default {
         fg: 'var(--fg)',
         'fg-muted': 'var(--fg-muted)',
         'fg-subtle': 'var(--fg-subtle)',
-        // accent
-        brass: 'var(--accent-brass)',
-        'brass-soft': 'var(--accent-soft)',
-        'on-brass': 'var(--text-on-brass)',
-        // status
+        'border-emphasis': 'var(--border-emphasis)',
+        // accent: the marker (GL-003 §2.1/§2.2). `marker` = fills, borders,
+        // large-scale display, meaningful non-text. `marker-text` = small
+        // marker TEXT (ruling A148: on paper it steps to #B93613 so small
+        // strings clear the §2.8 4.5:1 floor; on ink both resolve the same).
+        marker: 'var(--accent-marker)',
+        'marker-text': 'var(--accent-marker-text)',
+        'marker-soft': 'var(--accent-marker-soft)',
+        'on-marker': 'var(--text-on-marker)',
+        // status (§2.5: warning/success are STATES; quiet state text rides
+        // the ink voice; identity rides the icon/glyph)
         success: 'var(--status-success)',
+        'success-dot': 'var(--status-success-dot)',
         warning: 'var(--status-warning)',
         error: 'var(--status-error)',
+        'error-text': 'var(--status-error-text)',
         info: 'var(--status-info)',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        // GL-003 §3.1 four roles, all self-hosted (@fontsource, see main.tsx)
+        sans: ['"Instrument Sans Variable"', '"Instrument Sans"', 'system-ui', 'sans-serif'],
+        display: ['"Bricolage Grotesque Variable"', '"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        mono: ['"Spline Sans Mono Variable"', '"Spline Sans Mono"', 'ui-monospace', 'monospace'],
+        hand: ['"Caveat Variable"', 'Caveat', 'cursive'],
       },
       fontSize: {
         // GL-003 type scale (token-named, not raw tailwind text-sm/lg)
@@ -45,7 +56,9 @@ export default {
         xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '32px', '2xl': '48px', '3xl': '64px',
       },
       borderRadius: {
-        card: '4px', panel: '8px', hero: '12px',
+        // GL-003 §5.2 corner ladder: 10 (chips/toasts/small wells) /
+        // 16 (cards/panels/inputs) / 20 (modals/elevated sheets) / pill.
+        card: '10px', panel: '16px', hero: '20px',
       },
       maxWidth: {
         page: '1100px',

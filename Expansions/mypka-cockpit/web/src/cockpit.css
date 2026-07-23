@@ -1,12 +1,11 @@
 /* ===========================================================================
    cockpit.css — the myPKA Cockpit shell + universal viewer + journal +
-   serendipity styles. GL-003 v4 "GRAPHITE" dark mode (canonical). Tokens only —
-   every colour is a var() from index.css; spacing follows the GL-003 §4 4px
-   scale; type follows the §3.2 scale. No hardcoded hex, no raw Tailwind palette
-   colours. "Calm operator, precise instrument." Brass on cool graphite. ONE
-   accent. Signature chrome: frosted glass nav/overlays (backdrop-blur), precise
-   1px gradient hairlines, faint top-lit card gradients, edge-fade on wide cards,
-   SPARING brass glow (one active element only).
+   serendipity styles. GL-003 v5 "INKLINE" (dark ink room canonical). Tokens
+   only - every colour is a var() from index.css. "A calm teacher's blackboard
+   at dusk." The room is ink, the type is paper, the pen is the marker: ONE
+   loud marker moment per view (§2.3). Elevation is hairline, not shadow
+   (§5.3); separation adds noise, so content sits flat on the room (§5.1);
+   glass chrome speaks the room's own ground (§2.2 scrim doctrine).
    =========================================================================== */
 
 :root {
@@ -65,7 +64,7 @@
   justify-content: center;
   height: 36px;
   width: 36px;
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--fg-muted);
   background: transparent;
   border: 1px solid transparent;
@@ -89,13 +88,12 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  /* Graphite: the nav sits deeper than the canvas, with a faint top-light wash
-     and a frosted backdrop. A cool near-black gradient floor → canvas. */
+  /* INKLINE rail (§6.1): the deepest ink in the room, opaque, with the §5.5
+     whisper of marker light at its top and a right hairline. */
   background:
-    linear-gradient(180deg, oklch(0.135 0.004 250) 0%, var(--surface-bg) 100%);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-right: 1px solid var(--border);
+    linear-gradient(180deg, var(--rail-wash) 0%, transparent 140px),
+    var(--surface-deep);
+  border-right: 1px solid var(--border-subtle);
   transition: margin-left 220ms cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 40;
 }
@@ -113,9 +111,9 @@
   justify-content: center;
   height: 36px;
   width: 36px;
-  border-radius: 8px;
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  border-radius: 10px;
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   flex-shrink: 0;
 }
 .sidebar-brand-text { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
@@ -132,7 +130,7 @@
   height: 32px;
   width: 32px;
   flex-shrink: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--fg-subtle);
   background: transparent;
   border: 1px solid transparent;
@@ -140,7 +138,7 @@
   transition: background-color 150ms ease, color 150ms ease;
 }
 .sidebar-collapse:hover { background: var(--surface-2); color: var(--fg); }
-.sidebar-collapse:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; box-shadow: none; }
+.sidebar-collapse:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; box-shadow: none; }
 
 /* Global-search trigger (item-8) — looks like a field, behaves as a button that
    opens the ⌘K command palette. Sits between the header and the scrolling nav. */
@@ -151,7 +149,7 @@
   gap: 8px;
   width: 100%;
   padding: 8px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   color: var(--fg-subtle);
@@ -161,8 +159,8 @@
 }
 .sidebar-search-trigger:hover,
 .sidebar-search-trigger:focus-visible {
-  background: var(--surface-2);
-  border-color: var(--accent-brass);
+  background: var(--rail-hover-bg);
+  border-color: var(--border-emphasis);
   color: var(--fg-muted);
 }
 .sidebar-search-icon { flex-shrink: 0; }
@@ -170,7 +168,7 @@
 .sidebar-search-kbd {
   flex-shrink: 0;
   padding: 2px 6px;
-  border-radius: 5px;
+  border-radius: 4px;
   border: 1px solid var(--border);
   background: var(--surface-bg);
   font-size: 0.6875rem;
@@ -189,12 +187,15 @@
 }
 .sidebar-group { display: flex; flex-direction: column; gap: 4px; }
 .sidebar-group-label {
+  /* §3.4 mono kicker voice: tiny uppercase Spline Mono, paper_faint at FULL
+     alpha (the §2.8 quiet-voice floor). */
   padding: 4px 10px;
-  font-size: 0.75rem;
-  font-weight: 460;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
   color: var(--fg-subtle);
-  text-transform: none;
-  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
 
 .menu { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -205,14 +206,14 @@
   gap: 10px;
   width: 100%;
   padding: 8px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--fg-muted);
   text-decoration: none;
   font-size: 0.9375rem;
   transition: background-color 150ms ease, color 150ms ease;
   cursor: pointer;
 }
-.menu-button:hover { background: var(--surface-2); color: var(--fg); }
+.menu-button:hover { background: var(--rail-hover-bg); color: var(--fg); }
 /* A <button> used as a menu row (e.g. the Quick Terminal launcher): reset the
    native button chrome so it sits flush with the <a> rows around it. */
 .menu-button--action {
@@ -222,20 +223,20 @@
   text-align: left;
 }
 .menu-button--action:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
 }
-/* Active nav row — the ONE prominent moment in the rail (Graphite §4.1): a faint
-   brass wash + a precise 2px brass left-edge marker. Glow stays reserved for the
-   primary button / hero (§1.10 sparing-glow discipline), so the active row points
-   with edge + tint, never a halo. */
+/* Active nav row - §6.1 rail grammar: the pressed WELL (an opaque composite
+   over the rail ground + inset) with the MARKER glyph (ruling A123: a paper
+   glyph on the active stop is a FAIL). One treatment; never well + border +
+   glow stacked. */
 .menu-button[data-active='true'] {
-  background: var(--accent-soft);
+  background: var(--rail-well-bg);
   color: var(--fg);
   font-weight: 460;
-  box-shadow: inset 2px 0 0 0 var(--accent-brass);
+  box-shadow: var(--rail-well-inset);
 }
-.menu-button[data-active='true'] .menu-icon { color: var(--accent-brass); }
+.menu-button[data-active='true'] .menu-icon { color: var(--accent-marker); }
 
 /* ---- "My AI Team" fly-out (v3.1.0) ----------------------------------------
    The trigger is a <button> styled as a menu row; it carries the disclosure
@@ -249,7 +250,7 @@
   text-align: left;
 }
 .team-flyout-trigger:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
 }
 .team-flyout-caret {
@@ -257,7 +258,7 @@
   color: var(--fg-subtle);
   transition: transform 150ms ease;
 }
-.team-flyout-caret.is-open { transform: rotate(90deg); color: var(--accent-brass); }
+.team-flyout-caret.is-open { transform: rotate(90deg); color: var(--accent-marker-text); }
 
 .team-flyout-wrap { position: relative; }
 
@@ -271,7 +272,7 @@
   flex-direction: column;
   gap: 2px;
   padding: 6px;
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface-1);
   border: 1px solid var(--border);
   box-shadow: 0 12px 36px -16px var(--scrim);
@@ -286,7 +287,7 @@
   align-items: center;
   gap: 10px;
   padding: 8px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--fg-muted);
   text-decoration: none;
   font-size: 0.9375rem;
@@ -294,12 +295,12 @@
   transition: background-color 150ms ease, color 150ms ease;
 }
 .team-flyout-item:hover { background: var(--surface-2); color: var(--fg); }
-.team-flyout-item:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.team-flyout-item:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 .team-flyout-item[data-active='true'] {
-  background: var(--accent-soft);
+  background: var(--accent-marker-soft);
   color: var(--fg);
 }
-.team-flyout-item[data-active='true'] .team-flyout-item-icon { color: var(--accent-brass); }
+.team-flyout-item[data-active='true'] .team-flyout-item-icon { color: var(--accent-marker); }
 .team-flyout-item-icon { flex-shrink: 0; color: var(--fg-subtle); }
 .team-flyout-item-label { flex: 1 1 auto; min-width: 0; }
 
@@ -328,7 +329,7 @@
   color: var(--fg-subtle);
   background: var(--surface-2);
 }
-.menu-button[data-active='true'] .menu-badge { color: var(--accent-brass); background: transparent; }
+.menu-button[data-active='true'] .menu-badge { color: var(--accent-marker-text); background: transparent; }
 
 /* Bottom-pinned nav region (the "Team" item). Sits between the scrollable
    .sidebar-content (flex:1) and the footer, so it's anchored to the bottom of the
@@ -350,7 +351,7 @@
     position: fixed;
     inset: 0 auto 0 0;
     margin-left: calc(var(--sidebar-w) * -1 - 1px);
-    box-shadow: 8px 0 40px oklch(0.1 0 0 / 0.4);
+    box-shadow: 8px 0 40px var(--shadow-strong-color);
   }
   .cockpit-sidebar.is-open { margin-left: 0; }
   .sidebar-scrim {
@@ -417,7 +418,7 @@
   gap: 6px;
   flex-shrink: 0;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   color: var(--fg);
@@ -426,22 +427,25 @@
   cursor: pointer;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
-.page-action-btn:hover { background: var(--accent-brass); border-color: var(--accent-brass); color: var(--text-on-brass); }
-.page-action-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; box-shadow: none; }
+.page-action-btn:hover { background: var(--accent-marker); border-color: var(--accent-marker); color: var(--text-on-marker); }
+.page-action-btn:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; box-shadow: none; }
 .page-action-btn:disabled { opacity: 0.55; cursor: default; }
 
 .page-title {
-  font-size: 2rem;
-  line-height: 1.2;
-  font-weight: 520;
-  letter-spacing: -0.01em;
+  /* GL-003 §3.1/§3.2: the display voice - Bricolage 640 at -0.015em; page
+     titles ride the canonical clamp at 1.04 leading. */
+  font-family: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
+  font-size: clamp(32px, 3.2vw, 46px);
+  line-height: 1.04;
+  font-weight: 640;
+  letter-spacing: -0.015em;
   color: var(--fg);
   margin: 0;
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.title-icon { color: var(--accent-brass); flex-shrink: 0; }
+.title-icon { color: var(--accent-marker-text); flex-shrink: 0; }
 .page-sub { margin: 4px 0 0; font-size: 0.8125rem; color: var(--fg-muted); }
 
 /* ---- Team roster ("Das Team") --------------------------------------------- */
@@ -457,14 +461,14 @@
   width: 48px;
   border-radius: 999px;
   overflow: hidden;
-  background: var(--accent-soft);
+  background: var(--accent-marker-soft);
   border: 1px solid var(--border-subtle);
 }
 .roster-avatar-img { height: 100%; width: 100%; object-fit: cover; display: block; }
 .roster-avatar-initials {
   font-size: 1rem;
   font-weight: 520;
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
   letter-spacing: 0.01em;
 }
 .roster-avatar--lead { height: 72px; width: 72px; }
@@ -478,9 +482,9 @@
   gap: 18px;
   padding: 20px;
   margin-bottom: 24px;
-  border: 1px solid var(--accent-brass);
-  border-radius: 12px;
-  background: var(--accent-soft);
+  border: 1px solid var(--accent-marker);
+  border-radius: 16px;
+  background: var(--accent-marker-soft);
 }
 .roster-lead-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .roster-lead-eyebrow {
@@ -488,7 +492,7 @@
   font-weight: 460;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
 }
 .roster-lead-name { font-size: 1.25rem; font-weight: 520; color: var(--fg); line-height: 1.2; }
 .roster-lead-role { font-size: 0.9375rem; color: var(--fg-muted); }
@@ -509,11 +513,11 @@
   gap: 14px;
   padding: 16px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--surface-1);
   transition: border-color 150ms ease, background-color 150ms ease;
 }
-.roster-card:hover { border-color: var(--accent-brass); background: var(--surface-2); }
+.roster-card:hover { border-color: var(--border-emphasis); background: var(--surface-2); }
 .roster-card-body { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .roster-card-name { font-size: 0.9375rem; font-weight: 520; color: var(--fg); line-height: 1.25; }
 .roster-card-role { font-size: 0.8125rem; color: var(--fg-subtle); }
@@ -559,7 +563,7 @@
 .filter-search-input {
   width: 100%;
   padding: 8px 12px 8px 32px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   color: var(--fg);
@@ -569,7 +573,7 @@
 .filter-search-input::placeholder { color: var(--fg-subtle); }
 .filter-search-input:focus-visible {
   outline: none;
-  border-color: var(--accent-brass);
+  border-color: var(--accent-marker);
 }
 .filter-facet { display: flex; flex-direction: column; gap: 4px; }
 .filter-facet-label {
@@ -580,7 +584,7 @@
 }
 .filter-select {
   padding: 8px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   color: var(--fg);
@@ -590,7 +594,7 @@
 }
 .filter-select:focus-visible {
   outline: none;
-  border-color: var(--accent-brass);
+  border-color: var(--accent-marker);
 }
 
 /* The card grid — same responsive auto-fill as the roster. */
@@ -608,11 +612,11 @@
   gap: 8px;
   padding: 16px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--surface-1);
   transition: border-color 150ms ease, background-color 150ms ease;
 }
-.lib-card:hover { border-color: var(--accent-brass); background: var(--surface-2); }
+.lib-card:hover { border-color: var(--border-emphasis); background: var(--surface-2); }
 .lib-card-head {
   display: flex;
   align-items: flex-start;
@@ -672,14 +676,14 @@
   font-size: 0.6875rem;
   padding: 2px 8px;
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
 }
 
 /* Media — star rating, progress, verdict. */
 .media-rating { display: inline-flex; align-items: center; gap: 2px; }
 .media-star { color: var(--fg-subtle); }
-.media-star--on { color: var(--accent-brass); }
+.media-star--on { color: var(--accent-marker-text); }
 .media-rating--none { color: var(--fg-subtle); font-variant-numeric: tabular-nums; }
 .media-progress { font-size: 0.75rem; color: var(--fg-subtle); }
 .media-verdict {
@@ -687,7 +691,7 @@
   padding: 10px 12px;
   border-left: 2px solid var(--border);
   background: var(--surface-bg);
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 10px 10px 0;
   font-size: 0.8125rem;
   line-height: 1.55;
   color: var(--fg-muted);
@@ -704,7 +708,7 @@
   gap: 8px;
   padding: 48px 24px;
   border: 1px dashed var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface-1);
 }
 .library-empty-mark {
@@ -714,8 +718,8 @@
   height: 56px;
   width: 56px;
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   margin-bottom: 4px;
 }
 .library-empty-title { margin: 0; font-size: 1rem; font-weight: 520; color: var(--fg); }
@@ -723,7 +727,7 @@
 .library-noresults {
   padding: 24px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--surface-1);
   color: var(--fg-muted);
   font-size: 0.875rem;
@@ -746,7 +750,7 @@
   gap: 6px;
   flex-shrink: 0;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--fg);
@@ -755,7 +759,7 @@
   cursor: pointer;
   transition: background-color 150ms ease, border-color 150ms ease;
 }
-.workbench-new-btn:hover:not(:disabled) { background: var(--surface-3); border-color: var(--accent-brass); }
+.workbench-new-btn:hover:not(:disabled) { background: var(--surface-3); border-color: var(--border-emphasis); }
 .workbench-new-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ---- Type list / row list ------------------------------------------------- */
@@ -766,14 +770,14 @@
   gap: 12px;
   width: 100%;
   padding: 12px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   cursor: pointer;
   text-align: left;
   transition: background-color 150ms ease, border-color 150ms ease;
 }
-.row-button:hover, .row-button:focus-visible { background: var(--surface-2); border-color: var(--accent-brass); }
+.row-button:hover, .row-button:focus-visible { background: var(--surface-2); border-color: var(--border-emphasis); }
 .row-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .row-title { font-size: 0.9375rem; color: var(--fg); }
 .row-sub { font-size: 0.75rem; color: var(--fg-muted); }
@@ -814,7 +818,7 @@
   padding: 8px 10px;
   background: transparent;
   border: 0;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
   color: var(--fg-muted);
   font: inherit;
@@ -822,7 +826,7 @@
   transition: color 150ms ease, background-color 150ms ease;
 }
 .sort-header:hover { color: var(--fg); background: var(--surface-2); }
-.sort-header.is-active { color: var(--accent-brass); }
+.sort-header.is-active { color: var(--accent-marker-text); }
 .sort-header:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
@@ -840,7 +844,7 @@
 .type-row:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
-  border-radius: 6px;
+  border-radius: 10px;
 }
 .type-table tbody td {
   padding: 11px 10px;
@@ -880,12 +884,12 @@
   white-space: nowrap;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
-.social-chip:hover { background: var(--accent-soft); border-color: var(--accent-brass); color: var(--accent-brass); }
+.social-chip:hover { background: var(--accent-marker-soft); border-color: var(--border-emphasis); color: var(--accent-marker-text); }
 .social-chip:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 1px;
 }
-.social-chip-favicon { border-radius: 3px; flex-shrink: 0; }
+.social-chip-favicon { border-radius: 4px; flex-shrink: 0; }
 .social-chip-glyph { flex-shrink: 0; }
 .social-chip-label { max-width: 18ch; overflow: hidden; text-overflow: ellipsis; }
 
@@ -906,7 +910,7 @@
   cursor: pointer;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
-.sort-pill.is-active { background: var(--accent-soft); border-color: var(--accent-brass); color: var(--accent-brass); }
+.sort-pill.is-active { background: var(--accent-marker-soft); border-color: var(--accent-marker); color: var(--accent-marker-text); }
 .sort-pill:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
 
 /* The 640px breakpoint: collapse the table into stacked cards, reveal the
@@ -923,7 +927,7 @@
     margin-bottom: 10px;
     padding: 12px 14px;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     background: var(--surface-1);
   }
   .type-row:hover { background: var(--surface-2); }
@@ -947,7 +951,7 @@
 .type-list-empty {
   padding: 28px 14px;
   border: 1px dashed var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--surface-1);
   color: var(--fg-subtle);
   font-size: 0.875rem;
@@ -963,7 +967,7 @@
 }
 .journal-entry-row {
   display: flex; align-items: flex-start; gap: 12px; width: 100%;
-  padding: 10px 12px; border-radius: 8px; border: 1px solid transparent;
+  padding: 10px 12px; border-radius: 10px; border: 1px solid transparent;
   background: transparent; cursor: pointer; text-align: left;
   transition: background-color 150ms ease, border-color 150ms ease;
 }
@@ -983,7 +987,7 @@
   padding: 2px 8px; border-radius: 999px; font-size: 0.75rem;
   background: var(--surface-2); color: var(--fg-muted); white-space: nowrap;
 }
-.chip-mood.tone-low { background: var(--status-warning-soft); color: var(--status-warning); }
+.chip-mood.tone-low { background: var(--status-warning-soft); color: var(--fg-muted); } /* A162: amber tint stays, text goes quiet */
 .chip-mood.tone-high { background: var(--status-success-soft); color: var(--status-success); }
 .chip-mood.tone-mid, .chip-mood.tone-word { background: var(--surface-2); color: var(--fg-muted); }
 
@@ -991,20 +995,22 @@
 .note-view { display: flex; flex-direction: column; }
 .back-button {
   display: inline-flex; align-items: center; gap: 4px; align-self: flex-start;
-  padding: 4px 8px 4px 4px; margin-bottom: 12px; border-radius: 6px;
+  padding: 4px 8px 4px 4px; margin-bottom: 12px; border-radius: 10px;
   background: transparent; border: none; cursor: pointer;
   color: var(--fg-muted); font-size: 0.8125rem; transition: color 150ms ease;
 }
-.back-button:hover { color: var(--accent-brass); }
+.back-button:hover { color: var(--accent-marker-text); }
 
 .note-header { margin-bottom: 20px; }
 .note-type-pill {
   display: inline-block; padding: 2px 10px; border-radius: 999px;
-  background: var(--accent-soft); color: var(--accent-brass);
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
   font-size: 0.75rem; font-weight: 460; margin-bottom: 8px;
 }
 .note-title {
-  font-size: 2rem; line-height: 1.2; font-weight: 520; letter-spacing: -0.01em;
+  /* Display voice (§3.1). */
+  font-family: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
+  font-size: clamp(28px, 2.6vw, 38px); line-height: 1.1; font-weight: 640; letter-spacing: -0.015em;
   color: var(--fg); margin: 0;
 }
 .note-journal-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
@@ -1045,10 +1051,10 @@
 .note-body-col .doc-preview-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .note-body-col .doc-preview-open {
   margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
-  font-size: 0.75rem; color: var(--accent-brass); text-decoration: none;
-  padding: 3px 8px; border-radius: 6px;
+  font-size: 0.75rem; color: var(--accent-marker-text); text-decoration: none;
+  padding: 3px 8px; border-radius: 10px;
 }
-.note-body-col .doc-preview-open:hover { background: var(--accent-soft); }
+.note-body-col .doc-preview-open:hover { background: var(--accent-marker-soft); }
 .note-body-col .doc-preview-frame {
   width: 100%; height: min(72vh, 760px); border: 0; background: var(--surface-0, var(--surface-1));
   display: block;
@@ -1074,16 +1080,16 @@
 .note-prose strong { color: var(--fg); font-weight: 520; }
 .note-prose em { font-style: italic; }
 .note-prose code {
-  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.85em;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace; font-size: 0.85em;
   background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--fg);
 }
 .note-prose pre {
-  background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
   padding: 12px 14px; overflow-x: auto; margin: 0 0 1em;
 }
 .note-prose pre code { background: transparent; padding: 0; }
 .note-prose blockquote {
-  border-left: 3px solid var(--accent-brass); padding: 2px 0 2px 14px; margin: 0 0 1em;
+  border-left: 3px solid var(--accent-marker); padding: 2px 0 2px 14px; margin: 0 0 1em;
   color: var(--fg); font-style: italic;
 }
 /* Graphite §4.6 divider — a thin gradient hairline that fades to transparent at
@@ -1094,7 +1100,7 @@
   background: var(--grad-divider);
   margin: 1.6em 0;
 }
-.note-prose a.ext-link { color: var(--accent-brass); text-decoration: none; }
+.note-prose a.ext-link { color: var(--accent-marker-text); text-decoration: none; }
 .note-prose a.ext-link:hover { text-decoration: underline; }
 .note-prose table {
   border-collapse: collapse; width: 100%; margin: 0 0 1em; font-size: 0.875rem;
@@ -1108,12 +1114,12 @@
 /* Clickable wikilink — brass text, subtle underline-on-hover (a real button). */
 .wikilink {
   display: inline; padding: 0; margin: 0; border: none; background: transparent;
-  color: var(--accent-brass); font: inherit; cursor: pointer;
+  color: var(--accent-marker-text); font: inherit; cursor: pointer;
   text-decoration: none; border-bottom: 1px solid transparent;
   transition: border-color 120ms ease;
 }
-.wikilink:hover { border-bottom-color: var(--accent-brass); }
-.wikilink:focus-visible { outline: none; border-radius: 3px; box-shadow: 0 0 0 2px var(--accent-soft); }
+.wikilink:hover { border-bottom-color: var(--accent-marker); }
+.wikilink:focus-visible { outline: none; border-radius: 4px; box-shadow: 0 0 0 2px var(--accent-marker-soft); }
 
 /* Unresolvable wikilink — a [[target]] with no cockpit view (a Team-Knowledge
    SOP/WS/GL reference). Non-interactive: muted text, no brass, a dotted underline
@@ -1129,14 +1135,14 @@
 /* ---- Media (inline images + graceful degradation) ------------------------- */
 .media-figure { margin: 0 0 1em; }
 .media-figure img {
-  max-width: 100%; border-radius: 8px; border: 1px solid var(--border); display: block;
+  max-width: 100%; border-radius: 10px; border: 1px solid var(--border); display: block;
 }
 .media-figure figcaption, .media-missing figcaption {
   margin-top: 5px; font-size: 0.75rem; color: var(--fg-subtle);
 }
 .media-missing {
   display: flex; align-items: center; gap: 10px; margin: 0 0 1em;
-  padding: 12px; border: 1px dashed var(--border); border-radius: 8px; background: var(--surface-1);
+  padding: 12px; border: 1px dashed var(--border); border-radius: 10px; background: var(--surface-1);
 }
 .media-missing-box { color: var(--fg-subtle); flex-shrink: 0; }
 .media-missing-note { display: block; color: var(--fg-subtle); margin-top: 2px; }
@@ -1146,13 +1152,13 @@
   display: flex; flex-direction: column; gap: 4px; max-width: 220px;
 }
 .media-thumb img {
-  max-width: 220px; max-height: 160px; border-radius: 8px; border: 1px solid var(--border); display: block;
+  max-width: 220px; max-height: 160px; border-radius: 10px; border: 1px solid var(--border); display: block;
 }
 /* The thumb is a real button opening the shared ImageLightbox: bare reset so
    the image carries the visuals; zoom-in invites the click. Focus ring comes
    from the global :focus-visible rule (index.css). */
 .media-thumb-btn {
-  display: block; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 8px;
+  display: block; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 10px;
 }
 .media-thumb-cap { font-size: 0.7rem; color: var(--fg-subtle); }
 
@@ -1160,12 +1166,15 @@
 .note-side { display: flex; flex-direction: column; gap: 16px; }
 .side-panel {
   /* Graphite §4.4 card: faint top-lit gradient surface + 1px hairline. */
-  border: 1px solid var(--border); border-radius: 8px;
+  border: 1px solid var(--border); border-radius: 10px;
   background: var(--grad-card); padding: 14px;
 }
 .side-panel-title {
+  /* §3.4 mono kicker voice - a zone label, not a heading display moment. */
   display: flex; align-items: center; gap: 6px; margin: 0 0 10px;
-  font-size: 0.8125rem; font-weight: 460; color: var(--fg-muted);
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
+  font-size: 0.6875rem; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.14em; color: var(--fg-subtle);
 }
 .side-panel-title svg { color: var(--fg-subtle); }
 .side-empty { margin: 0; font-size: 0.8125rem; color: var(--fg-subtle); }
@@ -1179,7 +1188,7 @@
 .backlink-list, .outbound-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .backlink {
   display: flex; flex-direction: column; gap: 1px; width: 100%; text-align: left;
-  padding: 6px 8px; border-radius: 6px; border: 1px solid transparent; background: transparent;
+  padding: 6px 8px; border-radius: 10px; border: 1px solid transparent; background: transparent;
   cursor: pointer; transition: background-color 150ms ease, border-color 150ms ease;
 }
 .backlink:hover, .backlink:focus-visible { background: var(--surface-2); border-color: var(--border); }
@@ -1194,18 +1203,18 @@
 /* ---- Serendipity ---------------------------------------------------------- */
 .serendipity-intro { max-width: 60ch; line-height: 1.6; }
 .depth-dial {
-  border: 1px solid var(--border); border-radius: 8px; background: var(--surface-1);
+  border: 1px solid var(--border); border-radius: 10px; background: var(--surface-1);
   padding: 14px 16px; margin: 20px 0; max-width: 480px;
 }
 .depth-label { display: flex; align-items: center; gap: 6px; font-size: 0.8125rem; color: var(--fg-muted); margin-bottom: 8px; }
-.depth-value { margin-left: auto; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.75rem; color: var(--accent-brass); font-variant-numeric: tabular-nums; }
-.depth-range { width: 100%; accent-color: var(--accent-brass); }
+.depth-value { margin-left: auto; font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace; font-size: 0.75rem; color: var(--accent-marker-text); font-variant-numeric: tabular-nums; }
+.depth-range { width: 100%; accent-color: var(--accent-marker-text); }
 .depth-ends { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.7rem; color: var(--fg-subtle); }
-.depth-current { color: var(--accent-brass); font-weight: 460; transition: opacity 160ms ease; }
+.depth-current { color: var(--accent-marker-text); font-weight: 460; transition: opacity 160ms ease; }
 /* While the dial re-queries the archive, give a quiet confirmation that the
    slider IS doing something (the data layer re-fetches on every depth change). */
 .depth-dial.is-refetching .depth-current { opacity: 0.55; }
-.depth-dial.is-refetching .depth-range { accent-color: var(--accent-brass); opacity: 0.85; }
+.depth-dial.is-refetching .depth-range { accent-color: var(--accent-marker-text); opacity: 0.85; }
 @media (prefers-reduced-motion: reduce) {
   .depth-current { transition: none; }
 }
@@ -1218,7 +1227,7 @@
 @media (min-width: 720px) { .resonance-grid { grid-template-columns: 1fr 1fr; } }
 .resonance-card {
   display: flex; flex-direction: column; gap: 8px;
-  border: 1px solid var(--border); border-radius: 8px; background: var(--surface-1); padding: 16px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--surface-1); padding: 16px;
 }
 .resonance-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .resonance-when { font-size: 0.75rem; color: var(--fg-subtle); font-variant-numeric: tabular-nums; }
@@ -1232,7 +1241,7 @@
 .resonance-open {
   align-self: flex-start; display: inline-flex; align-items: center; gap: 5px;
   margin-top: 4px; padding: 0; background: transparent; border: none; cursor: pointer;
-  color: var(--accent-brass); font-size: 0.8125rem; transition: gap 150ms ease;
+  color: var(--accent-marker-text); font-size: 0.8125rem; transition: gap 150ms ease;
 }
 .resonance-open:hover { gap: 9px; }
 .serendipity-note { margin: 24px 0 0; font-size: 0.7rem; color: var(--fg-subtle); max-width: 60ch; line-height: 1.5; }
@@ -1242,7 +1251,7 @@
 .dashboard-header { display: flex; align-items: center; gap: 8px; }
 .dashboard-header-mark {
   display: inline-flex; align-items: center; justify-content: center;
-  height: 40px; width: 40px; border-radius: 8px; background: var(--surface-1); color: var(--accent-brass);
+  height: 40px; width: 40px; border-radius: 10px; background: var(--surface-1); color: var(--accent-marker-text);
   flex-shrink: 0;
 }
 .dashboard-main { display: flex; flex-direction: column; gap: 48px; }
@@ -1251,7 +1260,7 @@
 
 /* ---- Skeletons / errors --------------------------------------------------- */
 .skeleton-line, .skeleton-block {
-  background: var(--surface-1); border-radius: 8px; animation: pulse 1.5s ease-in-out infinite;
+  background: var(--surface-1); border-radius: 10px; animation: pulse 1.5s ease-in-out infinite;
 }
 .skeleton-line { height: 28px; margin-bottom: 16px; }
 .skeleton-line.w-half { width: 50%; }
@@ -1260,7 +1269,7 @@
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
 .view-error {
-  border: 1px solid var(--border); border-radius: 8px; background: var(--surface-1);
+  border: 1px solid var(--border); border-radius: 10px; background: var(--surface-1);
   padding: 16px; color: var(--fg-muted); font-size: 0.875rem;
 }
 
@@ -1303,14 +1312,17 @@
 .heatmap-week { display: grid; grid-template-rows: repeat(7, 13px); gap: 3px; }
 
 .heat-cell {
-  width: 13px; height: 13px; border-radius: 3px;
+  /* §5.2 A137: contribution-graph cells ride radius_micro (2px). */
+  width: 13px; height: 13px; border-radius: 2px;
   display: inline-block;
   /* default is the empty scaffold; states override below */
   background: var(--surface-2);
   border: 1px solid transparent;
 }
-/* hit — the warm "done" signal. The one brass moment in the grid. */
-.heat-cell--hit { background: var(--accent-brass); }
+/* hit — the day is INKED (§4.4: read/done = inked in marker; §6.8.2 state-ink:
+   dot-scale repetition of the marker records what is done, it is not a second
+   loud moment). */
+.heat-cell--hit { background: var(--accent-marker); }
 /* miss — a SOFT neutral, never alarm-red. Present, not punishing. */
 .heat-cell--miss {
   background: var(--surface-3);
@@ -1347,12 +1359,12 @@
   display: flex; flex-direction: column;
   /* Graphite §4.4 card: faint top-lit gradient + hairline; hover lifts the edge
      to border-strong + a -2px translate (no glow — glow is reserved, §1.10). */
-  border: 1px solid var(--border); border-radius: 8px;
+  border: 1px solid var(--border); border-radius: 10px;
   background: var(--grad-card); overflow: hidden;
   transition: border-color 150ms ease, transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .food-card:hover {
-  border-color: oklch(0.37 0.006 250); /* --border-strong: emphasized edge on hover */
+  border-color: var(--border-emphasis); /* --border-strong: emphasized edge on hover */
   transform: translateY(-2px);
 }
 
@@ -1371,7 +1383,7 @@
   padding: 1px 7px; border-radius: 999px;
   /* This pill overlays food PHOTOS, so it stays a dark scrim with light text in
      BOTH themes (an on-media chip, like the lightbox) — not theme-flipped. */
-  background: oklch(0.20 0 0 / 0.72); color: oklch(0.97 0 0);
+  background: var(--scrim); color: var(--fg);
   font-size: 0.68rem; font-variant-numeric: tabular-nums;
   backdrop-filter: blur(4px);
 }
@@ -1382,7 +1394,7 @@
   display: inline-flex; align-items: center; gap: 5px;
   font-size: 0.8125rem; font-weight: 520; color: var(--fg);
 }
-.food-meal svg { color: var(--accent-brass); }
+.food-meal svg { color: var(--accent-marker-text); }
 .food-date { font-size: 0.7rem; color: var(--fg-subtle); font-variant-numeric: tabular-nums; }
 .food-protein {
   display: inline-flex; align-items: center; margin-left: auto;
@@ -1402,7 +1414,7 @@
 .food-open {
   align-self: flex-start; display: inline-flex; align-items: center; gap: 4px;
   padding: 0; background: transparent; border: none; cursor: pointer;
-  color: var(--accent-brass); font-size: 0.75rem; transition: gap 150ms ease;
+  color: var(--accent-marker-text); font-size: 0.75rem; transition: gap 150ms ease;
 }
 .food-open:hover { gap: 7px; }
 
@@ -1427,8 +1439,8 @@
 .pin-splash {
   height: 44px;
   width: 44px;
-  border-radius: 12px;
-  background: var(--accent-soft);
+  border-radius: 16px;
+  background: var(--accent-marker-soft);
   animation: pulse 1.5s ease-in-out infinite;
 }
 
@@ -1441,9 +1453,9 @@
   gap: 12px;
   padding: 28px 24px 24px;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--surface-1);
-  box-shadow: 0 18px 60px oklch(0.1 0 0 / 0.45);
+  box-shadow: 0 18px 60px var(--shadow-strong-color);
 }
 
 .pin-mark {
@@ -1453,9 +1465,9 @@
   justify-content: center;
   height: 48px;
   width: 48px;
-  border-radius: 12px;
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  border-radius: 16px;
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   margin-bottom: 4px;
 }
 
@@ -1490,7 +1502,7 @@
   border: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--fg);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 1.25rem; /* roomy digits; ≥16px also stops iOS zoom-on-focus */
   letter-spacing: 0.3em;
   text-align: center;
@@ -1498,7 +1510,7 @@
 }
 .pin-input::placeholder { color: var(--fg-subtle); letter-spacing: normal; }
 .pin-input:focus-visible {
-  border-color: var(--accent-brass);
+  border-color: var(--accent-marker);
   background: var(--surface-3);
 }
 .pin-input:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -1513,14 +1525,14 @@
   margin-top: 6px;
   border: none;
   border-radius: 10px;
-  background: var(--accent-brass);
-  color: var(--text-on-brass);
+  background: var(--accent-marker);
+  color: var(--text-on-marker);
   font-size: 0.9375rem;
   font-weight: 520;
   cursor: pointer;
   transition: background-color 150ms ease, opacity 150ms ease;
 }
-.pin-submit:hover:not(:disabled) { background: var(--accent-deep); }
+.pin-submit:hover:not(:disabled) { background: var(--accent-marker-up); }
 .pin-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .pin-spin { animation: pin-rotate 0.9s linear infinite; }
@@ -1532,7 +1544,7 @@
   text-align: center;
   font-size: 0.8125rem;
   line-height: 1.4;
-  color: var(--status-error);
+  color: var(--status-error-text);
 }
 
 .pin-foot {
@@ -1552,28 +1564,38 @@
 .food-empty {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   text-align: center; padding: 40px 16px;
-  border: 1px dashed var(--border); border-radius: 8px; background: var(--surface-1);
+  border: 1px dashed var(--border); border-radius: 10px; background: var(--surface-1);
   color: var(--fg-subtle);
 }
-.food-empty svg { color: var(--accent-brass); opacity: 0.8; }
+.food-empty svg { color: var(--accent-marker-text); opacity: 0.8; }
 .food-empty-title { margin: 4px 0 0; font-size: 0.9375rem; color: var(--fg); }
 .food-empty-sub { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--fg-subtle); max-width: 42ch; }
 
 /* Module data-availability empty state (ui.tsx ModuleEmptyState) — shown when a
-   data-backed module's table/view is absent from a bare-scaffold mirror. Same
-   calm dashed-panel vocabulary as .food-empty / .library-empty (GL-003 §8.7),
-   one brass glyph, what's-missing + the fix. Never alarming. Tokens only. */
+   data-backed module's table/view is absent from a bare-scaffold mirror. The
+   dashed hairline is the §4.2 "not yet traveled" track; the TITLE speaks the
+   hand voice (GL-003 §6.5: empty states are the sanctioned home of Caveat -
+   a single handwritten line, centered, quiet, slightly rotated; §3.6 note
+   weight 500 at the 23px base rung). Never alarming. Tokens only. */
 .module-empty {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   text-align: center; padding: 40px 24px;
-  border: 1px dashed var(--border); border-radius: 12px; background: var(--surface-1);
+  border: 1px dashed var(--border); border-radius: 16px; background: var(--surface-1);
 }
 .module-empty-mark {
   display: inline-flex; align-items: center; justify-content: center;
   height: 52px; width: 52px; border-radius: 999px;
-  background: var(--accent-soft); color: var(--accent-brass); margin-bottom: 2px;
+  background: var(--accent-marker-soft); color: var(--accent-marker-text); margin-bottom: 2px;
 }
-.module-empty-title { margin: 0; font-size: 1rem; font-weight: 520; color: var(--fg); }
+.module-empty-title {
+  margin: 0;
+  font-family: 'Caveat Variable', 'Caveat', cursive;
+  font-size: 23px; /* text_hand base rung (§3.6) */
+  line-height: 1;
+  font-weight: 500; /* hand_weight_note (A145) */
+  color: var(--accent-marker-text);
+  transform: rotate(-2deg);
+}
 .module-empty-sub { margin: 0; max-width: 46ch; font-size: 0.875rem; line-height: 1.55; color: var(--fg-muted); }
 .module-empty-hint { margin: 0; max-width: 46ch; font-size: 0.8125rem; line-height: 1.5; color: var(--fg-subtle); }
 .module-empty-hint .font-mono, .module-empty-sub .font-mono { color: var(--fg-muted); }
@@ -1599,23 +1621,23 @@
   font-size: 0.8125rem; font-weight: 460; cursor: pointer;
   transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
 }
-.workout-chip:hover { border-color: var(--accent-brass); color: var(--fg); }
+.workout-chip:hover { border-color: var(--border-emphasis); color: var(--fg); }
 .workout-chip[data-state='on'] {
-  background: var(--accent-soft); border-color: var(--accent-brass); color: var(--accent-brass);
+  background: var(--accent-marker-soft); border-color: var(--accent-marker); color: var(--accent-marker-text);
 }
 .workout-chip-count {
   font-size: 0.68rem; color: var(--fg-subtle); font-variant-numeric: tabular-nums;
 }
-.workout-chip[data-state='on'] .workout-chip-count { color: var(--accent-brass); }
+.workout-chip[data-state='on'] .workout-chip-count { color: var(--accent-marker-text); }
 
 .workout-year { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
 .workout-year-label { font-size: 0.75rem; color: var(--fg-subtle); }
 .workout-year-select {
   background: var(--surface-1); color: var(--fg); border: 1px solid var(--border);
-  border-radius: 6px; padding: 4px 8px; font-size: 0.8125rem; font-family: inherit;
+  border-radius: 10px; padding: 4px 8px; font-size: 0.8125rem; font-family: inherit;
   cursor: pointer;
 }
-.workout-year-select:hover { border-color: var(--accent-brass); }
+.workout-year-select:hover { border-color: var(--border-emphasis); }
 
 /* ---- Layout: map beside list on wide, stacked on mobile -------------------- */
 .workout-layout {
@@ -1633,7 +1655,7 @@
 .workout-map {
   width: 100%;
   height: 460px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   /* The token surface IS the backdrop when no basemap is loaded AND the dark ground
      showing through before the dark vector tiles paint. */
@@ -1681,7 +1703,7 @@
   position: absolute; top: 10px; right: 10px; z-index: 1001;
   display: inline-flex; align-items: center; justify-content: center;
   width: 36px; height: 36px; padding: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1); color: var(--fg-muted);
   cursor: pointer;
@@ -1689,12 +1711,12 @@
   /* a quiet grounding shadow so it reads above the dark basemap */
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
 }
-.workout-map-fs-btn:hover { background: var(--surface-2); color: var(--accent-brass); border-color: var(--accent-brass); }
+.workout-map-fs-btn:hover { background: var(--surface-2); color: var(--accent-marker-text); border-color: var(--border-emphasis); }
 .workout-map-fs-btn:focus-visible {
-  outline: none; color: var(--accent-brass);
-  box-shadow: 0 0 0 2px var(--accent-soft), 0 2px 8px rgb(0 0 0 / 0.35);
+  outline: none; color: var(--accent-marker-text);
+  box-shadow: 0 0 0 2px var(--accent-marker-soft), 0 2px 8px rgb(0 0 0 / 0.35);
 }
-.workout-map-fs-btn[aria-pressed='true'] { color: var(--accent-brass); border-color: var(--accent-brass); }
+.workout-map-fs-btn[aria-pressed='true'] { color: var(--accent-marker-text); border-color: var(--accent-marker); }
 
 /* Re-skin Leaflet chrome to GL-003 tokens (it ships a light theme). */
 .workout-map .leaflet-control-zoom a {
@@ -1702,14 +1724,14 @@
   border-color: var(--border);
 }
 .workout-map .leaflet-control-zoom a:hover {
-  background: var(--surface-2); color: var(--accent-brass);
+  background: var(--surface-2); color: var(--accent-marker-text);
 }
 .workout-map .leaflet-bar { border: 1px solid var(--border); box-shadow: none; }
 .workout-map .leaflet-control-attribution {
   background: var(--surface-1); color: var(--fg-subtle);
   font-size: 0.62rem; padding: 1px 6px; border-top-left-radius: 6px;
 }
-.workout-map .leaflet-control-attribution a { color: var(--accent-brass); }
+.workout-map .leaflet-control-attribution a { color: var(--accent-marker-text); }
 
 /* Pluggable-basemap hint — quiet, centered, never alarming. */
 .workout-map-basemap-hint {
@@ -1725,7 +1747,7 @@
   margin: 0; display: inline-flex; align-items: center; gap: 6px;
   font-size: 0.75rem; color: var(--fg-subtle); font-variant-numeric: tabular-nums;
 }
-.workout-map-caption svg { color: var(--accent-brass); }
+.workout-map-caption svg { color: var(--accent-marker-text); }
 .workout-map-loading { color: var(--fg-muted); }
 
 /* ---- Route list ------------------------------------------------------------ */
@@ -1740,17 +1762,17 @@
 }
 .workout-row {
   width: 100%; display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; border-radius: 6px;
+  padding: 8px 10px; border-radius: 10px;
   border: 1px solid transparent; background: transparent;
   text-align: left; cursor: pointer; color: var(--fg);
   transition: background-color 150ms ease, border-color 150ms ease;
 }
 .workout-row:hover { background: var(--surface-1); }
 .workout-row[data-selected='true'] {
-  background: var(--accent-soft); border-color: var(--accent-brass);
+  background: var(--accent-marker-soft); border-color: var(--accent-marker);
 }
 .workout-row-icon { flex-shrink: 0; color: var(--fg-subtle); }
-.workout-row[data-selected='true'] .workout-row-icon { color: var(--accent-brass); }
+.workout-row[data-selected='true'] .workout-row-icon { color: var(--accent-marker-text); }
 .workout-row-main { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
 .workout-row-type {
   font-size: 0.8125rem; color: var(--fg); white-space: nowrap;
@@ -1769,7 +1791,7 @@
   color: var(--fg-subtle); white-space: nowrap; flex-shrink: 0;
 }
 .workout-row-place-sub::before { content: '·'; margin: 0 4px; color: var(--fg-subtle); }
-.workout-row[data-selected='true'] .workout-row-place > svg { color: var(--accent-brass); }
+.workout-row[data-selected='true'] .workout-row-place > svg { color: var(--accent-marker-text); }
 .workout-row-date { font-size: 0.68rem; color: var(--fg-subtle); font-variant-numeric: tabular-nums; }
 .workout-row-stats {
   display: flex; flex-direction: column; align-items: flex-end; gap: 1px; flex-shrink: 0;
@@ -1785,7 +1807,7 @@
   text-align: center; padding: 40px 16px;
   color: var(--fg-subtle);
 }
-.workout-empty svg { color: var(--accent-brass); opacity: 0.8; }
+.workout-empty svg { color: var(--accent-marker-text); opacity: 0.8; }
 .workout-empty-title { margin: 4px 0 0; font-size: 0.9375rem; color: var(--fg); }
 .workout-empty-sub { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--fg-subtle); max-width: 46ch; }
 
@@ -2315,7 +2337,7 @@
 }
 .planner-card-check svg { width: 100%; height: 100%; }
 .planner-card-check:hover { color: var(--fg); }
-.planner-card-check:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; border-radius: 50%; }
+.planner-card-check:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; border-radius: 50%; }
 /* Complete (local OR source-done): the calm neutral mark — never green. */
 .planner-card-check[aria-checked='true'] { color: var(--fg-muted); }
 .planner-card-check[aria-checked='true']:hover { color: var(--fg); }
@@ -2355,7 +2377,7 @@
 .planner-focus-toggle {
   display: inline-flex; align-items: center; justify-content: center;
   color: var(--planner-focus-toggle-fg); background: transparent;
-  border: 0; border-radius: 8px; cursor: pointer;
+  border: 0; border-radius: 10px; cursor: pointer;
   transition: background-color 120ms ease, color 120ms ease;
 }
 .planner-focus-toggle[data-active='true'] {
@@ -2418,7 +2440,7 @@
 .planner-goal-badge {
   flex-shrink: 0;
   display: inline-flex; align-items: center; gap: 4px;
-  padding: 2px 6px; border-radius: 6px;
+  padding: 2px 6px; border-radius: 10px;
   font-size: 11px; line-height: 1; letter-spacing: 0.02em;
   color: var(--planner-highlight);
   background: var(--planner-highlight-soft);
@@ -2556,7 +2578,7 @@
   transition: background-color 150ms ease, color 150ms ease;
 }
 .planner-timer-digits {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-variant-numeric: tabular-nums; font-size: 0.8125rem;
 }
 /* "ample" (default running): full brass — the day is lit and on track. */
@@ -2587,7 +2609,7 @@
   transition: background-color 150ms ease, color 150ms ease;
 }
 .planner-countdown-bar-digits {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-variant-numeric: tabular-nums; margin-right: 5px;
 }
 /* the three calm states — IDENTICAL palette to .planner-timer (Iris 04/11). */
@@ -2656,7 +2678,7 @@
 /* Collapse / reopen chevron — the 28px icon-button idiom (Iris 11 §3a). */
 .planner-tasksidebar-toggle {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
+  width: 28px; height: 28px; border-radius: 10px; flex-shrink: 0;
   background: transparent; border: none; cursor: pointer;
   color: var(--tasksidebar-toggle-fg);
   transition: background-color 150ms ease, color 150ms ease;
@@ -2679,7 +2701,7 @@
   display: flex; align-items: center; gap: 6px; width: 100%;
   font-size: 0.75rem; font-weight: 460; letter-spacing: 0.01em;
   color: var(--tasksidebar-group-head-fg);
-  padding: 2px; margin: 0 0 2px; border: none; border-radius: 6px;
+  padding: 2px; margin: 0 0 2px; border: none; border-radius: 10px;
   background: transparent; cursor: pointer; text-align: left;
   transition: background-color 150ms ease, color 150ms ease;
 }
@@ -2728,7 +2750,7 @@
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   text-align: center; padding: 40px 16px; color: var(--fg-subtle);
 }
-.planner-tasksidebar-empty svg { color: var(--accent-brass); opacity: 0.8; }
+.planner-tasksidebar-empty svg { color: var(--accent-marker-text); opacity: 0.8; }
 
 /* ---- Gear / settings panel (reuses .side-panel surface + drawer idiom) ----- */
 .settings-panel {
@@ -2782,7 +2804,7 @@
    pointer 1:1 (§2.2). The lifted shadow is the affordance that the card is held. */
 .planner-drag-overlay {
   transform: scale(1.02) rotate(0.6deg);
-  box-shadow: 0 12px 28px oklch(0.1 0 0 / 0.45);
+  box-shadow: 0 12px 28px var(--shadow-strong-color);
   cursor: grabbing;
   /* P1 (Pax 09): promote ONLY the active clone to its own compositor layer so the
      per-frame transform dnd-kit writes is a cheap GPU move (no main-thread paint).
@@ -3023,11 +3045,11 @@ body.chat-locked {
 }
 .chat-newchat {
   display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
-  padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px;
+  padding: 6px 12px; border: 1px solid var(--border); border-radius: 10px;
   background: var(--surface-1); color: var(--fg-muted);
   font-size: 0.8125rem; cursor: pointer; transition: all 150ms ease;
 }
-.chat-newchat:hover:not(:disabled) { background: var(--surface-2); color: var(--fg); border-color: var(--accent-brass); }
+.chat-newchat:hover:not(:disabled) { background: var(--surface-2); color: var(--fg); border-color: var(--border-emphasis); }
 .chat-newchat:disabled { opacity: 0.4; cursor: default; }
 
 /* ---- Thread (the scroll region) ------------------------------------------ */
@@ -3082,8 +3104,8 @@ body.chat-locked {
 }
 .chat-empty-mark {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 56px; height: 56px; border-radius: 14px;
-  background: var(--accent-soft); color: var(--accent-brass); margin-bottom: 4px;
+  width: 56px; height: 56px; border-radius: 16px;
+  background: var(--accent-marker-soft); color: var(--accent-marker-text); margin-bottom: 4px;
 }
 .chat-empty-title { margin: 0; font-size: 1.0625rem; font-weight: 520; color: var(--fg); }
 .chat-empty-sub { margin: 0; font-size: 0.875rem; line-height: 1.55; color: var(--fg-muted); }
@@ -3096,20 +3118,20 @@ body.chat-locked {
 .chat-avatar {
   flex-shrink: 0; margin-top: 2px;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 8px;
-  background: var(--accent-soft); color: var(--accent-brass);
+  width: 28px; height: 28px; border-radius: 10px;
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
 }
 
 .chat-bubble {
   max-width: 76%;
   padding: 11px 14px;
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid var(--border-subtle);
   font-size: 0.9375rem;
   line-height: 1.6;
 }
 .chat-turn--user .chat-bubble {
-  background: var(--accent-soft);
+  background: var(--accent-marker-soft);
   border-color: transparent;
   color: var(--fg);
   border-bottom-right-radius: 4px;
@@ -3137,7 +3159,7 @@ body.chat-locked {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 2px 8px; border-radius: 999px;
   background: var(--surface-2); color: var(--fg-subtle);
-  font-size: 0.6875rem; font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6875rem; font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
 }
 
 /* ---- Streaming affordances (typing dots + caret) ------------------------- */
@@ -3154,7 +3176,7 @@ body.chat-locked {
 }
 .chat-caret {
   display: inline-block; width: 2px; height: 1.05em; margin-left: 2px;
-  vertical-align: text-bottom; background: var(--accent-brass);
+  vertical-align: text-bottom; background: var(--accent-marker);
   animation: chat-caret-blink 1000ms step-end infinite;
 }
 @keyframes chat-caret-blink { 50% { opacity: 0; } }
@@ -3167,11 +3189,11 @@ body.chat-locked {
    (index.css) zeroes the animation → a calm static brass ring instead. */
 .chat-avatar.is-working {
   animation: chat-avatar-breath 2400ms ease-in-out infinite;
-  box-shadow: 0 0 0 0 var(--accent-soft);
+  box-shadow: 0 0 0 0 var(--accent-marker-soft);
 }
 @keyframes chat-avatar-breath {
-  0%, 100% { box-shadow: 0 0 0 0 oklch(0.72 0.13 60 / 0.28); }
-  50%      { box-shadow: 0 0 0 4px oklch(0.72 0.13 60 / 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 90, 45, 0.28); }
+  50%      { box-shadow: 0 0 0 4px rgba(255, 90, 45, 0); }
 }
 
 /* The working line: breathing dots + a status label ("running Pax…"). It sits where
@@ -3188,8 +3210,8 @@ body.chat-locked {
 .chat-working-spinner {
   display: inline-block; width: 11px; height: 11px; flex-shrink: 0;
   border-radius: 50%;
-  border: 1.5px solid var(--accent-soft);
-  border-top-color: var(--accent-brass);
+  border: 1.5px solid var(--accent-marker-soft);
+  border-top-color: var(--accent-marker);
   animation: pin-rotate 720ms linear infinite;
 }
 
@@ -3232,16 +3254,16 @@ body.chat-locked {
 .chat-md h1 { font-size: 1.15rem; }
 .chat-md h2 { font-size: 1.05rem; }
 .chat-md h3 { font-size: 1rem; }
-.chat-md a { color: var(--accent-brass); text-decoration: underline; text-underline-offset: 2px; }
+.chat-md a { color: var(--accent-marker-text); text-decoration: underline; text-underline-offset: 2px; }
 .chat-md ul, .chat-md ol { margin: 0 0 0.7em; padding-left: 1.3em; }
 .chat-md li { margin: 0.15em 0; }
 .chat-md code {
-  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.85em;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace; font-size: 0.85em;
   background: var(--surface-2); color: var(--fg); padding: 1px 5px; border-radius: 4px;
 }
 .chat-md pre {
   background: var(--surface-bg); border: 1px solid var(--border-subtle);
-  border-radius: 8px; padding: 12px; overflow-x: auto; margin: 0 0 0.7em;
+  border-radius: 10px; padding: 12px; overflow-x: auto; margin: 0 0 0.7em;
 }
 .chat-md pre code { background: transparent; padding: 0; }
 .chat-md blockquote {
@@ -3258,16 +3280,16 @@ body.chat-locked {
   margin: 4px 0 4px 38px; /* aligns under Larry's bubbles, past the avatar */
   max-width: 76%;
   padding: 16px;
-  border: 1px solid var(--accent-brass);
-  border-radius: 12px;
+  border: 1px solid var(--accent-marker);
+  border-radius: 16px;
   background: var(--surface-1);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  box-shadow: 0 0 0 3px var(--accent-marker-soft);
 }
 .confirm-head { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
 .confirm-icon {
   flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 8px;
-  background: var(--accent-soft); color: var(--accent-brass);
+  width: 30px; height: 30px; border-radius: 10px;
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
 }
 .confirm-title { margin: 0; font-size: 0.9375rem; font-weight: 540; color: var(--fg); line-height: 1.3; }
 .confirm-tool { margin: 2px 0 0; font-size: 0.75rem; color: var(--fg-subtle); }
@@ -3277,7 +3299,7 @@ body.chat-locked {
   display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline;
 }
 .confirm-action { font-weight: 560; }
-.confirm-target { font-weight: 560; color: var(--accent-brass); }
+.confirm-target { font-weight: 560; color: var(--accent-marker-text); }
 
 .confirm-details {
   margin: 0 0 12px; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px;
@@ -3286,13 +3308,14 @@ body.chat-locked {
 .confirm-detail { display: contents; }
 .confirm-detail-label { color: var(--fg-subtle); }
 .confirm-detail-value { color: var(--fg); word-break: break-word; }
+/* A162: emphasis is weight + full voice, never amber text. */
 .confirm-detail.is-emphasis .confirm-detail-value {
-  color: var(--status-warning); font-weight: 520;
+  color: var(--fg); font-weight: 520;
 }
-.confirm-detail.is-emphasis .confirm-detail-label { color: var(--status-warning); }
+.confirm-detail.is-emphasis .confirm-detail-label { color: var(--fg-muted); }
 
 .confirm-readback {
-  margin: 0 0 12px; padding: 8px 10px; border-radius: 8px;
+  margin: 0 0 12px; padding: 8px 10px; border-radius: 10px;
   background: var(--surface-2); color: var(--fg-muted);
   font-size: 0.8125rem; line-height: 1.5;
 }
@@ -3305,7 +3328,7 @@ body.chat-locked {
 .confirm-actions { display: flex; gap: 10px; }
 .confirm-btn {
   flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 9px 14px; border-radius: 8px; font-size: 0.875rem; font-weight: 520;
+  padding: 9px 14px; border-radius: 10px; font-size: 0.875rem; font-weight: 520;
   cursor: pointer; transition: all 150ms ease; border: 1px solid var(--border);
 }
 .confirm-btn:disabled { opacity: 0.6; cursor: default; }
@@ -3314,12 +3337,12 @@ body.chat-locked {
 }
 .confirm-btn--deny:hover:not(:disabled) { background: var(--surface-3, var(--surface-2)); color: var(--fg); }
 .confirm-btn--ok {
-  background: var(--accent-brass); color: var(--text-on-brass); border-color: var(--accent-brass);
+  background: var(--accent-marker); color: var(--text-on-marker); border-color: var(--accent-marker);
 }
 /* Graphite §4.2 — the brass primary button gains a faint, color-matched glow on
    hover (sparing: this is the ONE accent moment in a confirm dialog). */
 .confirm-btn--ok:hover:not(:disabled) { filter: brightness(1.06); box-shadow: var(--glow-signal); }
-.confirm-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.confirm-btn:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 .confirm-outcome {
   margin: 0; display: inline-flex; align-items: center; gap: 7px;
@@ -3327,14 +3350,14 @@ body.chat-locked {
 }
 .confirm-outcome--ok { color: var(--status-success); }
 .confirm-outcome--denied { color: var(--fg-muted); }
-.confirm-outcome--error { color: var(--status-error); }
+.confirm-outcome--error { color: var(--status-error-text); }
 
 /* Sub-agent attribution (Phase 2) — shared shape across confirm + answer cards. */
 .confirm-subagent, .answer-subagent {
   margin: 2px 0 0; font-size: 0.75rem; color: var(--fg-subtle);
 }
 .confirm-subagent-name, .answer-subagent-name {
-  font-weight: 560; color: var(--accent-brass);
+  font-weight: 560; color: var(--accent-marker-text);
 }
 
 /* ---- AskUserQuestion menu card (Phase 2) --------------------------------- */
@@ -3343,21 +3366,21 @@ body.chat-locked {
   margin: 4px 0 4px 38px; /* aligns under Larry's bubbles, past the avatar */
   max-width: 76%;
   padding: 16px;
-  border: 1px solid var(--accent-brass);
-  border-radius: 12px;
+  border: 1px solid var(--accent-marker);
+  border-radius: 16px;
   background: var(--surface-1);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  box-shadow: 0 0 0 3px var(--accent-marker-soft);
 }
 .answer-head { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
 .answer-icon {
   flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 8px;
-  background: var(--accent-soft); color: var(--accent-brass);
+  width: 30px; height: 30px; border-radius: 10px;
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
 }
 .answer-title { margin: 0; font-size: 0.9375rem; font-weight: 540; color: var(--fg); line-height: 1.3; }
 
 .answer-readback {
-  margin: 0 0 14px; padding: 8px 10px; border-radius: 8px;
+  margin: 0 0 14px; padding: 8px 10px; border-radius: 10px;
   background: var(--surface-2); color: var(--fg-muted);
   font-size: 0.8125rem; line-height: 1.5;
 }
@@ -3373,7 +3396,7 @@ body.chat-locked {
 }
 .answer-header-chip {
   flex-shrink: 0; display: inline-block; padding: 2px 8px; border-radius: 999px;
-  background: var(--accent-soft); color: var(--accent-brass);
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
   font-size: 0.6875rem; font-weight: 560; text-transform: uppercase; letter-spacing: 0.04em;
 }
 .answer-question-text { font-size: 0.9375rem; color: var(--fg); line-height: 1.4; }
@@ -3387,14 +3410,14 @@ body.chat-locked {
 }
 .answer-option:hover { background: var(--surface-2); }
 .answer-option.is-selected {
-  border-color: var(--accent-brass);
-  background: var(--accent-soft);
+  border-color: var(--accent-marker);
+  background: var(--accent-marker-soft);
 }
 .answer-option-input {
   flex-shrink: 0; margin: 2px 0 0; width: 16px; height: 16px;
-  accent-color: var(--accent-brass); cursor: pointer;
+  accent-color: var(--accent-marker-text); cursor: pointer;
 }
-.answer-option-input:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.answer-option-input:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 .answer-option-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .answer-option-label { font-size: 0.875rem; font-weight: 520; color: var(--fg); }
 .answer-option-desc { font-size: 0.8125rem; color: var(--fg-subtle); line-height: 1.45; }
@@ -3410,7 +3433,7 @@ body.chat-locked {
   transition: border-color 150ms ease;
 }
 .answer-notes-input::placeholder { color: var(--fg-subtle); }
-.answer-notes-input:focus-visible { outline: none; border-color: var(--accent-brass); }
+.answer-notes-input:focus-visible { outline: none; border-color: var(--accent-marker); }
 .answer-notes-input:disabled { opacity: 0.6; }
 
 .answer-rule { margin: 0 0 14px; font-size: 0.75rem; color: var(--fg-subtle); line-height: 1.5; }
@@ -3418,17 +3441,17 @@ body.chat-locked {
 .answer-actions { display: flex; gap: 10px; }
 .answer-btn {
   flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 9px 14px; border-radius: 8px; font-size: 0.875rem; font-weight: 520;
+  padding: 9px 14px; border-radius: 10px; font-size: 0.875rem; font-weight: 520;
   cursor: pointer; transition: all 150ms ease; border: 1px solid var(--border);
 }
 .answer-btn:disabled { opacity: 0.6; cursor: default; }
 .answer-btn--dismiss { background: var(--surface-2); color: var(--fg-muted); }
 .answer-btn--dismiss:hover:not(:disabled) { background: var(--surface-3, var(--surface-2)); color: var(--fg); }
 .answer-btn--submit {
-  background: var(--accent-brass); color: var(--text-on-brass); border-color: var(--accent-brass);
+  background: var(--accent-marker); color: var(--text-on-marker); border-color: var(--accent-marker);
 }
 .answer-btn--submit:hover:not(:disabled) { filter: brightness(1.06); }
-.answer-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.answer-btn:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 .answer-outcome {
   margin: 0; display: inline-flex; align-items: center; gap: 7px;
@@ -3436,12 +3459,12 @@ body.chat-locked {
 }
 .answer-outcome--ok { color: var(--status-success); }
 .answer-outcome--dismissed { color: var(--fg-muted); }
-.answer-outcome--error { color: var(--status-error); }
+.answer-outcome--error { color: var(--status-error-text); }
 
 /* ---- Error banner --------------------------------------------------------- */
 .chat-error {
-  margin: 0 20px; padding: 8px 12px; border-radius: 8px;
-  background: var(--status-error-soft); color: var(--status-error);
+  margin: 0 20px; padding: 8px 12px; border-radius: 10px;
+  background: var(--status-error-soft); color: var(--status-error-text);
   font-size: 0.8125rem;
 }
 
@@ -3492,19 +3515,19 @@ body.chat-locked {
   background: var(--surface-bg);
   max-width: 100%;
 }
-.chat-composer.is-dragging { background: var(--accent-soft); }
+.chat-composer.is-dragging { background: var(--accent-marker-soft); }
 
 /* The input shell — the bordered card that frames textarea + toolbar as one surface.
    The outer .chat-composer owns the pane gutter padding; this inner shell owns the
    visible border + surface, so the border sits flush to the gutter, not the text. */
 .prompt-input {
   display: flex; flex-direction: column;
-  border: 1px solid var(--border); border-radius: 14px;
+  border: 1px solid var(--border); border-radius: 16px;
   background: var(--surface-1);
   transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 /* Brass focus ring when anything inside the shell holds focus (textarea or a control). */
-.prompt-input:focus-within { border-color: var(--accent-brass); }
+.prompt-input:focus-within { border-color: var(--accent-marker); }
 
 /* HEADER — attachment chips + notice, above the textarea. */
 .prompt-input-header {
@@ -3547,14 +3570,14 @@ body.chat-locked {
    old 44px slab crammed beside the input. */
 .prompt-input-btn {
   flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
-  gap: 6px; height: 36px; min-width: 36px; padding: 0 8px; border-radius: 9px;
+  gap: 6px; height: 36px; min-width: 36px; padding: 0 8px; border-radius: 10px;
   cursor: pointer; border: 1px solid transparent; background: transparent;
   color: var(--fg-muted);
   transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
-.prompt-input-btn:hover:not(:disabled) { background: var(--surface-2); color: var(--accent-brass); }
+.prompt-input-btn:hover:not(:disabled) { background: var(--surface-2); color: var(--accent-marker-text); }
 .prompt-input-btn:disabled { opacity: 0.4; cursor: default; }
-.prompt-input-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.prompt-input-btn:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 /* Submit — the right-edge primary action. GROK AESTHETIC: a brass-TINTED, BORDERLESS
    inline icon button — NOT a hard filled box. The send glyph reads brass; the only
@@ -3563,13 +3586,13 @@ body.chat-locked {
 .prompt-input-submit {
   flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
   width: 38px; height: 38px; border-radius: 999px; cursor: pointer;
-  background: var(--accent-soft); color: var(--accent-brass); border: none;
+  background: var(--accent-marker-soft); color: var(--accent-marker-text); border: none;
   transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease;
 }
-.prompt-input-submit:hover:not(:disabled) { background: var(--accent-brass); color: var(--text-on-brass); }
+.prompt-input-submit:hover:not(:disabled) { background: var(--accent-marker); color: var(--text-on-marker); }
 .prompt-input-submit:disabled { opacity: 0.4; cursor: default; }
-.prompt-input-submit:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
-.prompt-input-submit[data-status='error'] { background: var(--accent-soft); color: var(--status-error); }
+.prompt-input-submit:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
+.prompt-input-submit[data-status='error'] { background: var(--accent-marker-soft); color: var(--status-error-text); }
 
 /* ---- Composer attachments (Feature 4 — image paste/drop) ------------------ */
 .chat-file-input { display: none; }
@@ -3585,29 +3608,29 @@ body.chat-locked {
 }
 .chat-attachment-thumb {
   width: 36px; height: 36px; flex-shrink: 0;
-  border-radius: 7px; object-fit: cover; background: var(--surface-2);
+  border-radius: 10px; object-fit: cover; background: var(--surface-2);
 }
 .chat-attachment-meta { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
 .chat-attachment-name { font-size: 0.8125rem; color: var(--fg); }
 .chat-attachment-size { font-size: 0.6875rem; color: var(--fg-subtle); }
 .chat-attachment-remove {
   flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
-  width: 22px; height: 22px; border-radius: 6px; cursor: pointer;
+  width: 22px; height: 22px; border-radius: 10px; cursor: pointer;
   border: none; background: transparent; color: var(--fg-muted);
   transition: background-color 150ms ease, color 150ms ease;
 }
 .chat-attachment-remove:hover { background: var(--surface-2); color: var(--fg); }
-.chat-attachment-remove:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 1px; }
+.chat-attachment-remove:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 1px; }
 
 .chat-composer-notice {
-  margin: 0; font-size: 0.75rem; color: var(--status-warning, var(--fg-muted));
+  margin: 0; font-size: 0.75rem; color: var(--fg-muted); /* A162: amber never carries the string */
 }
 
 .chat-composer-dropzone {
   position: absolute; inset: 6px;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-  border-radius: 14px; border: 2px dashed var(--accent-brass);
-  background: var(--accent-soft); color: var(--accent-brass);
+  border-radius: 16px; border: 2px dashed var(--accent-marker);
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
   font-size: 0.8125rem; font-weight: 520; pointer-events: none; z-index: 2;
 }
 
@@ -3616,23 +3639,23 @@ body.chat-locked {
   display: inline-flex; align-items: center; justify-content: center;
   width: 1.05em; height: 1.05em; margin-right: 0.18em; vertical-align: -0.16em;
   border-radius: 50%; overflow: hidden; flex-shrink: 0;
-  background: var(--accent-soft); border: 1px solid var(--border-subtle);
+  background: var(--accent-marker-soft); border: 1px solid var(--border-subtle);
 }
 .chat-specialist-avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .chat-specialist-avatar-initials {
-  font-size: 0.5em; font-weight: 600; line-height: 1; color: var(--accent-brass);
+  font-size: 0.5em; font-weight: 600; line-height: 1; color: var(--accent-marker-text);
   letter-spacing: 0.02em;
 }
 
 /* ---- Clickable vault references in a reply (Feature 2) -------------------- */
 .chat-doclink {
   border: none; background: transparent; padding: 0; font: inherit; cursor: pointer;
-  color: var(--accent-brass); text-decoration: underline;
+  color: var(--accent-marker-text); text-decoration: underline;
   text-underline-offset: 2px; text-decoration-thickness: 1px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 .chat-doclink:hover { text-decoration-thickness: 2px; }
-.chat-doclink:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent-soft); }
+.chat-doclink:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent-marker-soft); }
 .chat-doclink.is-inert { color: inherit; text-decoration: none; cursor: text; }
 
 /* ---- In-chat document preview pane (Feature 2) ---------------------------- */
@@ -3647,13 +3670,13 @@ body.chat-locked {
 .chat-docpreview-nav, .chat-docpreview-actions { display: inline-flex; gap: 2px; flex-shrink: 0; }
 .chat-docpreview-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 7px; cursor: pointer;
+  width: 28px; height: 28px; border-radius: 10px; cursor: pointer;
   border: 1px solid transparent; background: transparent; color: var(--fg-muted);
   transition: background-color 150ms ease, color 150ms ease;
 }
 .chat-docpreview-btn:hover:not(:disabled) { background: var(--surface-2); color: var(--fg); }
 .chat-docpreview-btn:disabled { opacity: 0.35; cursor: default; }
-.chat-docpreview-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 1px; }
+.chat-docpreview-btn:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 1px; }
 .chat-docpreview-title {
   flex: 1 1 auto; min-width: 0;
   display: inline-flex; align-items: center; gap: 6px;
@@ -3666,7 +3689,7 @@ body.chat-locked {
 .chat-docpreview-pill {
   display: inline-block; margin-bottom: 8px;
   padding: 2px 8px; border-radius: 999px;
-  background: var(--accent-soft); color: var(--accent-brass);
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
   font-size: 0.6875rem; font-weight: 540; text-transform: uppercase; letter-spacing: 0.06em;
 }
 .chat-docpreview-h { margin: 0 0 12px; font-size: 1.05rem; font-weight: 560; color: var(--fg); }
@@ -3686,7 +3709,7 @@ body.chat-locked {
    sidebar with its diff viewer. Tokens only (GL-003) — every colour is a var().
    The two SIGNATURE state colours the orb needs (blue = listening, amber-warm =
    speaking) are NEW; flagged to Iris. Until GL-003 adds them, blue maps to
-   --status-info and amber to --accent-brass (the cockpit's one warm accent), so
+   --status-info and amber to --accent-marker (the cockpit's one warm accent), so
    the build stays token-only with zero raw hex.
    =========================================================================== */
 
@@ -3780,7 +3803,7 @@ body.chat-locked {
 .chat-back {
   display: inline-flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; margin-right: 2px; flex-shrink: 0;
-  border-radius: 8px; border: 1px solid transparent; background: transparent;
+  border-radius: 10px; border: 1px solid transparent; background: transparent;
   color: var(--fg-muted); cursor: pointer; transition: background-color 150ms ease, color 150ms ease;
 }
 .chat-back:hover { background: var(--surface-2); color: var(--fg); }
@@ -3795,9 +3818,9 @@ body.chat-locked {
   border: 1px solid var(--border); background: var(--surface-1); color: var(--fg-muted);
   transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
-.chat-rail-toggle:hover { color: var(--fg); border-color: var(--accent-brass); }
-.chat-rail-toggle:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
-.chat-rail-toggle.has-pending { color: var(--accent-brass); border-color: var(--accent-brass); }
+.chat-rail-toggle:hover { color: var(--fg); border-color: var(--border-emphasis); }
+.chat-rail-toggle:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
+.chat-rail-toggle.has-pending { color: var(--accent-marker-text); border-color: var(--accent-marker); }
 .chat-rail-toggle-badge {
   position: absolute; top: 6px; right: 6px;
   width: 8px; height: 8px; border-radius: 999px;
@@ -3829,7 +3852,7 @@ body.chat-locked {
   display: flex; flex-direction: column; min-height: 0;
   background: var(--surface-1);
   border-left: 1px solid var(--border);
-  box-shadow: -18px 0 60px oklch(0.1 0 0 / 0.45);
+  box-shadow: -18px 0 60px var(--shadow-strong-color);
   outline: none;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   animation: chat-rail-drawer-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -3848,7 +3871,7 @@ body.chat-locked {
   transition: background-color 150ms ease, color 150ms ease;
 }
 .chat-rail-drawer-close:hover { background: var(--surface-2); color: var(--fg); }
-.chat-rail-drawer-close:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.chat-rail-drawer-close:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 @keyframes chat-rail-drawer-in {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
@@ -3862,16 +3885,16 @@ body.chat-locked {
   border: 1px solid var(--border); background: var(--surface-1); color: var(--fg-muted);
   font-size: 0.8125rem; font-weight: 500; transition: all 150ms ease;
 }
-.mic-toggle:hover { color: var(--fg); border-color: var(--accent-brass); }
+.mic-toggle:hover { color: var(--fg); border-color: var(--border-emphasis); }
 .mic-toggle.is-voice {
-  background: var(--accent-soft); color: var(--accent-brass); border-color: var(--accent-brass);
+  background: var(--accent-marker-soft); color: var(--accent-marker-text); border-color: var(--accent-marker);
 }
-.mic-toggle:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.mic-toggle:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 .mic-toggle-note {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 0.6875rem; color: var(--fg-subtle);
 }
-.mic-toggle-note--warn { color: var(--status-warning); }
+.mic-toggle-note--warn { color: var(--fg-muted); } /* A162 */
 
 /* ---- Model switcher — header cluster + segmented per-session control ------- */
 /* The header right-side cluster keeps the model selector + mic toggle aligned to
@@ -3896,13 +3919,13 @@ body.chat-locked {
 }
 .model-seg-item:hover:not(:disabled) { color: var(--fg); }
 .model-seg-item[data-state='on'] {
-  background: var(--accent-soft); color: var(--accent-brass);
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
 }
 .model-seg-item:disabled { opacity: 0.5; cursor: default; }
-.model-seg-item:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.model-seg-item:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 /* The one-line hint rides beside the label; muted, and tucks away on narrow widths. */
 .model-seg-hint { color: var(--fg-subtle); font-size: 0.6875rem; font-weight: 400; }
-.model-seg-item[data-state='on'] .model-seg-hint { color: var(--accent-brass); opacity: 0.8; }
+.model-seg-item[data-state='on'] .model-seg-hint { color: var(--accent-marker-text); } /* §2.8: no alpha dial on persistent text */
 @media (max-width: 768px) {
   /* On tablet/mobile, keep the label (the tier name carries the meaning) and drop the
      inline hint to save width — the full hint stays available via title + aria-label. */
@@ -3938,14 +3961,14 @@ body.chat-locked {
   font-size: 0.8125rem; font-weight: 500; line-height: 1;
   transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
-.model-pick:hover:not(:disabled) { background: var(--surface-2); color: var(--accent-brass); }
+.model-pick:hover:not(:disabled) { background: var(--surface-2); color: var(--accent-marker-text); }
 .model-pick:disabled { opacity: 0.4; cursor: default; }
-.model-pick:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.model-pick:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 /* When the per-message tier differs from the session default, a brass label + dot flag
    the one-off override so it never silently diverges from the header (no border needed). */
-.model-pick[data-overridden='true'] { color: var(--accent-brass); }
+.model-pick[data-overridden='true'] { color: var(--accent-marker-text); }
 .model-pick-dot {
-  width: 6px; height: 6px; border-radius: 999px; background: var(--accent-brass);
+  width: 6px; height: 6px; border-radius: 999px; background: var(--accent-marker);
 }
 @media (max-width: 480px) {
   /* On the narrowest composer, the trigger collapses to icon + dot (label hidden) so
@@ -3956,13 +3979,13 @@ body.chat-locked {
 /* The portaled override menu (bottom-anchored above the composer). */
 .model-menu {
   z-index: 50; display: flex; flex-direction: column; gap: 1px;
-  border: 1px solid var(--border); border-radius: 12px;
+  border: 1px solid var(--border); border-radius: 16px;
   background: var(--surface-3); padding: 4px; outline: none;
-  box-shadow: 0 18px 60px oklch(0.1 0 0 / 0.45);
+  box-shadow: 0 18px 60px var(--shadow-strong-color);
 }
 .model-menu-item {
   display: flex; align-items: center; gap: 9px; width: 100%;
-  padding: 7px 9px; border-radius: 8px; cursor: pointer;
+  padding: 7px 9px; border-radius: 10px; cursor: pointer;
   border: none; background: transparent; color: var(--fg);
   font-size: 0.8125rem; text-align: left; outline: none;
   transition: background-color 150ms ease;
@@ -3976,7 +3999,7 @@ body.chat-locked {
   margin-left: auto; font-size: 0.6875rem; color: var(--fg-subtle);
   border: 1px solid var(--border-subtle); border-radius: 999px; padding: 1px 7px;
 }
-.model-menu-check { margin-left: auto; color: var(--accent-brass); flex-shrink: 0; }
+.model-menu-check { margin-left: auto; color: var(--accent-marker-text); flex-shrink: 0; }
 /* When both the default badge and the check would claim the right edge, the check
    wins the margin-auto and the default badge sits inline before it. */
 .model-menu-default + .model-menu-check { margin-left: 8px; }
@@ -3986,8 +4009,9 @@ body.chat-locked {
    THREAD now fills the pane (Model-A mirror lands the spoken lines there); this is
    just "where the channel is": a small dot + one word + the live interim caption.
    Tokens only; the dot pulse is neutralised by the global prefers-reduced-motion
-   collapse in index.css. State-driven hue: blue (--status-info) when LISTENING,
-   brass (--accent-brass) when SPEAKING — same legibility cue the orb carried. */
+   collapse in index.css. State-hue law (§6.13 / A163): the room LISTENS in the
+   quiet ink voice (--status-info is that voice by de-blue construction); the pen
+   SPEAKS in marker. Never a blue listening state (§2.4). */
 .voice-indicator {
   flex: 0 0 auto;
   display: flex; align-items: center; gap: 8px;
@@ -4011,18 +4035,18 @@ body.chat-locked {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-style: italic; color: var(--status-info);
 }
-/* LISTENING — blue dot, gentle pulse. `color` carries the hue so the pulse ring
-   (box-shadow: currentColor) and the fill (background: currentColor) agree. */
+/* LISTENING — quiet ink dot (§6.13), gentle pulse. `color` carries the hue so the
+   pulse ring (box-shadow: currentColor) and the fill (background: currentColor) agree. */
 .voice-indicator[data-state='listening'] .voice-indicator-dot {
   color: var(--status-info); background: currentColor;
   animation: voice-dot-pulse 1.8s ease-in-out infinite;
 }
-/* SPEAKING — brass dot, slightly quicker pulse (mentor TTS / your voice). */
+/* SPEAKING — marker dot (the pen speaks, §6.13), slightly quicker pulse. */
 .voice-indicator[data-state='speaking'] .voice-indicator-dot {
-  color: var(--accent-brass); background: currentColor;
+  color: var(--accent-marker-text); background: currentColor;
   animation: voice-dot-pulse 1.1s ease-in-out infinite;
 }
-.voice-indicator[data-state='speaking'] .voice-indicator-partial { color: var(--accent-brass); }
+.voice-indicator[data-state='speaking'] .voice-indicator-partial { color: var(--accent-marker-text); }
 /* CONNECTING — muted dot, slow pulse. */
 .voice-indicator[data-state='connecting'] .voice-indicator-dot {
   color: var(--fg-muted); background: currentColor;
@@ -4046,10 +4070,13 @@ body.chat-locked {
   /* Calm ambient settle — NO overshoot (a presence cue, not a springy toy). */
   transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease, background 700ms ease;
 }
-.sigma-glow--1 { inset: -28px; filter: blur(26px); background: radial-gradient(circle, var(--accent-soft), transparent 70%); }
-.sigma-glow--2 { inset: -52px; filter: blur(40px); background: radial-gradient(circle, var(--accent-soft), transparent 72%); }
-.sigma-orb.is-listening .sigma-glow { background: radial-gradient(circle, oklch(0.70 0.10 230 / 0.18), transparent 70%); }
-.sigma-orb.is-speaking  .sigma-glow { background: radial-gradient(circle, var(--accent-soft), transparent 70%); }
+.sigma-glow--1 { inset: -28px; filter: blur(26px); background: radial-gradient(circle, var(--accent-marker-soft), transparent 70%); }
+.sigma-glow--2 { inset: -52px; filter: blur(40px); background: radial-gradient(circle, var(--accent-marker-soft), transparent 72%); }
+/* §6.13 state-hue law (A163): the room LISTENS in paper; the pen SPEAKS in
+   marker. Listening rides the quiet ink voice (per-room --orb-listen-glow,
+   never a hardcoded rgba); speaking rides the marker family. */
+.sigma-orb.is-listening .sigma-glow { background: radial-gradient(circle, var(--orb-listen-glow), transparent 70%); }
+.sigma-orb.is-speaking  .sigma-glow { background: radial-gradient(circle, var(--accent-marker-soft), transparent 70%); }
 
 .sigma-orb-btn {
   position: absolute; inset: 0; display: block; padding: 0; cursor: pointer;
@@ -4061,29 +4088,30 @@ body.chat-locked {
 .sigma-orb-btn:hover:not(:disabled) { transform: scale(1.02); }
 .sigma-orb-btn:active:not(:disabled) { transform: scale(0.97); }
 .sigma-orb-btn:disabled { cursor: default; }
-.sigma-orb-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 6px; border-radius: 50%; }
+.sigma-orb-btn:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 6px; border-radius: 50%; }
 
 .sigma-orb-ring {
   position: absolute; inset: 0; border-radius: 50%;
   background: linear-gradient(to bottom, var(--surface-3), var(--surface-2));
   transition: background 700ms ease;
 }
-.sigma-orb.is-listening .sigma-orb-ring { background: linear-gradient(to bottom, oklch(0.70 0.10 230 / 0.40), oklch(0.55 0.10 230 / 0.40)); }
-.sigma-orb.is-speaking  .sigma-orb-ring { background: linear-gradient(to bottom, var(--accent-brass), var(--accent-deep)); opacity: 0.6; }
+/* Listening ring: hairline_emphasis-class paper alphas (§6.13 / A163), not marker. */
+.sigma-orb.is-listening .sigma-orb-ring { background: linear-gradient(to bottom, var(--border-emphasis), var(--border)); }
+.sigma-orb.is-speaking  .sigma-orb-ring { background: linear-gradient(to bottom, var(--accent-marker), var(--accent-marker-up)); opacity: 0.6; }
 .sigma-orb-core {
   position: absolute; inset: 4px; border-radius: 50%;
   background: radial-gradient(circle at 50% 35%, var(--surface-1), var(--surface-bg));
-  box-shadow: inset 0 2px 14px oklch(0 0 0 / 0.55), inset 0 0 0 1px var(--border-subtle);
+  box-shadow: inset 0 2px 14px var(--shadow-inset-color), inset 0 0 0 1px var(--border-subtle);
 }
 
 /* Processing ring — a conic sweep filling to --orb-progress (0..100). */
 .sigma-orb-progress {
   position: absolute; inset: 2px; border-radius: 50%;
-  background: conic-gradient(var(--accent-brass) calc(var(--orb-progress, 0) * 1%), transparent 0);
+  background: conic-gradient(var(--accent-marker) calc(var(--orb-progress, 0) * 1%), transparent 0);
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
           mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
 }
-.sigma-orb.is-processing-analyzing .sigma-orb-progress { background: conic-gradient(var(--accent-brass) calc(var(--orb-progress) * 1%), transparent 0); }
+.sigma-orb.is-processing-analyzing .sigma-orb-progress { background: conic-gradient(var(--accent-marker) calc(var(--orb-progress) * 1%), transparent 0); }
 .sigma-orb.is-processing-complete .sigma-orb-progress { background: conic-gradient(var(--status-success) 100%, transparent 0); }
 .sigma-orb.is-processing-error .sigma-orb-progress { background: conic-gradient(var(--status-error) 100%, transparent 0); }
 
@@ -4097,19 +4125,21 @@ body.chat-locked {
   transform: scale(var(--orb-sigma-scale, 1));
   transition: color 120ms ease, transform 120ms ease;
 }
-.sigma-orb.is-connecting .sigma-orb-glyph { color: var(--accent-brass); animation: sigma-pulse 1500ms ease-in-out infinite; }
-.sigma-orb.is-listening .sigma-orb-glyph { color: oklch(0.70 0.10 230); }
-.sigma-orb.is-speaking  .sigma-orb-glyph { color: var(--accent-brass); }
-.sigma-orb.is-processing-analyzing .sigma-orb-glyph { color: var(--accent-brass); }
+/* §6.13: connecting is a quiet paper_dim pulse; listening glyph rides paper_dim.
+   Only SPEAKING and PROCESSING wear the marker (the pen is working). */
+.sigma-orb.is-connecting .sigma-orb-glyph { color: var(--fg-muted); animation: sigma-pulse 1500ms ease-in-out infinite; }
+.sigma-orb.is-listening .sigma-orb-glyph { color: var(--fg-muted); }
+.sigma-orb.is-speaking  .sigma-orb-glyph { color: var(--accent-marker-text); }
+.sigma-orb.is-processing-analyzing .sigma-orb-glyph { color: var(--accent-marker-text); }
 .sigma-orb.is-processing-complete .sigma-orb-glyph { color: var(--status-success); }
-.sigma-orb.is-processing-error .sigma-orb-glyph { color: var(--status-error); }
+.sigma-orb.is-processing-error .sigma-orb-glyph { color: var(--status-error-text); }
 @keyframes sigma-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
 .sigma-orb-caption {
   font-size: 0.625rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.28em;
   color: var(--fg-subtle);
 }
-.sigma-orb.is-listening .sigma-orb-caption { color: oklch(0.70 0.10 230 / 0.85); }
-.sigma-orb.is-speaking  .sigma-orb-caption { color: var(--accent-brass); }
+.sigma-orb.is-listening .sigma-orb-caption { color: var(--fg-muted); } /* §6.13 */
+.sigma-orb.is-speaking  .sigma-orb-caption { color: var(--accent-marker-text); }
 
 /* ---- Session-deliverables sidebar (the headline feature) ------------------ */
 .chat-artifacts {
@@ -4126,7 +4156,7 @@ body.chat-locked {
 }
 .chat-artifacts-refresh {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 7px;
+  width: 28px; height: 28px; border-radius: 10px;
   border: 1px solid transparent; background: transparent; color: var(--fg-muted); cursor: pointer;
   transition: background-color 150ms ease, color 150ms ease;
 }
@@ -4136,8 +4166,8 @@ body.chat-locked {
 .chat-artifacts-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 12px; }
 
 .chat-artifacts-error {
-  margin: 0 0 10px; padding: 8px 10px; border-radius: 8px;
-  background: var(--status-error-soft); color: var(--status-error); font-size: 0.8125rem;
+  margin: 0 0 10px; padding: 8px 10px; border-radius: 10px;
+  background: var(--status-error-soft); color: var(--status-error-text); font-size: 0.8125rem;
 }
 .chat-artifacts-empty { padding: 24px 8px; text-align: center; }
 .chat-artifacts-empty-title { margin: 0 0 6px; font-size: 0.875rem; font-weight: 520; color: var(--fg-muted); }
@@ -4150,7 +4180,7 @@ body.chat-locked {
 }
 .chat-artifacts-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 
-.chat-artifact { border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--surface-bg); overflow: hidden; }
+.chat-artifact { border-radius: 10px; border: 1px solid var(--border-subtle); background: var(--surface-bg); overflow: hidden; }
 .chat-artifact-row {
   display: flex; align-items: center; gap: 8px; width: 100%;
   padding: 8px 10px; background: transparent; border: none; cursor: pointer;
@@ -4159,39 +4189,39 @@ body.chat-locked {
 .chat-artifact-row:hover:not(:disabled) { background: var(--surface-2); }
 .chat-artifact-row:disabled { cursor: default; }
 .chat-artifact-row--static { cursor: default; }
-.chat-artifact-row:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: -2px; border-radius: 6px; }
+.chat-artifact-row:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: -2px; border-radius: 10px; }
 .chat-artifact-chevron { flex-shrink: 0; color: var(--fg-subtle); transition: transform 150ms ease; }
 .chat-artifact-chevron.is-open { transform: rotate(90deg); }
 .chat-artifact-icon { flex-shrink: 0; color: var(--fg-muted); }
 .chat-artifact--file.is-created .chat-artifact-icon { color: var(--status-success); }
-.chat-artifact--file.is-modified .chat-artifact-icon { color: var(--accent-brass); }
-.chat-artifact--file.is-deleted .chat-artifact-icon { color: var(--status-error); }
-.chat-artifact--journal .chat-artifact-icon { color: var(--accent-brass); }
+.chat-artifact--file.is-modified .chat-artifact-icon { color: var(--accent-marker-text); }
+.chat-artifact--file.is-deleted .chat-artifact-icon { color: var(--status-error-text); }
+.chat-artifact--journal .chat-artifact-icon { color: var(--accent-marker-text); }
 .chat-artifact-main { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
 .chat-artifact-name { font-size: 0.8125rem; color: var(--fg); }
 .chat-artifact-dir { font-size: 0.6875rem; color: var(--fg-subtle); }
 .chat-artifact-tier {
   flex-shrink: 0; font-size: 0.625rem; font-weight: 600; padding: 1px 5px; border-radius: 4px;
-  background: var(--accent-soft); color: var(--accent-brass);
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
 }
 .chat-artifact-state {
   flex-shrink: 0; font-size: 0.625rem; font-weight: 600; padding: 1px 6px; border-radius: 999px;
 }
 .chat-artifact-state.is-created { background: var(--status-success-soft); color: var(--status-success); }
-.chat-artifact-state.is-proposed { background: var(--status-warning-soft); color: var(--status-warning); }
+.chat-artifact-state.is-proposed { background: var(--status-warning-soft); color: var(--fg-muted); } /* A162 */
 
 /* ---- Diff viewer ---------------------------------------------------------- */
 .artifact-diff { border-top: 1px solid var(--border-subtle); background: var(--surface-bg); }
 .artifact-diff-note { margin: 0; padding: 8px 10px; font-size: 0.75rem; color: var(--fg-subtle); }
-.artifact-diff-note--error { color: var(--status-error); }
+.artifact-diff-note--error { color: var(--status-error-text); }
 .artifact-diff-pre {
   margin: 0; padding: 8px 0; max-height: 320px; overflow: auto;
-  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.72rem; line-height: 1.55;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace; font-size: 0.72rem; line-height: 1.55;
 }
 .artifact-diff-line { display: block; padding: 0 10px; white-space: pre; color: var(--fg-muted); }
 .artifact-diff-line.is-add { background: var(--status-success-soft); color: var(--fg); }
 .artifact-diff-line.is-del { background: var(--status-error-soft); color: var(--fg); }
-.artifact-diff-line.is-hunk { color: var(--accent-brass); background: var(--surface-1); }
+.artifact-diff-line.is-hunk { color: var(--accent-marker-text); background: var(--surface-1); }
 .artifact-diff-line.is-meta { color: var(--fg-subtle); }
 
 /* ---- Artifact review modal (rendered markdown + raw-diff toggle) -----------
@@ -4219,8 +4249,8 @@ body.chat-locked {
   max-height: min(86vh, 900px);
   background: var(--surface-1);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 24px 60px oklch(0.1 0 0 / 0.5);
+  border-radius: 20px; /* §5.2 radius_elevated — modal tier */
+  box-shadow: 0 24px 60px var(--shadow-strong-color);
   outline: none;
   overflow: hidden;
   animation: artifact-modal-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -4232,7 +4262,7 @@ body.chat-locked {
   border-bottom: 1px solid var(--border-subtle);
 }
 .artifact-modal-heading { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
-.artifact-modal-icon { flex-shrink: 0; margin-top: 2px; color: var(--accent-brass); }
+.artifact-modal-icon { flex-shrink: 0; margin-top: 2px; color: var(--accent-marker-text); }
 .artifact-modal-titles { min-width: 0; }
 .artifact-modal-title {
   margin: 0; font-size: 0.9375rem; font-weight: 520; line-height: 1.3; color: var(--fg);
@@ -4243,11 +4273,11 @@ body.chat-locked {
   flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center;
   margin: -4px -4px 0 0; padding: 6px;
-  border: none; background: transparent; border-radius: 8px;
+  border: none; background: transparent; border-radius: 10px;
   color: var(--fg-muted); cursor: pointer; transition: background 150ms ease, color 150ms ease;
 }
 .artifact-modal-close:hover { background: var(--surface-2); color: var(--fg); }
-.artifact-modal-close:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.artifact-modal-close:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 .artifact-modal-toolbar {
   flex-shrink: 0;
@@ -4255,29 +4285,29 @@ body.chat-locked {
 }
 .artifact-modal-segmented {
   display: inline-flex; gap: 2px; padding: 2px;
-  background: var(--surface-bg); border: 1px solid var(--border-subtle); border-radius: 8px;
+  background: var(--surface-bg); border: 1px solid var(--border-subtle); border-radius: 10px;
 }
 .artifact-modal-seg {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 5px 12px;
-  border: none; background: transparent; border-radius: 6px;
+  border: none; background: transparent; border-radius: 10px;
   font-size: 0.75rem; font-weight: 520; color: var(--fg-subtle);
   cursor: pointer; transition: background 150ms ease, color 150ms ease;
 }
 .artifact-modal-seg:hover:not(.is-active) { color: var(--fg-muted); }
 .artifact-modal-seg.is-active { background: var(--surface-2); color: var(--fg); }
-.artifact-modal-seg:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: -2px; }
+.artifact-modal-seg:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: -2px; }
 
 .artifact-modal-body {
   flex: 1 1 auto; min-height: 0; overflow-y: auto;
   padding: 16px;
 }
-.artifact-modal-body:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: -2px; }
+.artifact-modal-body:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: -2px; }
 .artifact-modal-note { margin: 0 0 10px; font-size: 0.8125rem; line-height: 1.5; color: var(--fg-subtle); }
-.artifact-modal-note--error { color: var(--status-error); }
+.artifact-modal-note--error { color: var(--status-error-text); }
 .artifact-modal-note--hint {
-  padding: 8px 10px; border-radius: 8px;
-  background: var(--status-warning-soft); color: var(--status-warning);
+  padding: 8px 10px; border-radius: 10px;
+  background: var(--status-warning-soft); color: var(--fg-muted); /* A162 */
 }
 
 /* Frontmatter as a calm key/value list (NOT raw YAML). */
@@ -4303,7 +4333,7 @@ body.chat-locked {
    the modal body, so no inner max-height clamp here. */
 .artifact-modal-diff-pre {
   margin: 0; padding: 8px 0;
-  font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.72rem; line-height: 1.55;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace; font-size: 0.72rem; line-height: 1.55;
   white-space: pre;
 }
 
@@ -4333,9 +4363,9 @@ body.chat-locked {
   background: var(--surface-bg);
 }
 .docpreview-fallback { margin-top: 10px; }
-.docpreview-fallback a { color: var(--accent-brass); text-decoration: underline; }
+.docpreview-fallback a { color: var(--accent-marker-text); text-decoration: underline; }
 .docpreview-fallback a:focus-visible {
-  outline: 2px solid var(--accent-brass); outline-offset: 2px; border-radius: 2px;
+  outline: 2px solid var(--accent-marker); outline-offset: 2px; border-radius: 2px;
 }
 .docpreview-figure { margin: 0; display: flex; justify-content: center; }
 .docpreview-img {
@@ -4346,7 +4376,7 @@ body.chat-locked {
   background: var(--surface-bg);
 }
 .docpreview-path {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.75rem;
   color: var(--fg-subtle);
   overflow-wrap: anywhere;
@@ -4372,14 +4402,15 @@ body.chat-locked {
   display: flex; flex-direction: column;
   width: min(640px, 100%);
   max-height: min(70vh, 640px);
-  /* Graphite §4.1/§4.8 — the command/search surface is frosted glass: a
-     translucent fill over a backdrop blur, a glass hairline, premium shadow. */
+  /* INKLINE command-glass (§2.1/§2.2 scrim doctrine): glass speaks the
+     room's own ground at 0.92 with a hairline at 0.12; blur stays as the
+     sanctioned backdrop treatment on command chrome. */
   background: var(--glass-fill);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  box-shadow: 0 24px 60px oklch(0.08 0.004 250 / 0.7);
+  border-radius: 20px; /* §5.2 radius_elevated — floating command surface */
+  box-shadow: 0 24px 60px var(--shadow-strong-color);
   overflow: hidden;
   animation: artifact-modal-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -4400,7 +4431,7 @@ body.chat-locked {
 .cmdk-esc-hint {
   flex-shrink: 0;
   padding: 2px 6px;
-  border-radius: 5px;
+  border-radius: 4px;
   border: 1px solid var(--border);
   background: var(--surface-bg);
   font-size: 0.6875rem;
@@ -4413,7 +4444,7 @@ body.chat-locked {
   font-size: 0.8125rem; line-height: 1.5; color: var(--fg-subtle);
   text-align: center;
 }
-.cmdk-state--error { color: var(--status-error); }
+.cmdk-state--error { color: var(--status-error-text); }
 .cmdk-state--hint { color: var(--fg-subtle); }
 
 .cmdk-listbox { list-style: none; margin: 0; padding: 0; }
@@ -4427,7 +4458,7 @@ body.chat-locked {
 .cmdk-option {
   display: flex; align-items: center; gap: 10px;
   padding: 9px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   /* No hover background here — hover sets the active row via JS so keyboard +
      mouse share ONE highlight (the .is-active rule below). */
@@ -4443,12 +4474,12 @@ body.chat-locked {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .cmdk-mark {
-  background: var(--accent-soft);
+  background: var(--accent-marker-soft);
   color: var(--fg);
-  border-radius: 3px;
+  border-radius: 4px;
   padding: 0 1px;
 }
-.cmdk-option-enter { flex-shrink: 0; color: var(--accent-brass); }
+.cmdk-option-enter { flex-shrink: 0; color: var(--accent-marker-text); }
 
 /* ---- Sub-agents dock (Tom's spec — bottom/sticky in "This session made") -- */
 /* The foot sits OUTSIDE the scrolling artifacts body so dispatched subagents stay
@@ -4471,7 +4502,7 @@ body.chat-locked {
   display: flex; flex-direction: column; gap: 6px;
 }
 .chat-subagent {
-  border-radius: 8px; border: 1px solid var(--border-subtle);
+  border-radius: 10px; border: 1px solid var(--border-subtle);
   background: var(--surface-bg); overflow: hidden;
 }
 /* A live (running/held) card carries a faint brass-soft left edge so the eye finds the
@@ -4491,7 +4522,7 @@ body.chat-locked {
 }
 .chat-subagent-row:hover:not(:disabled) { background: var(--surface-2); }
 .chat-subagent-row:disabled { cursor: default; }
-.chat-subagent-row:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: -2px; border-radius: 6px; }
+.chat-subagent-row:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: -2px; border-radius: 10px; }
 .chat-subagent-chevron { flex-shrink: 0; color: var(--fg-subtle); transition: transform 150ms ease; }
 .chat-subagent-chevron.is-open { transform: rotate(90deg); }
 
@@ -4506,8 +4537,8 @@ body.chat-locked {
 .chat-subagent-status.is-running,
 .chat-subagent-status.is-dispatched { color: var(--status-info); }
 .chat-subagent-status.is-held,
-.chat-subagent-status.is-timed-out { color: var(--status-warning); }
-.chat-subagent-status.is-denied { color: var(--status-error); }
+.chat-subagent-status.is-timed-out { color: var(--fg-muted); } /* A162: the amber border rails carry the state */
+.chat-subagent-status.is-denied { color: var(--status-error-text); }
 .chat-subagent-status.is-done { color: var(--status-success); }
 
 .chat-subagent-dot {
@@ -4557,10 +4588,10 @@ body.chat-locked {
 }
 .chat-readmore {
   margin-top: 3px; padding: 0; background: none; border: none; cursor: pointer;
-  font-size: 0.6875rem; font-weight: 520; color: var(--accent-brass);
+  font-size: 0.6875rem; font-weight: 520; color: var(--accent-marker-text);
 }
 .chat-readmore:hover { text-decoration: underline; text-underline-offset: 2px; }
-.chat-readmore:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; border-radius: 3px; }
+.chat-readmore:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; border-radius: 4px; }
 
 /* Per-subagent TOOL TIMELINE (Axon §2.3) — the tool chips that used to land on Larry's
    main bubble now live here, attributed to the subagent that ran them (Tom #5). A compact
@@ -4569,13 +4600,13 @@ body.chat-locked {
 .chat-tool-step {
   display: flex; align-items: center; gap: 6px;
   font-size: 0.6875rem; color: var(--fg-muted);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
 }
 .chat-tool-step-icon { display: inline-flex; flex-shrink: 0; }
 .chat-tool-step.is-running .chat-tool-step-icon { color: var(--status-info); }
 .chat-tool-step.is-done .chat-tool-step-icon { color: var(--status-success); }
-.chat-tool-step.is-error .chat-tool-step-icon { color: var(--status-error); }
-.chat-tool-step.is-error .chat-tool-step-name { color: var(--status-error); }
+.chat-tool-step.is-error .chat-tool-step-icon { color: var(--status-error-text); }
+.chat-tool-step.is-error .chat-tool-step-name { color: var(--status-error-text); }
 .chat-tool-step-icon .is-spinning { animation: pin-rotate 760ms linear infinite; }
 
 /* ---- PROGRESS RAIL: slim thread marker + compact rail items (Axon §3) ------ */
@@ -4586,12 +4617,12 @@ body.chat-locked {
   padding: 6px 11px; border-radius: 999px; cursor: pointer;
   border: 1px solid color-mix(in oklch, var(--status-warning) 40%, var(--border));
   background: color-mix(in oklch, var(--status-warning) 9%, transparent);
-  color: var(--status-warning); font-size: 0.75rem; font-weight: 520;
+  color: var(--fg-muted); font-size: 0.75rem; font-weight: 520; /* A162: border/tint/pulse stay amber */
   transition: background-color 130ms ease;
   animation: chat-marker-breath 2600ms ease-in-out infinite;
 }
 .chat-approval-marker:hover { background: color-mix(in oklch, var(--status-warning) 16%, transparent); }
-.chat-approval-marker:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.chat-approval-marker:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 .chat-approval-marker-arrow { transition: transform 130ms ease; }
 .chat-approval-marker:hover .chat-approval-marker-arrow { transform: translateX(2px); }
 @keyframes chat-marker-breath {
@@ -4602,7 +4633,7 @@ body.chat-locked {
 /* The rail list (top-level confirm/answer + decisions live in their own lists). */
 .chat-rail-list { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .chat-rail-item {
-  border-radius: 8px; border: 1px solid var(--border-subtle);
+  border-radius: 10px; border: 1px solid var(--border-subtle);
   background: var(--surface-bg); overflow: hidden;
 }
 .chat-rail-item.is-awaiting { border-left: 2px solid var(--status-warning); }
@@ -4622,7 +4653,7 @@ body.chat-locked {
   color: var(--fg); text-align: left; transition: background-color 130ms ease;
 }
 .chat-rail-row:hover { background: var(--surface-2); }
-.chat-rail-row:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: -2px; border-radius: 6px; }
+.chat-rail-row:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: -2px; border-radius: 10px; }
 .chat-rail-chevron { flex-shrink: 0; color: var(--fg-subtle); transition: transform 150ms ease; }
 .chat-rail-chevron.is-open { transform: rotate(90deg); }
 .chat-rail-icon { flex-shrink: 0; display: inline-flex; color: var(--fg-subtle); }
@@ -4637,10 +4668,10 @@ body.chat-locked {
   flex-shrink: 0; padding: 1px 7px; border-radius: 999px;
   font-size: 0.5625rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase;
 }
-.chat-rail-pill.is-awaiting { color: var(--status-warning); background: color-mix(in oklch, var(--status-warning) 14%, transparent); }
+.chat-rail-pill.is-awaiting { color: var(--fg-muted); background: color-mix(in oklch, var(--status-warning) 14%, transparent); } /* A162 */
 .chat-rail-pill.is-ok { color: var(--status-success); background: color-mix(in oklch, var(--status-success) 14%, transparent); }
-.chat-rail-pill.is-denied { color: var(--status-warning); background: color-mix(in oklch, var(--status-warning) 12%, transparent); }
-.chat-rail-pill.is-error { color: var(--status-error); background: color-mix(in oklch, var(--status-error) 14%, transparent); }
+.chat-rail-pill.is-denied { color: var(--fg-muted); background: color-mix(in oklch, var(--status-warning) 12%, transparent); } /* A162 */
+.chat-rail-pill.is-error { color: var(--status-error-text); background: color-mix(in oklch, var(--status-error) 14%, transparent); }
 
 /* The expanded body: structured details + readback + the action buttons. */
 .chat-rail-body { padding: 2px 12px 12px 28px; display: flex; flex-direction: column; gap: 8px; }
@@ -4650,7 +4681,7 @@ body.chat-locked {
 .chat-rail-detail dt { font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--fg-subtle); }
 .chat-rail-detail dd { margin: 0; font-size: 0.78rem; color: var(--fg-muted); word-break: break-word; }
 /* Vex 11 blast-radius emphasis (recipient/assignee) preserved in the rail item. */
-.chat-rail-detail.is-emphasis dd { color: var(--accent-brass); font-weight: 520; }
+.chat-rail-detail.is-emphasis dd { color: var(--accent-marker-text); font-weight: 520; }
 .chat-rail-readback {
   margin: 0; font-size: 0.75rem; line-height: 1.5; color: var(--fg-subtle); font-style: italic;
 }
@@ -4668,13 +4699,13 @@ body.chat-locked {
 }
 .chat-rail-outcome.is-ok { color: var(--status-success); }
 .chat-rail-outcome.is-denied { color: var(--fg-subtle); }
-.chat-rail-outcome.is-error { color: var(--status-error); }
+.chat-rail-outcome.is-error { color: var(--status-error-text); }
 
 /* ---- Session launcher (#/chat) -------------------------------------------- */
 .chat-launcher-new {
   display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;
   padding: 11px 16px; border-radius: 10px; cursor: pointer;
-  background: var(--accent-brass); color: var(--text-on-brass); border: none;
+  background: var(--accent-marker); color: var(--text-on-marker); border: none;
   font-size: 0.9375rem; font-weight: 520; transition: filter 150ms ease;
 }
 .chat-launcher-new:hover { filter: brightness(1.06); }
@@ -4688,14 +4719,14 @@ body.chat-locked {
   border: 1px solid var(--border-subtle); border-radius: 10px; background: var(--surface-1);
   transition: border-color 150ms ease;
 }
-.chat-launcher-row:hover { border-color: var(--accent-brass); }
+.chat-launcher-row:hover { border-color: var(--border-emphasis); }
 .chat-launcher-open {
   display: flex; align-items: center; gap: 12px; flex: 1 1 auto; min-width: 0;
   padding: 12px 14px; background: transparent; border: none; cursor: pointer; text-align: left;
 }
 .chat-launcher-mode {
   display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
-  width: 30px; height: 30px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-brass);
+  width: 30px; height: 30px; border-radius: 10px; background: var(--accent-marker-soft); color: var(--accent-marker-text);
 }
 .chat-launcher-main { display: flex; flex-direction: column; min-width: 0; }
 .chat-launcher-title { font-size: 0.9375rem; color: var(--fg); }
@@ -4705,21 +4736,21 @@ body.chat-locked {
   width: 38px; border: none; border-left: 1px solid var(--border-subtle); border-radius: 0 10px 10px 0;
   background: transparent; color: var(--fg-subtle); cursor: pointer; transition: all 150ms ease;
 }
-.chat-launcher-del:hover { background: var(--status-error-soft); color: var(--status-error); }
+.chat-launcher-del:hover { background: var(--status-error-soft); color: var(--status-error-text); }
 
 /* ---- Journal-page conversation crystallisation ---------------------------- */
 .journal-entry-titlerow { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
 .journal-entry-row.is-conversation { position: relative; }
-.journal-entry-cat--conversation { color: var(--accent-brass); background: var(--accent-soft); }
+.journal-entry-cat--conversation { color: var(--accent-marker-text); background: var(--accent-marker-soft); }
 
 .orbiting-insight {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
   width: 18px; height: 18px; flex-shrink: 0;
 }
-.orbiting-insight-core { display: inline-flex; color: var(--accent-brass); }
+.orbiting-insight-core { display: inline-flex; color: var(--accent-marker-text); }
 .orbiting-insight-mote {
   position: absolute; top: 50%; left: 50%; width: 3px; height: 3px; border-radius: 50%;
-  background: var(--accent-brass); opacity: 0.7;
+  background: var(--accent-marker); opacity: 0.7;
   /* Each mote orbits on a ring, phase-offset by its index. Ambient; the global
      reduced-motion rule freezes it to a quiet static cluster. */
   transform-origin: 0 0;
@@ -4766,13 +4797,13 @@ body.chat-locked {
   cursor: pointer; transition: background 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out;
 }
 .mg-control:hover { background: var(--surface-2); color: var(--fg); border-color: var(--fg-subtle); }
-.mg-control:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.mg-control:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 /* ---- The inline canvas frame --------------------------------------------- */
 .mg-canvas {
   position: relative;
   width: 100%; height: 460px;
-  border: 1px solid var(--border); border-radius: 8px;
+  border: 1px solid var(--border); border-radius: 10px;
   background: var(--surface-bg);
   overflow: hidden;
 }
@@ -4844,13 +4875,13 @@ body.chat-locked {
 .mg-node[data-gen="0"] {
   width: var(--graph-node-w-0);
   background: var(--surface-2);
-  border-radius: 8px;
+  border-radius: 10px;
   border-left: 2px solid var(--graph-focus-edge);
   box-shadow: var(--graph-focus-glow);
   padding: 16px;
   cursor: default;
 }
-.mg-node[data-gen="0"] .mg-node-icon { color: var(--accent-brass); }
+.mg-node[data-gen="0"] .mg-node-icon { color: var(--accent-marker-text); }
 /* Gen-0 title: 2-line clamp (Vera M3, §8.9.3) — long focus titles wrap to two
    lines then ellipsize, never overflow the 200px card or push the layout. */
 .mg-node[data-gen="0"] .mg-node-title {
@@ -4960,7 +4991,7 @@ body.chat-locked {
 }
 .mg-canvas .react-flow__controls-button:hover,
 .mg-fullscreen .react-flow__controls-button:hover {
-  background: var(--surface-2); color: var(--fg); border-color: var(--accent-brass);
+  background: var(--surface-2); color: var(--fg); border-color: var(--accent-marker);
 }
 .mg-canvas .react-flow__controls-button svg,
 .mg-fullscreen .react-flow__controls-button svg {
@@ -5112,7 +5143,7 @@ body.chat-locked {
 .rg-canvas {
   position: relative;
   width: 100%; height: 640px;
-  border: 1px solid var(--border); border-radius: 8px;
+  border: 1px solid var(--border); border-radius: 10px;
   background: var(--surface-bg);
   overflow: hidden;
 }
@@ -5265,7 +5296,7 @@ body.chat-locked {
 /* ==========================================================================
    GL-003 §8.9.18–§8.9.20 — My Life graph explorer OPENED-node state.
    TWO registers, both brass-family, neither a category hue (§9.5 holds):
-     - calm  = --accent-soft fill + 2px --graph-open-edge left-edge — MULTI-instance
+     - calm  = --accent-marker-soft fill + 2px --graph-open-edge left-edge — MULTI-instance
                (every open node; sub-threshold @12% alpha → never a brass field)
      - strong = --graph-focus-ring (2px full brass, 5.85:1) — SINGLE-instance
                (the one most-recently-opened OR :focus-visible node; §2.3 holds)
@@ -5273,7 +5304,7 @@ body.chat-locked {
 
 /* OPENED (calm) — multi-instance. N of these legal at once. */
 .rg-node[data-opened="true"] {
-  background: var(--accent-soft);                 /* 12%-alpha brass wash — NOT full brass */
+  background: var(--accent-marker-soft);                 /* 12%-alpha brass wash — NOT full brass */
   border-left: 2px solid var(--graph-open-edge);  /* the "this is open" mark */
 }
 /* live member-count chip on an opened type anchor reads "dispensing". */
@@ -5331,20 +5362,20 @@ body.chat-locked {
 
 /* COMPOSITION with §8.9.18: the opened brass wash + left-edge layer ON TOP of the
    concept tint (brass owns the edge, concept owns the glyph+tint — no channel
-   collision). The opened --accent-soft wash is the TOP gradient layer; the concept
+   collision). The opened --accent-marker-soft wash is the TOP gradient layer; the concept
    color-mix tint sits beneath it (per data-concept), so both read on the same node:
    sage glyph + sage tint (concept) + brass left-edge + brass wash (opened). */
-.rg-node--type[data-concept="key-element"][data-opened="true"] { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-key-element) 12%, var(--surface-2)); }
-.rg-node--type[data-concept="project"][data-opened="true"]     { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-project)     12%, var(--surface-2)); }
-.rg-node--type[data-concept="goal"][data-opened="true"]        { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-goal)        12%, var(--surface-2)); }
-.rg-node--type[data-concept="topic"][data-opened="true"]       { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-topic)       12%, var(--surface-2)); }
-.rg-node--type[data-concept="habit"][data-opened="true"]       { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-habit)       12%, var(--surface-2)); }
+.rg-node--type[data-concept="key-element"][data-opened="true"] { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-key-element) 12%, var(--surface-2)); }
+.rg-node--type[data-concept="project"][data-opened="true"]     { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-project)     12%, var(--surface-2)); }
+.rg-node--type[data-concept="goal"][data-opened="true"]        { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-goal)        12%, var(--surface-2)); }
+.rg-node--type[data-concept="topic"][data-opened="true"]       { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-topic)       12%, var(--surface-2)); }
+.rg-node--type[data-concept="habit"][data-opened="true"]       { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-habit)       12%, var(--surface-2)); }
 
-.rg-node--member[data-concept="key-element"][data-opened="true"] { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-key-element) 8%, var(--surface-1)); }
-.rg-node--member[data-concept="project"][data-opened="true"]     { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-project)     8%, var(--surface-1)); }
-.rg-node--member[data-concept="goal"][data-opened="true"]        { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-goal)        8%, var(--surface-1)); }
-.rg-node--member[data-concept="topic"][data-opened="true"]       { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-topic)       8%, var(--surface-1)); }
-.rg-node--member[data-concept="habit"][data-opened="true"]       { background: linear-gradient(var(--accent-soft), var(--accent-soft)), color-mix(in oklab, var(--concept-habit)       8%, var(--surface-1)); }
+.rg-node--member[data-concept="key-element"][data-opened="true"] { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-key-element) 8%, var(--surface-1)); }
+.rg-node--member[data-concept="project"][data-opened="true"]     { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-project)     8%, var(--surface-1)); }
+.rg-node--member[data-concept="goal"][data-opened="true"]        { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-goal)        8%, var(--surface-1)); }
+.rg-node--member[data-concept="topic"][data-opened="true"]       { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-topic)       8%, var(--surface-1)); }
+.rg-node--member[data-concept="habit"][data-opened="true"]       { background: linear-gradient(var(--accent-marker-soft), var(--accent-marker-soft)), color-mix(in oklab, var(--concept-habit)       8%, var(--surface-1)); }
 
 /* the single focused node keeps the §8.9.18 ring ON TOP of everything (crisp stroke,
    no collision) — also for concept-colored nodes. */
@@ -5419,7 +5450,7 @@ body.chat-locked {
 }
 .rg-canvas .react-flow__controls-button:hover,
 .rg-fullscreen .react-flow__controls-button:hover {
-  background: var(--surface-2); color: var(--fg); border-color: var(--accent-brass);
+  background: var(--surface-2); color: var(--fg); border-color: var(--accent-marker);
 }
 .rg-canvas .react-flow__controls-button svg,
 .rg-fullscreen .react-flow__controls-button svg { fill: none; max-width: none; max-height: none; }
@@ -5436,9 +5467,9 @@ body.chat-locked {
   z-index: 20; width: min(440px, calc(100% - 48px));
   background: var(--surface-3);
   border: var(--graph-panel-border);                  /* honey HAIRLINE, never a fill */
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 20px 22px;
-  box-shadow: 0 12px 40px oklch(0 0 0 / 0.40);
+  box-shadow: 0 12px 40px var(--shadow-strong-color);
 }
 .rg-budget-panel .rg-panel-head {
   margin: 0 0 8px; font-size: 1.125rem; font-weight: 520; color: var(--fg); line-height: 1.35;
@@ -5451,21 +5482,21 @@ body.chat-locked {
 .rg-panel-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .rg-budget-panel .rg-panel-primary {                  /* the ONE brass moment of the panel */
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer;
+  padding: 8px 14px; border-radius: 10px; border: none; cursor: pointer;
   font-size: 0.875rem; font-weight: 520;
-  background: var(--accent-brass); color: var(--text-on-brass);  /* surface-color label, NEVER cream */
+  background: var(--accent-marker); color: var(--text-on-marker);  /* surface-color label, NEVER cream */
   transition: filter 120ms ease-out;
 }
 .rg-budget-panel .rg-panel-primary:hover { filter: brightness(1.06); }
-.rg-budget-panel .rg-panel-primary:focus-visible { outline: 2px solid var(--text-on-brass); outline-offset: 2px; }
-.rg-panel-frees { font-size: 0.75rem; opacity: 0.85; font-variant-numeric: tabular-nums; }
+.rg-budget-panel .rg-panel-primary:focus-visible { outline: 2px solid var(--text-on-marker); outline-offset: 2px; }
+.rg-panel-frees { font-size: 0.75rem; color: var(--fg-muted); font-variant-numeric: tabular-nums; } /* §2.8: token step, not a dial */
 .rg-budget-panel .rg-panel-cancel {
   padding: 8px 10px; border: none; background: transparent; cursor: pointer;
   font-size: 0.875rem; color: var(--fg-muted);
   transition: color 120ms ease-out;
 }
 .rg-budget-panel .rg-panel-cancel:hover { color: var(--fg); }
-.rg-budget-panel .rg-panel-cancel:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; border-radius: 4px; }
+.rg-budget-panel .rg-panel-cancel:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; border-radius: 4px; }
 
 /* ===========================================================================
    TYPE-FIRST EXPLORER (rebuilt 2026-06-03). The full-screen drill-down explorer
@@ -5547,7 +5578,7 @@ body.chat-locked {
   transition: background 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out;
 }
 .rg-explorer-back:hover { background: var(--surface-2); color: var(--fg); border-color: var(--fg-subtle); }
-.rg-explorer-back:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.rg-explorer-back:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 .rg-explorer-title {
   display: flex; align-items: center; gap: 6px; margin: 0;
   font-size: 0.8125rem; font-weight: 460; color: var(--fg-muted);
@@ -5589,7 +5620,7 @@ body.chat-locked {
   transition: background 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out;
 }
 .rg-explorer-canvas .react-flow__controls-button:hover {
-  background: var(--surface-2); color: var(--fg); border-color: var(--accent-brass);
+  background: var(--surface-2); color: var(--fg); border-color: var(--accent-marker);
 }
 .rg-explorer-canvas .react-flow__controls-button svg { fill: none; max-width: none; max-height: none; }
 .rg-explorer-canvas .react-flow__controls-button:focus-visible {
@@ -5637,7 +5668,7 @@ body.chat-locked {
 .stoic-view-mark {
   display: inline-flex; align-items: center; justify-content: center;
   width: 38px; height: 38px; border-radius: 50%;
-  color: var(--accent-brass); background: var(--accent-soft);
+  color: var(--accent-marker-text); background: var(--accent-marker-soft);
   flex-shrink: 0;
 }
 .stoic-view-title { margin: 0; font-size: 1.5rem; font-weight: 520; color: var(--fg); }
@@ -5666,11 +5697,11 @@ body.chat-locked {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   display: grid; place-items: center;
-  color: var(--accent-brass);
-  background: radial-gradient(circle at 50% 42%, var(--accent-soft) 0%, transparent 70%);
-  border: 1.5px solid oklch(0.72 0.13 60 / 0.30);
+  color: var(--accent-marker-text);
+  background: radial-gradient(circle at 50% 42%, var(--accent-marker-soft) 0%, transparent 70%);
+  border: 1.5px solid var(--accent-marker-border);
   /* static rest glow only — punctuation, never animated (§6.3) */
-  box-shadow: 0 0 32px oklch(0.72 0.13 60 / 0.12);
+  box-shadow: 0 0 32px rgba(255, 90, 45, 0.12);
   z-index: 2; pointer-events: none;
 }
 
@@ -5767,17 +5798,17 @@ body.chat-locked {
 /* Imageless fallback (Tom 2026-06-05: Silas's list now surfaces ALL Seneca-answered
    entries, many WITHOUT an image — the glyph card is now a common case, not an
    edge). Give it an intentional brass-soft radial fill so a bildlose Karte reads as
-   a designed "reflection" token, not an empty disc. Tokens only: --accent-soft fill,
-   --accent-brass glyph. The mood border (set on .stoic-card) still rings it, so the
+   a designed "reflection" token, not an empty disc. Tokens only: --accent-marker-soft fill,
+   --accent-marker glyph. The mood border (set on .stoic-card) still rings it, so the
    mood signal survives even without a photo. */
 .stoic-card.is-imageless,
 .stoic-card-glyph {
-  display: grid; place-items: center; color: var(--accent-brass);
+  display: grid; place-items: center; color: var(--accent-marker-text);
 }
 .stoic-card.is-imageless,
 .stoic-card:has(.stoic-card-glyph) {
   background:
-    radial-gradient(circle at 50% 42%, var(--accent-soft) 0%, var(--surface-2) 78%);
+    radial-gradient(circle at 50% 42%, var(--accent-marker-soft) 0%, var(--surface-2) 78%);
 }
 .stoic-card-glyph { width: 100%; height: 100%; opacity: 0.92; }
 
@@ -5786,7 +5817,7 @@ body.chat-locked {
 .stoic-card:hover { transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle))) scale(1.08); }
 .stoic-card:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--surface-bg), 0 0 0 4px var(--accent-brass);
+  box-shadow: 0 0 0 2px var(--surface-bg), 0 0 0 4px var(--accent-marker);
 }
 
 /* Skeleton state — just the orb, no rings. */
@@ -5817,8 +5848,8 @@ body.chat-locked {
   padding: 10px 12px;
   background: var(--surface-3);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: 0 12px 40px oklch(0 0 0 / 0.40);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px var(--shadow-strong-color);
   pointer-events: none;         /* the card under it stays hoverable/clickable */
   /* place above by default: anchor the bottom edge of the box at `top` */
   transform: translateY(-100%);
@@ -5866,7 +5897,7 @@ body.chat-locked {
 
 /* Image with the same §8.11.1 mood border as the field. */
 .stoic-detail-image {
-  border-radius: 8px; overflow: hidden; margin: 0 0 18px;
+  border-radius: 10px; overflow: hidden; margin: 0 0 18px;
   border: var(--stoic-card-ring-w) solid var(--stoic-mood-neutral);
   background: var(--surface-1);
 }
@@ -5898,7 +5929,7 @@ body.chat-locked {
 .stoic-virtue-fill { stroke: var(--stoic-virtue-fill); stroke-width: 4; }
 .stoic-virtue-pct {
   position: absolute; inset: 0; display: grid; place-items: center;
-  font-size: 0.9rem; color: var(--accent-brass);
+  font-size: 0.9rem; color: var(--accent-marker-text);
   font-variant-numeric: tabular-nums;
 }
 .stoic-virtue-label { font-size: 0.78rem; color: var(--fg); }
@@ -5930,7 +5961,7 @@ body.chat-locked {
 .stoic-persp {
   background: var(--stoic-persp-surface);
   border-left: 3px solid var(--stoic-persp-edge);
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 10px 10px 0;
   padding: 14px 16px; margin: 0 0 20px;
 }
 .stoic-persp-body {
@@ -5953,7 +5984,7 @@ body.chat-locked {
 .stoic-audio-toggle {
   flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
   display: grid; place-items: center; cursor: pointer;
-  color: var(--accent-brass); background: var(--surface-1);
+  color: var(--accent-marker-text); background: var(--surface-1);
   border: 1px solid var(--border);
 }
 .stoic-audio-toggle:hover { background: var(--surface-2); }
@@ -5961,7 +5992,7 @@ body.chat-locked {
   flex: 1; height: 4px; border-radius: 999px;
   background: var(--surface-2); overflow: hidden;
 }
-.stoic-audio-progress { display: block; height: 100%; background: var(--accent-brass); }
+.stoic-audio-progress { display: block; height: 100%; background: var(--accent-marker); }
 .stoic-audio-time {
   flex-shrink: 0; font-size: 0.78rem; color: var(--fg-muted);
   font-variant-numeric: tabular-nums;
@@ -6062,17 +6093,16 @@ body.chat-locked {
   transition: background var(--dur-collapse-close) var(--ease-collapse),
     box-shadow var(--dur-collapse-close) var(--ease-collapse);
 }
-/* Collapsed branch: bullet goes BRASS (--outliner-bullet-collapsed →
-   --accent-brass, GL-003 v3.25) AND gains a soft-brass halo ring
-   (--accent-soft, restored Tom 2026-06-09). With the chevron removed, the
-   haloed brass bullet is the SOLE visual signal that a node has collapsed
-   children: a brass dot inside a soft-brass halo. The decoration only sets
-   data-collapsed when collapsed AND has-children, so the halo is fenced to
-   folded parents; leaf bullets + expanded parents stay --outliner-bullet
-   (--fg-muted), no halo. */
+/* Collapsed branch: bullet goes MARKER (--outliner-bullet-collapsed →
+   --accent-marker) AND gains a soft-marker halo ring (--accent-marker-soft).
+   With the chevron removed, the haloed marker bullet is the SOLE visual signal
+   that a node has collapsed children: a marker dot inside a soft-marker halo.
+   The decoration only sets data-collapsed when collapsed AND has-children, so
+   the halo is fenced to folded parents; leaf bullets + expanded parents stay
+   --outliner-bullet (--fg-muted), no halo. */
 .wb-outliner-content li[data-collapsed='true'] > p::before {
   background: var(--outliner-bullet-collapsed);
-  box-shadow: 0 0 0 0.1875rem var(--accent-soft);
+  box-shadow: 0 0 0 0.1875rem var(--accent-marker-soft);
 }
 
 /* A row WITH children advertises foldability via a pointer affordance on the
@@ -6164,7 +6194,7 @@ body.chat-locked {
    ProseMirror's dropcursor; we recolor it to the brand brass. */
 .wb-outliner-content .ProseMirror-dropcursor,
 .wb-outliner .prosemirror-dropcursor-block {
-  background: var(--accent-brass) !important;
+  background: var(--accent-marker) !important;
   height: 2px !important;
 }
 
@@ -6232,7 +6262,7 @@ body.chat-locked {
   color: var(--fg-muted);
   cursor: pointer;
 }
-.wb-save-action:hover { border-color: var(--accent-brass); color: var(--fg); }
+.wb-save-action:hover { border-color: var(--border-emphasis); color: var(--fg); }
 .wb-save-action--danger:hover { border-color: var(--fg-subtle); }
 
 /* ---- New-note affordance (P2) -------------------------------------------- */
@@ -6242,20 +6272,20 @@ body.chat-locked {
   font-size: 0.875rem;
   padding: 0.375rem 0.625rem;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--surface-1);
   color: var(--fg);
   min-width: 14rem;
 }
-.workbench-new-input:focus { outline: none; border-color: var(--accent-brass); }
+.workbench-new-input:focus { outline: none; border-color: var(--accent-marker); }
 .workbench-new-input::placeholder { color: var(--fg-subtle); }
 .workbench-new-confirm {
   font-size: 0.875rem;
   padding: 0.375rem 0.75rem;
-  border: 1px solid var(--accent-brass);
-  border-radius: 6px;
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  border: 1px solid var(--accent-marker);
+  border-radius: 10px;
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   cursor: pointer;
 }
 .workbench-new-confirm:disabled { opacity: 0.5; cursor: default; }
@@ -6266,7 +6296,7 @@ body.chat-locked {
   min-width: 1.75rem;
   min-height: 1.75rem;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 10px;
   background: transparent;
   color: var(--fg-muted);
   cursor: pointer;
@@ -6277,7 +6307,7 @@ body.chat-locked {
 .workbench-new-link {
   border: 0;
   background: transparent;
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
   cursor: pointer;
   text-decoration: underline;
   padding: 0;
@@ -6329,8 +6359,8 @@ body.chat-locked {
 .wb-img-el--readonly { margin: 0.5rem 0; }
 /* Selected (caret on the atom) — brass ring, matches the cockpit selection idiom. */
 .wb-img[data-selected='true'] .wb-img-el {
-  box-shadow: 0 0 0 2px var(--accent-soft);
-  border-color: var(--accent-brass);
+  box-shadow: 0 0 0 2px var(--accent-marker-soft);
+  border-color: var(--accent-marker);
 }
 /* Optimistic placeholder while the blob uploads + the missing/failed state. */
 .wb-img-placeholder {
@@ -6357,7 +6387,7 @@ body.chat-locked {
   border-radius: var(--radius-card, 8px);
   border: 1px solid var(--border);
   background: var(--surface-1);
-  color: var(--status-error);
+  color: var(--status-error-text);
   font-size: 0.8125rem;
 }
 /* The global prefers-reduced-motion block (index.css) neutralises the spinner
@@ -6414,7 +6444,7 @@ body.chat-locked {
 .wb-outliner-content li[data-collapsed='true'] > h2::before,
 .wb-outliner-content li[data-collapsed='true'] > h3::before {
   background: var(--outliner-bullet-collapsed);
-  box-shadow: 0 0 0 0.1875rem var(--accent-soft);
+  box-shadow: 0 0 0 0.1875rem var(--accent-marker-soft);
 }
 /* Foldable rows advertise the gutter click target (mirrors the `> p` rule). */
 .wb-outliner-content li[data-has-children] > h1::before,
@@ -6603,7 +6633,7 @@ body.chat-locked {
 }
 .wb-outliner-content pre code {
   display: block;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.8125rem;
   line-height: 1.55;
   background: transparent;
@@ -6619,7 +6649,7 @@ body.chat-locked {
   border-top: 1px solid var(--border);
 }
 .wb-outliner-content hr.ProseMirror-selectednode {
-  border-top-color: var(--accent-brass);
+  border-top-color: var(--accent-marker);
 }
 
 /* ---- `[[` wikilink suggestion popup (outlinerWikilink) ----------------------- */
@@ -6644,7 +6674,7 @@ body.chat-locked {
   padding: 0.375rem 0.5rem;
   min-height: 1.75rem; /* ≥24px hit target (WCAG 2.5.8) */
   border: 0;
-  border-radius: 6px;
+  border-radius: 10px;
   background: transparent;
   color: var(--fg);
   font-size: 0.8125rem;
@@ -6656,7 +6686,7 @@ body.chat-locked {
   background: var(--surface-3, var(--surface-1));
 }
 .wb-wikilink-item[aria-selected='true'] {
-  box-shadow: inset 2px 0 0 var(--accent-brass); /* brass focus rail */
+  box-shadow: inset 2px 0 0 var(--accent-marker); /* brass focus rail */
 }
 .wb-wikilink-title {
   overflow: hidden;
@@ -6693,19 +6723,20 @@ body.chat-locked {
 /* -- The decorated link parts (inside the editor) -- */
 .wb-outliner-content .wb-wl-bracket,
 .wb-outliner-content .wb-wl-prefix {
+  /* §2.8 quiet-voice floor: quiet is a token step, never an opacity dial -
+     paper_faint at FULL alpha is the terminal quiet voice. */
   color: var(--fg-subtle);
-  opacity: 0.6;
-  transition: opacity 150ms ease, color 150ms ease;
+  transition: color 150ms ease;
 }
 .wb-outliner-content .wb-wl-target {
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 .wb-outliner-content .wb-wl-target:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
-  background: var(--accent-soft);
+  background: var(--accent-marker-soft);
 }
 /* Caret inside the link → editing mode: full raw visibility, Obsidian-style. */
 .wb-outliner-content .wb-wl-bracket.is-editing,
@@ -6736,7 +6767,7 @@ body.chat-locked {
   max-height: calc(100vh - 48px); /* full content-area height; own scroll below */
   background: var(--surface-1);
   border-left: 1px solid var(--border-subtle);
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 10px 10px 0;
 }
 .wb-context-head {
   display: flex;
@@ -6763,14 +6794,14 @@ body.chat-locked {
   width: 28px;
   height: 28px;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   background: transparent;
   color: var(--fg-muted);
   cursor: pointer;
   transition: color 150ms ease, background 150ms ease;
 }
-.wb-context-btn:hover { color: var(--accent-brass); background: var(--surface-2); }
-.wb-context-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent-soft); }
+.wb-context-btn:hover { color: var(--accent-marker-text); background: var(--surface-2); }
+.wb-context-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent-marker-soft); }
 .wb-context-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -6798,7 +6829,7 @@ body.chat-locked {
     max-height: none;
     border-radius: 0;
     border-left: 1px solid var(--border);
-    box-shadow: -8px 0 40px oklch(0.1 0 0 / 0.4);
+    box-shadow: -8px 0 40px var(--shadow-strong-color);
   }
 }
 
@@ -6825,14 +6856,14 @@ body.chat-locked {
    the jailed /api/cockpit/file route in a new tab. Brass link affordance so
    they read as openable, distinct from wikilinks only by the underline. */
 .wb-outliner-content a[href^="_attachments/"] {
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 .wb-outliner-content a[href^="_attachments/"]:hover {
-  background: var(--accent-soft);
+  background: var(--accent-marker-soft);
 }
 /* ========= END WIKILINK HIDDEN SYNTAX + PDF ATTACHMENT LINKS =============== */
 
@@ -6862,12 +6893,12 @@ body.chat-locked {
   transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 .discuss-trigger:hover {
-  color: var(--accent-brass);
-  background: var(--accent-soft);
-  border-color: var(--accent-brass);
+  color: var(--accent-marker-text);
+  background: var(--accent-marker-soft);
+  border-color: var(--accent-marker);
 }
 .discuss-trigger:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 1px;
 }
 
@@ -6908,14 +6939,14 @@ body.chat-locked {
   color: var(--fg);
   background: var(--surface-1);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: var(--space-sm) 12px;
 }
 .discuss-textarea::placeholder { color: var(--fg-subtle); }
 .discuss-textarea:focus-visible {
   outline: none;
-  border-color: var(--accent-brass);
-  box-shadow: 0 0 0 1px var(--accent-brass);
+  border-color: var(--accent-marker);
+  box-shadow: 0 0 0 1px var(--accent-marker);
 }
 .discuss-textarea:disabled { opacity: 0.6; }
 
@@ -6951,14 +6982,14 @@ body.chat-locked {
   color: var(--fg);
   background: var(--surface-1);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 6px 10px;
   cursor: pointer;
 }
 .discuss-model-select:focus-visible {
   outline: none;
-  border-color: var(--accent-brass);
-  box-shadow: 0 0 0 1px var(--accent-brass);
+  border-color: var(--accent-marker);
+  box-shadow: 0 0 0 1px var(--accent-marker);
 }
 .discuss-model-select:disabled { opacity: 0.6; cursor: default; }
 
@@ -6976,7 +7007,7 @@ body.chat-locked {
 }
 .discuss-error {
   font-size: 0.78rem;
-  color: var(--status-error);
+  color: var(--status-error-text);
 }
 
 .discuss-actions {
@@ -6990,17 +7021,17 @@ body.chat-locked {
   gap: 6px;
   font-size: 0.8125rem;
   font-weight: 520;
-  color: var(--text-on-brass);
-  background: var(--accent-brass);
+  color: var(--text-on-marker);
+  background: var(--accent-marker);
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 7px 14px;
   cursor: pointer;
   transition: background-color 150ms ease;
 }
-.discuss-submit:hover:not(:disabled) { background: var(--accent-deep); }
+.discuss-submit:hover:not(:disabled) { background: var(--accent-marker-up); }
 .discuss-submit:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
 }
 .discuss-submit:disabled { opacity: 0.5; cursor: default; }
@@ -7032,13 +7063,13 @@ body.chat-locked {
   gap: var(--space-sm);
   background: var(--surface-bg);
   border: 1px solid var(--border-subtle);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: var(--space-sm) 12px;
 }
 .discuss-command-text {
   flex: 1 1 auto;
   min-width: 0;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.72rem;
   line-height: 1.55;
   color: var(--fg-muted);
@@ -7055,14 +7086,14 @@ body.chat-locked {
   color: var(--fg-muted);
   background: var(--surface-2);
   border: 1px solid var(--border-subtle);
-  border-radius: 6px;
+  border-radius: 10px;
   padding: 3px 8px;
   cursor: pointer;
   transition: background-color 150ms ease, color 150ms ease;
 }
-.discuss-copy:hover { color: var(--accent-brass); background: var(--accent-soft); }
+.discuss-copy:hover { color: var(--accent-marker-text); background: var(--accent-marker-soft); }
 .discuss-copy:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 1px;
 }
 /* ========= END DISCUSS WITH AI ============================================= */
@@ -7080,7 +7111,7 @@ body.chat-locked {
 .wb-outliner-content .wb-task-marker:not(.is-editing) { display: none; }
 .wb-outliner-content .wb-task-marker.is-editing {
   color: var(--fg-muted);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.875em;
 }
 /* While the raw marker is revealed the widget steps aside (never both). */
@@ -7114,13 +7145,13 @@ body.chat-locked {
   transition: border-color 150ms ease, background 150ms ease;
 }
 .wb-outliner-content .wb-task-box:hover::before {
-  border-color: var(--accent-brass);
+  border-color: var(--accent-marker);
 }
 /* Checked: brass box + brass check — the same state family as the collapsed
-   bullet (--outliner-bullet-collapsed → --accent-brass). */
+   bullet (--outliner-bullet-collapsed → --accent-marker). */
 .wb-outliner-content .wb-task-box.is-checked::before {
-  border-color: var(--accent-brass);
-  background: var(--accent-soft);
+  border-color: var(--accent-marker);
+  background: var(--accent-marker-soft);
 }
 .wb-outliner-content .wb-task-box.is-checked::after {
   content: '';
@@ -7129,13 +7160,13 @@ body.chat-locked {
   top: 50%;
   width: 0.3125rem;
   height: 0.5625rem;
-  border-right: 2px solid var(--accent-brass);
-  border-bottom: 2px solid var(--accent-brass);
+  border-right: 2px solid var(--accent-marker);
+  border-bottom: 2px solid var(--accent-marker);
   transform: translate(-50%, -60%) rotate(45deg);
 }
 .wb-outliner-content .wb-task-box:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--accent-brass);
+  box-shadow: 0 0 0 2px var(--accent-marker);
 }
 
 /* Checked task text: muted, NO strikethrough (spec). */
@@ -7152,8 +7183,8 @@ body.chat-locked {
 .discuss-sent-label { font-size: 0.75rem; color: var(--fg-subtle); }
 .discuss-sent-text {
   margin: 0; padding: 8px 12px;
-  border-left: 2px solid var(--accent-brass);
-  border-radius: 0 8px 8px 0;
+  border-left: 2px solid var(--accent-marker);
+  border-radius: 0 10px 10px 0;
   background: var(--surface-2);
   font-size: 0.875rem; color: var(--fg);
   white-space: pre-wrap; overflow-wrap: break-word;
@@ -7161,26 +7192,28 @@ body.chat-locked {
 }
 
 /* ===========================================================================
-   GRAPHITE v4 — reusable signature-chrome utilities (Iris v4 DESIGN-LANGUAGE
-   §4.4–§4.6, §1.15, §1.17). Opt-in classes; tokens only. Add to any surface
-   that wants the wide-card edge-fade, a standalone gradient hairline divider,
-   a frosted glass panel, the blueprint dot-grid, or crosshair "+" corners.
+   INKLINE - reusable chrome utilities (GL-003 §3.4, §5.1, §2.2). Opt-in
+   classes; tokens only. The Graphite v4 set (edge-fade, gradient hairline,
+   frosted glass, top-lit card, blueprint dot grid + crosshairs) is RETIRED:
+   under INKLINE dividers are plain hairlines, glass speaks the room's own
+   ground, cards are flat ink with a hairline, and there is no decorative
+   grid (§10.3 banlist). Class names kept (zero TSX consumers at re-skin
+   time) so stray references keep resolving to sane INKLINE surfaces.
    =========================================================================== */
 
-/* §1.15 / §4.4 — wide cards, rows, logo strips and grid art that DISSOLVE at the
-   left + right edges into the canvas (a window onto something larger). */
+/* Edge-dissolve masks are BANNED as static decoration (§10.3); §6.10 allows a
+   28px mask only CONDITIONAL on real overflow. This class now paints nothing. */
 .graphite-edge-fade {
-  -webkit-mask-image: var(--mask-edge-fade);
-  mask-image: var(--mask-edge-fade);
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
-/* §4.6 — standalone gradient-hairline divider (fades to transparent both ends).
-   Use as <div class="graphite-divider" /> between sections. The optional
-   centred mono micro-label rides on top via a masking chip. */
+/* Divider — a plain hairline (§3.3: the divider is a hairline, never a
+   gradient). The optional centred mono micro-label rides a masking chip. */
 .graphite-divider {
   height: 1px;
   border: none;
-  background: var(--grad-divider);
+  background: var(--border-subtle);
   margin: 24px 0;
 }
 .graphite-divider--labelled {
@@ -7189,30 +7222,29 @@ body.chat-locked {
 }
 .graphite-divider--labelled::before {
   content: ''; position: absolute; left: 0; right: 0; top: 50%;
-  height: 1px; background: var(--grad-divider);
+  height: 1px; background: var(--border-subtle);
 }
 .graphite-divider-label {
   position: relative; z-index: 1;
   padding: 0 12px; background: var(--surface-bg);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.75rem; text-transform: uppercase;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
+  font-size: 0.6875rem; text-transform: uppercase;
   letter-spacing: var(--tracking-microlabel);
-  color: var(--fg-muted);
+  color: var(--fg-subtle);
 }
 
-/* §3.3 — mono uppercase micro-label (section eyebrow, card category tag, stat
-   label). The connective tissue of the page. */
+/* §3.4 — the mono kicker voice (section eyebrow, zone label): tiny uppercase
+   Spline Mono, paper_faint at FULL alpha (the §2.8 quiet-voice floor). */
 .graphite-microlabel {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.75rem; text-transform: uppercase;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
+  font-size: 0.6875rem; font-weight: 500; text-transform: uppercase;
   letter-spacing: var(--tracking-microlabel);
-  color: var(--fg-muted);
+  color: var(--fg-subtle);
 }
-.graphite-microlabel--signal { color: var(--accent-brass); }
+.graphite-microlabel--signal { color: var(--accent-marker-text); }
 
-/* §4.1 / §4.8 — frosted glass panel (banner, callout, floating chrome). Pairs
-   with --grad-signal-blob behind it where a soft brass glow should bleed
-   through the frost (the ONE content surface a colour gradient is allowed). */
+/* Glass — the §2.2 scrim doctrine: glass surfaces speak the ROOM'S OWN ground
+   (command-glass at 0.92), hairline at 0.12, §5.2 radius_standard. */
 .graphite-glass {
   background: var(--glass-fill);
   backdrop-filter: blur(var(--glass-blur));
@@ -7221,39 +7253,24 @@ body.chat-locked {
   border-radius: 16px;
 }
 
-/* §4.4 — the card surface: faint top-lit gradient + 1px hairline. Hover lifts
-   the edge to border-strong + a -2px translate. No glow (glow is reserved). */
+/* Card-when-earned (§6.3): flat ink_2, hairline, 16px, NO shadow, NO gradient.
+   Hover answers with the hairline stepping to emphasis. */
 .graphite-card {
-  background: var(--grad-card);
+  background: var(--surface-1);
   border: 1px solid var(--border);
   border-radius: 16px;
   transition: border-color 150ms ease,
-    transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .graphite-card:hover {
-  border-color: oklch(0.37 0.006 250); /* --border-strong */
+  border-color: var(--border-emphasis);
   transform: translateY(-2px);
 }
 
-/* §4.4 hero card — the ONE card per region allowed a sparing brass edge glow. */
+/* The hero card keeps the ONE sanctioned glow moment (§6.2 recipe; the paper
+   room resolves --glow-signal to none per ruling A154). */
 .graphite-card--hero { box-shadow: var(--glow-signal); }
 
-/* §1.17 / §4.5 — blueprint framing: a faint dot grid + crosshair "+" corners,
-   "like a technical drawing". Spice, not base: at most one or two per view. */
-.graphite-blueprint {
-  position: relative;
-  background-image: var(--grid-dot);
-  background-size: var(--grid-dot-size);
-}
-.graphite-blueprint::before,
-.graphite-blueprint::after {
-  content: ''; position: absolute; width: 12px; height: 12px;
-  background-image:
-    linear-gradient(var(--grid-line), var(--grid-line)),
-    linear-gradient(var(--grid-line), var(--grid-line));
-  background-size: 100% 1px, 1px 100%;
-  background-position: center, center;
-  background-repeat: no-repeat;
-}
-.graphite-blueprint::before { top: -6px; left: -6px; }
-.graphite-blueprint::after { bottom: -6px; right: -6px; }
+/* Blueprint framing (dot grid + crosshairs) is RETIRED under INKLINE (§10.3:
+   no decorative grids, no gradients as decoration). The class stays a no-op. */
+.graphite-blueprint { position: relative; }

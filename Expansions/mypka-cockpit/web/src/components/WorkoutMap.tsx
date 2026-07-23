@@ -286,10 +286,12 @@ export function WorkoutMap({
   if (!haloRef.current) haloRef.current = L.canvas({ padding: 0.5 });
   const glowHalo = haloRef.current;
 
-  const brass = useMemo(() => tokenColor('--accent-brass', 'oklch(0.72 0.13 60)'), []);
-  // Cool selection colour — GL-003 §2.4 --status-info steel blue. Cool against the
-  // warm brass glow so the selected route is unmistakable.
-  const selectColor = useMemo(() => tokenColor('--status-info', 'oklch(0.70 0.10 230)'), []);
+  // INKLINE line doctrine (GL-003 §4.2): the route field rests in PAPER (the
+  // line is paper at rest); the SELECTED route is the pen — it turns MARKER
+  // when it is teaching. This replaces the Graphite brass-glow + cool-blue
+  // selection split (the §2.4 de-blue doctrine retires the info-blue accent).
+  const brass = useMemo(() => tokenColor('--fg-muted', '#C9C4B8'), []);
+  const selectColor = useMemo(() => tokenColor('--accent-marker', '#FF5A2D'), []);
 
   // Paint a colour-matched shadowBlur onto the halo renderer's 2D context once it
   // exists, so the selection glow halo reads as soft light. Re-applied whenever the

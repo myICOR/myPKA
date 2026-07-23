@@ -62,7 +62,7 @@
   gap: 8px;
   padding: 8px 12px;
   border: 1px solid var(--border-subtle);
-  border-radius: 8px; /* house card radius ladder (8/10px) */
+  border-radius: 10px; /* house card radius ladder (8/10px) */
   background: var(--surface-1);
   font: inherit;
   font-size: 0.8125rem;
@@ -206,7 +206,7 @@
   display: block;
   padding: 0;
   border: 1px solid var(--border-subtle);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   background: var(--surface-2);
   cursor: zoom-in;
@@ -236,7 +236,7 @@
   padding: 4px 8px;
   margin-left: -8px; /* optical alignment of the label with the text column */
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   background: transparent;
   font-size: 0.8125rem;
   color: var(--fg-muted);
@@ -246,8 +246,8 @@
 .jt-open-full { margin-left: 0; }
 .jt-unfold:hover,
 .jt-open-full:hover {
-  color: var(--accent-brass);
-  background: var(--accent-soft);
+  color: var(--accent-marker-text);
+  background: var(--accent-marker-soft);
 }
 
 /* ---- Footer zone: loader / error / the calm end-state ---------------------- */
@@ -256,11 +256,11 @@
 .jt-foot-error {
   margin: 12px 0 0;
   font-size: 0.8125rem;
-  color: var(--status-error);
+  color: var(--status-error-text);
 }
 .jt-retry {
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--surface-2);
   color: var(--fg);
   font-size: 0.75rem;
@@ -268,7 +268,7 @@
   cursor: pointer;
   transition: border-color 150ms ease;
 }
-.jt-retry:hover { border-color: var(--accent-brass); }
+.jt-retry:hover { border-color: var(--border-emphasis); }
 
 /* "the beginning of your journal" — a quiet centered seal between hairlines. */
 .jt-origin {
@@ -317,16 +317,16 @@
 .jt-new-btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--accent-brass);
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  border-radius: 10px;
+  border: 1px solid var(--accent-marker);
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   font-size: 0.875rem;
   cursor: pointer;
   transition: background-color 150ms ease, color 150ms ease;
 }
-.jt-new-btn:hover { background: var(--accent-brass); color: var(--surface-1); }
-.jt-new-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; box-shadow: none; }
+.jt-new-btn:hover { background: var(--accent-marker); color: var(--surface-1); }
+.jt-new-btn:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; box-shadow: none; }
 
 .jt-composer {
   flex: 1 1 360px;
@@ -340,17 +340,17 @@
 .jt-composer-title {
   flex: 1;
   padding: 7px 10px;
-  border-radius: 6px;
+  border-radius: 10px;
   border: 1px solid var(--border-subtle);
   background: var(--surface-1);
   color: var(--fg);
   font-size: 0.9375rem;
 }
-.jt-composer-title:focus { outline: none; border-color: var(--accent-brass); }
+.jt-composer-title:focus { outline: none; border-color: var(--accent-marker); }
 .jt-composer-cancel {
   display: inline-flex; align-items: center; justify-content: center;
   width: 28px; height: 28px;
-  border: 1px solid var(--border-subtle); border-radius: 6px;
+  border: 1px solid var(--border-subtle); border-radius: 10px;
   background: var(--surface-1); color: var(--fg-muted); cursor: pointer;
 }
 .jt-composer-cancel:hover { background: var(--surface-3); color: var(--fg); }
@@ -358,7 +358,7 @@
   width: 100%;
   resize: vertical;
   padding: 9px 10px;
-  border-radius: 6px;
+  border-radius: 10px;
   border: 1px solid var(--border-subtle);
   background: var(--surface-1);
   color: var(--fg);
@@ -366,22 +366,22 @@
   line-height: 1.55;
   font-family: inherit;
 }
-.jt-composer-body:focus { outline: none; border-color: var(--accent-brass); }
+.jt-composer-body:focus { outline: none; border-color: var(--accent-marker); }
 .jt-composer-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .jt-composer-hint { margin-left: auto; color: var(--fg-subtle); font-size: 0.75rem; }
 .jt-composer-note { color: var(--fg-muted); font-size: 0.8125rem; }
-.jt-composer-note--error { color: var(--status-error); }
+.jt-composer-note--error { color: var(--status-error-text); }
 .jt-composer-save {
   padding: 7px 14px;
-  border-radius: 6px;
-  border: 1px solid var(--accent-brass);
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  border-radius: 10px;
+  border: 1px solid var(--accent-marker);
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   font-size: 0.875rem;
   cursor: pointer;
 }
-.jt-composer-save:hover:not(:disabled) { background: var(--accent-brass); color: var(--surface-1); }
-.jt-composer-save:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 1px; box-shadow: none; }
+.jt-composer-save:hover:not(:disabled) { background: var(--accent-marker); color: var(--surface-1); }
+.jt-composer-save:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 1px; box-shadow: none; }
 .jt-composer-save:disabled { opacity: 0.55; cursor: default; }
 
 /* ---- Raw badge + Integrate + unfold-original (Feature #9b / #9c) ----------- */
@@ -389,9 +389,9 @@
   margin-left: 8px;
   padding: 1px 7px;
   border-radius: 999px;
-  border: 1px solid color-mix(in oklch, var(--accent-brass) 45%, var(--border));
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  border: 1px solid color-mix(in oklch, var(--accent-marker) 45%, var(--border));
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
   font-size: 0.6875rem;
   font-weight: 500;
   vertical-align: middle;
@@ -402,15 +402,15 @@
 .jt-integrate {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 4px 8px;
-  border: none; border-radius: 6px;
+  border: none; border-radius: 10px;
   background: transparent;
   font-size: 0.8125rem;
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
   cursor: pointer;
   transition: color 150ms ease, background-color 150ms ease;
 }
-.jt-integrate:hover:not(:disabled) { background: var(--accent-soft); }
-.jt-integrate:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 1px; box-shadow: none; }
+.jt-integrate:hover:not(:disabled) { background: var(--accent-marker-soft); }
+.jt-integrate:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 1px; box-shadow: none; }
 .jt-integrate:disabled { opacity: 0.6; cursor: default; }
 .jt-integrate-msg { margin-top: 8px; padding-left: 0; color: var(--fg-muted); font-size: 0.8125rem; }
 
@@ -418,18 +418,18 @@
 .jt-original-toggle {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 3px 8px; margin-left: -8px;
-  border: none; border-radius: 6px;
+  border: none; border-radius: 10px;
   background: transparent;
   color: var(--fg-muted);
   font-size: 0.8125rem;
   cursor: pointer;
 }
-.jt-original-toggle:hover { color: var(--accent-brass); background: var(--accent-soft); }
-.jt-original-toggle:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 1px; box-shadow: none; }
+.jt-original-toggle:hover { color: var(--accent-marker-text); background: var(--accent-marker-soft); }
+.jt-original-toggle:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 1px; box-shadow: none; }
 .jt-original-body {
   margin-top: 8px;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px dashed var(--border);
   background: color-mix(in oklch, var(--surface-2) 70%, transparent);
   color: var(--fg-muted);

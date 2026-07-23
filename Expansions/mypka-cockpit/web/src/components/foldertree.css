@@ -37,10 +37,10 @@
   gap: 6px;
   min-height: 28px;
   padding: 3px 8px;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
   user-select: none;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.8125rem;
   color: var(--fg-muted);
   transition: background-color 120ms ease, color 120ms ease;
@@ -51,7 +51,7 @@
 }
 .ft-row-selected,
 .ft-row-selected:hover {
-  background: var(--accent-soft);
+  background: var(--accent-marker-soft);
   color: var(--fg);
 }
 
@@ -84,7 +84,7 @@
   display: inline-flex;
   align-items: center;
 }
-.ft-icon-folder { color: var(--accent-brass); }
+.ft-icon-folder { color: var(--accent-marker-text); }
 .ft-icon-file { color: var(--fg-subtle); }
 .ft-row:hover .ft-icon-file,
 .ft-row-selected .ft-icon-file { color: var(--fg-muted); }
@@ -148,12 +148,12 @@
   align-items: center;
   gap: 5px;
   font-size: 0.75rem;
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
   text-decoration: none;
   padding: 3px 8px;
-  border-radius: 6px;
+  border-radius: 10px;
 }
-.ft-preview-open:hover { background: var(--accent-soft); }
+.ft-preview-open:hover { background: var(--accent-marker-soft); }
 .ft-preview-close {
   flex: none;
   display: inline-flex;
@@ -162,7 +162,7 @@
   width: 26px;
   height: 26px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 10px;
   background: transparent;
   color: var(--fg-subtle);
   cursor: pointer;
@@ -190,7 +190,7 @@
 }
 .ft-preview-plain {
   margin: 0;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.75rem;
   line-height: 1.6;
   color: var(--fg-muted);
@@ -204,7 +204,7 @@
 }
 .ft-preview-path {
   margin: 0;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.72rem;
   color: var(--fg-subtle);
   word-break: break-all;
@@ -216,9 +216,9 @@
   content: '';
   position: absolute;
   inset: -4px;
-  border: 1px dashed var(--accent-brass);
-  border-radius: 12px;
-  background: var(--accent-soft);
+  border: 1px dashed var(--accent-marker);
+  border-radius: 16px;
+  background: var(--accent-marker-soft);
   pointer-events: none;
 }
 
@@ -234,19 +234,19 @@
   color: var(--fg-muted);
   background: var(--surface-1);
 }
-.ft-drop-hint-icon { color: var(--accent-brass); flex: none; display: inline-flex; }
+.ft-drop-hint-icon { color: var(--accent-marker-text); flex: none; display: inline-flex; }
 .ft-pick-button {
   margin-left: auto;
   flex: none;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--surface-2);
   color: var(--fg);
   font-size: 0.75rem;
   padding: 4px 10px;
   cursor: pointer;
 }
-.ft-pick-button:hover { border-color: var(--accent-brass); background: var(--surface-3); }
+.ft-pick-button:hover { border-color: var(--border-emphasis); background: var(--surface-3); }
 
 /* ---- per-file upload chips -------------------------------------------------------------- */
 .ft-upload-chips {
@@ -263,7 +263,7 @@
   gap: 6px;
   padding: 3px 10px;
   border-radius: 999px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.72rem;
   border: 1px solid var(--border);
   background: var(--surface-2);
@@ -290,7 +290,7 @@
 }
 .ft-chip-icon { flex: none; display: inline-flex; }
 .ft-chip-done .ft-chip-icon { color: var(--status-success); }
-.ft-chip-error .ft-chip-icon { color: var(--status-error); }
+.ft-chip-error .ft-chip-icon { color: var(--status-error-text); }
 
 .ft-chip-spinner {
   flex: none;
@@ -298,7 +298,7 @@
   height: 10px;
   border-radius: 50%;
   border: 2px solid var(--border);
-  border-top-color: var(--accent-brass);
+  border-top-color: var(--accent-marker);
   animation: ft-spin 800ms linear infinite;
 }
 @keyframes ft-spin { to { transform: rotate(360deg); } }
@@ -320,7 +320,7 @@ button.ft-preview-open {
   cursor: pointer;
 }
 button.ft-preview-open:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 1px;
 }
 
@@ -334,7 +334,7 @@ button.ft-preview-open:focus-visible {
 .file-view-glyph {
   flex: none;
   display: inline-flex;
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
 }
 /* Same ladder as NoteView's .note-title (cockpit.css) — this page IS the
    note-style reading view for raw files. */
@@ -355,15 +355,15 @@ button.ft-preview-open:focus-visible {
   color: var(--fg-subtle);
   text-decoration: none;
   padding: 3px 8px;
-  border-radius: 6px;
+  border-radius: 10px;
 }
-.file-view-raw:hover { color: var(--accent-brass); background: var(--accent-soft); }
-.file-view-raw:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 1px; }
+.file-view-raw:hover { color: var(--accent-marker-text); background: var(--accent-marker-soft); }
+.file-view-raw:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 1px; }
 
 /* Repo-relative path under the title — mono, quiet. */
 .file-view-path {
   margin: 4px 0 var(--space-lg);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.72rem;
   color: var(--fg-subtle);
   word-break: break-all;

@@ -26,8 +26,8 @@
   text-decoration: none;
   transition: border-color 150ms ease, background-color 150ms ease;
 }
-.library-picker-card:hover { border-color: var(--accent-brass); background: var(--surface-2); }
-.library-picker-card:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.library-picker-card:hover { border-color: var(--border-emphasis); background: var(--surface-2); }
+.library-picker-card:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 .library-picker-icon {
   flex-shrink: 0;
@@ -37,8 +37,8 @@
   height: 44px;
   width: 44px;
   border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent-brass);
+  background: var(--accent-marker-soft);
+  color: var(--accent-marker-text);
 }
 .library-picker-label { flex: 1 1 auto; font-size: 0.9375rem; font-weight: 520; min-width: 0; }
 .library-picker-chevron { flex-shrink: 0; color: var(--fg-subtle); }
@@ -54,9 +54,9 @@
   cursor: pointer;
 }
 .lib-card--link:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
-  border-color: var(--accent-brass);
+  border-color: var(--accent-marker);
 }
 
 /* ---- Library item large view — small spacing nicety reusing .note-* CSS ---- */

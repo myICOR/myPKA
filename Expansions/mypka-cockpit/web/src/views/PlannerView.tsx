@@ -893,7 +893,7 @@ export function PlannerView() {
             aria-pressed={amCollapsed}
             aria-label={amCollapsed ? 'Show the morning' : 'Collapse the morning to focus on the afternoon'}
             title={amCollapsed ? 'Show morning' : 'Collapse morning'}
-            className="inline-flex h-[36px] items-center gap-xs rounded-panel px-sm text-meta text-fg-muted transition-colors hover:bg-surface-2 hover:text-brass focus-visible:bg-surface-2 focus-visible:text-brass"
+            className="inline-flex h-[36px] items-center gap-xs rounded-panel px-sm text-meta text-fg-muted transition-colors hover:bg-surface-2 hover:text-marker-text focus-visible:bg-surface-2 focus-visible:text-marker-text"
           >
             {amCollapsed
               ? <ChevronDown size={16} strokeWidth={1.5} aria-hidden="true" />
@@ -919,7 +919,7 @@ export function PlannerView() {
           type="button"
           onClick={() => setSettingsOpen(true)}
           aria-label="Planning settings"
-          className="inline-flex h-[36px] w-[36px] items-center justify-center rounded-panel text-fg-muted transition-colors hover:bg-surface-2 hover:text-brass focus-visible:bg-surface-2 focus-visible:text-brass"
+          className="inline-flex h-[36px] w-[36px] items-center justify-center rounded-panel text-fg-muted transition-colors hover:bg-surface-2 hover:text-marker-text focus-visible:bg-surface-2 focus-visible:text-marker-text"
         >
           <Settings size={18} strokeWidth={1.5} aria-hidden="true" />
         </button>

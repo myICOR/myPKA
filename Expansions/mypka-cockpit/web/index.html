@@ -24,12 +24,11 @@
          a plain (non-module) <script> in <head> runs it synchronously before first
          paint, exactly as the old inline script did. -->
     <script src="/theme-bootstrap.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,370;14..32,460;14..32,520;14..32,600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap"
-      rel="stylesheet"
-    />
+    <!-- INKLINE fonts (Bricolage Grotesque / Instrument Sans / Spline Sans
+         Mono / Caveat) are self-hosted woff2, bundled through Vite via
+         @fontsource imports in src/main.tsx, zero CDN requests; the cockpit
+         runs fully offline. The Google Fonts links of the Graphite era are
+         retired. -->
   </head>
   <body>
     <div id="root"></div>

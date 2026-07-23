@@ -254,7 +254,7 @@ export const PlanCard = forwardRef<HTMLElement, PlanCardProps>(function PlanCard
               onOpenDetail?.();
             }
           }}
-          className={`planner-card-title truncate-fade block min-w-0 flex-1 text-left transition-colors hover:text-brass focus-visible:text-brass ${isDone ? 'line-through' : ''}`}
+          className={`planner-card-title truncate-fade block min-w-0 flex-1 text-left transition-colors hover:text-marker-text focus-visible:text-marker-text ${isDone ? 'line-through' : ''}`}
           title={title}
           aria-label={`Open details for ${title}`}
         >

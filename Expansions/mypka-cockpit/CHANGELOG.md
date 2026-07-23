@@ -7,6 +7,124 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The version in `expansion.yaml` is the single source of truth for a release; the
 root `package.json` and `package-lock.json` mirror it.
 
+## [1.4.0] - 2026-07-23
+
+### Changed
+
+- **INKLINE re-skin: the Cockpit moves from the retired GL-003 v4 "Graphite" design
+  to the GL-003 v5.32 INKLINE brand ("a calm teacher's blackboard at dusk").** UI
+  layer only; no behavior, data, API, or schema changes. By layer:
+  - **Tokens** (`web/src/index.css`): the dark default becomes the ink room
+    (`#0C0E12` ink / `#12151B` card / `#181C24` muted / `#1C212B` overlay, plus
+    `ink_deep` for the rail), the warm paper voice ladder (`#F6F3EC` /
+    `#C9C4B8` / `#8E897D` at full alpha per the GL-003 §2.8 quiet-voice floor),
+    and paper-alpha hairlines. The light theme becomes the paper room (GL-003
+    §2.2 cream grounds, warm ink foregrounds, A150 room chrome). **Brass is
+    retired; the marker (`#FF5A2D`, light `#D43F16` fills with the `#B93613`
+    small-text step per ruling A148) is THE accent** - every `--accent-brass`
+    family token is renamed to `--accent-marker*` and all consumers swept.
+    Status doctrine per GL-003 §2.5: destructive keeps red with the A146/A147
+    small-text steps, warning amber is icon-voice, success and info ride the
+    quiet ink voice with a `success-dot` green carve-out. Graphite category
+    hues (oxblood, teal, concept wheel, sticky palette) are remapped onto the
+    §2.6 calmed lenses and folder palette.
+  - **Typography** (self-hosted via `@fontsource-variable`, bundled by Vite,
+    zero CDN requests): Inter is replaced by Instrument Sans (body), JetBrains
+    Mono by Spline Sans Mono (mono kicker voice), Bricolage Grotesque added as
+    the display voice (headlines, page titles at 640 / -0.015em), Caveat added
+    as the hand voice (empty-state notes per §6.5). The Google Fonts links are
+    removed from `index.html`; the app runs fully offline. The §3.2 17px root
+    is adopted. The quotation serif collapses onto the display face per the
+    §3.1 no-serif law.
+  - **Chrome** (`web/src/cockpit.css` + view sheets): the sidebar becomes the
+    ink_deep rail with the §5.5 marker-light wash; active nav rows take the
+    §6.1 pressed well + marker glyph; the blueprint dot grid, crosshair
+    corners, gradient hairlines, top-lit card gradients, and static edge fades
+    are retired (§5.3 flatness, §10.3 banlist); glass surfaces speak the
+    room's own ground (§2.2 scrim doctrine); focus rings become the 2px marker
+    outline (§6.2 "focus is the pen"); selection and scrollbars take the §2.1 /
+    A150 recipes; the §5.5 room wash replaces the Graphite atmosphere; floating
+    shadows split per room (dark black-based, paper warm-ink per §5.3);
+    passive hover borders step to the emphasis hairline instead of the accent;
+    corner radii snap to the §5.2 ladder (10 / 16 / 20 / pill, data-viz cells
+    at the A137 2px micro rung); marker text steps ride `--accent-marker-text`
+    so small strings clear the §2.8 4.5:1 floor in both rooms; several
+    opacity-dial text dims are replaced by full-alpha ladder steps (§2.8).
+  - **Charts and map**: Recharts colors route through tokens (`var()` in SVG);
+    the workout map inverts to the §4.2 line doctrine (routes rest in paper,
+    the selected route turns marker; the info-blue selection is retired per
+    the §2.4 de-blue doctrine).
+- **Aligned to GL-003 v5.33 (rulings A159-A164).** Three post-canonization
+  deltas on top of the re-skin: the key-element concept color moves off the
+  gold hex onto dusty indigo (`#8087A6` dark / `#565E7E` light, A159 - an
+  assigned category palette never hands out the gold); warning amber leaves
+  text strings entirely and stays on icons, edge rails, state dots, soft
+  tints, and pulse rings (A162 - amber never carries the string); the voice
+  orb's listening and connecting states move from marker-tinted to the quiet
+  paper voice (A163 - the room listens in paper, the pen speaks in marker),
+  with the orb's listening glow now var-driven per room (`--orb-listen-glow`)
+  instead of hardcoded.
+- **The Mind section's legacy mood-word fallback defaults to English.** The
+  free-text mood-word matcher (used only for journal entries that predate the
+  language-neutral `mood_valence` field) now matches common English mood words;
+  unmatched words stay neutral. Users journaling in another language can extend
+  the word lists locally - `mood_valence` remains the primary, language-neutral
+  signal.
+
+### Added
+
+- **Four self-hosted font dependencies** (`@fontsource-variable/bricolage-grotesque`,
+  `instrument-sans`, `spline-sans-mono`, `caveat`). Bundled as woff2 by Vite;
+  no CDN request is ever made.
+
+## [1.3.0] - 2026-07-07
+
+### Added
+
+- **First standalone Expansion Pack release.** From this version the Cockpit ships
+  as its own pack (`mypka-cockpit-v<version>.zip`) on the myICOR Expansion Packs
+  page, installed into an existing myPKA scaffold per INSTALL.md. Version 1.2.1
+  was the last bundled-only version: it shipped only inside the all-in-one myPKA
+  scaffold (scaffold releases v3.0.0 through v4.1.1) and was never distributed on
+  its own. The scaffold returns to basic-only and no longer carries the Cockpit;
+  this repo and its releases are now the single source of truth for Cockpit code.
+- **Getting-the-pack note in INSTALL.md.** The install contract now opens with
+  where the zip comes from, the sha256 verification step against the value shown
+  on the Expansion Packs page, and the unzip-to-`Expansions/mypka-cockpit/`
+  placement.
+
+### Changed
+
+- **Repo brought up to the QA'd bundled state of scaffold v4.1.1.** The
+  consolidated bundle fixes (pending since 2026-06-21) land in this repo: the
+  launcher templates now guarantee a core `mypka.db` before the server starts
+  (creating it via `install-extensions.py --all` when missing, with an actionable
+  message when Python 3 or PyYAML is absent instead of a server crash),
+  `install-extensions.py` installs every module pack by default (`--all` is the
+  explicit alias of the no-flag default), INSTALL.md documents the auto-bootstrap
+  flow, DISCLAIMER.md and INSTALL.md add the auth-mode note for automated chat
+  bridge use (an Anthropic API key under Commercial Terms, never a consumer
+  Pro/Max OAuth login), `scripts/UPDATE-COCKPIT.md` documents the Cockpit-code
+  update lifecycle as a spec, and `docs/db-contract.md` plus
+  `sqlite-extension/DATA-CONTRACT.md` document the governance-doc tables.
+- **The schema-tolerant governance list endpoint is retained.** This repo's
+  `server/teamKnowledgeApi.js` and `web/src/views/TeamKnowledgeListView.tsx`
+  (schema tolerance, 2026-06-22) stay as they are; the bundled v4.1.1 copies
+  predated that fix and were not allowed to overwrite it. The endpoint keeps
+  working against both the pack's own regen shape and a user's richer private
+  mirror shape.
+- **Version mirrors reconciled.** `expansion.yaml` stays the single source of
+  truth; the root `package.json` and `package-lock.json` and the web
+  `package.json` and `package-lock.json` now all mirror it (the root lockfile had
+  been stuck at 1.0.0 and the web pair at 1.2.0).
+
+### Fixed
+
+- **Corrupted `react-leaflet@4.2.1` integrity hash in `web/package-lock.json`.**
+  The repo lockfile carried an integrity value that does not match the npm
+  registry, which breaks `npm ci` verification on a fresh install. Restored to
+  the canonical registry value.
+
 ## [1.2.1] - 2026-06-23
 
 ### Fixed
@@ -27,6 +145,14 @@ root `package.json` and `package-lock.json` mirror it.
   inside a single transaction each. No manual step; nothing to run.
 
 ## [1.2.0] - 2026-06-23
+
+### Added
+
+- **Theme bootstrap externalized to a CSP-safe `web/public/theme-bootstrap.js`.**
+  The first-paint theme-resolution script moves out of an inline `<script>` in
+  `web/index.html` to a same-origin `/theme-bootstrap.js` asset, so it runs under
+  the server's strict `script-src 'self'` CSP without a per-build nonce or hash to
+  drift. Behavior is unchanged (no flash of the wrong theme at first paint).
 
 ### Changed
 

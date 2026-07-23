@@ -38,7 +38,7 @@
   align-items: center;
   gap: 16px;
   padding: 13px 16px;
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid var(--border-subtle);
   background: var(--surface-1);
 }
@@ -60,7 +60,7 @@
   height: 20px;
   padding: 0;
   border: 1px solid var(--border-subtle);
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--surface-2);
   color: var(--fg-muted);
   cursor: pointer;
@@ -72,7 +72,7 @@
   border-color: var(--border);
 }
 .settings-move:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
 }
 .settings-move:disabled {
@@ -96,7 +96,7 @@
   cursor: pointer;
   border-radius: 999px;
 }
-.settings-switch:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 3px; }
+.settings-switch:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 3px; }
 
 .settings-switch-track {
   position: relative;
@@ -109,8 +109,8 @@
   transition: background 160ms ease, border-color 160ms ease;
 }
 .settings-switch[data-on='true'] .settings-switch-track {
-  background: color-mix(in oklch, var(--accent-brass) 55%, var(--surface-3));
-  border-color: var(--accent-brass);
+  background: color-mix(in oklch, var(--accent-marker) 55%, var(--surface-3));
+  border-color: var(--accent-marker);
 }
 .settings-switch-thumb {
   position: absolute;
@@ -135,7 +135,7 @@
   gap: 5px;
   color: var(--status-success);
 }
-.settings-status-error { color: var(--status-error); }
+.settings-status-error { color: var(--status-error-text); }
 
 @media (prefers-reduced-motion: reduce) {
   .settings-switch-track,
@@ -163,7 +163,7 @@
   gap: 6px;
   padding: 6px 12px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 10px;
   background: transparent;
   color: var(--fg-muted);
   font-size: 0.875rem;
@@ -172,12 +172,12 @@
 }
 .theme-option:hover { color: var(--fg); }
 .theme-option[data-active='true'] {
-  background: var(--accent-soft);
+  background: var(--accent-marker-soft);
   color: var(--fg);
 }
-.theme-option[data-active='true'] svg { color: var(--accent-brass); }
+.theme-option[data-active='true'] svg { color: var(--accent-marker-text); }
 .theme-option:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
 }
 

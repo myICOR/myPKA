@@ -18,9 +18,9 @@
   appearance: none;
 }
 .roster-card--button:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
-  border-color: var(--accent-brass);
+  border-color: var(--accent-marker);
 }
 
 /* Truncate the card bio to a clean two-line summary (the redesign's (a)). Not the
@@ -42,10 +42,10 @@
   appearance: none;
 }
 .roster-lead--button:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
 }
-.roster-lead--button:hover { background: var(--accent-soft); filter: brightness(1.02); }
+.roster-lead--button:hover { background: var(--accent-marker-soft); filter: brightness(1.02); }
 
 /* ---- Detail SHEET (right-side panel) — retained, currently unused by the
    redesign (clicking a member opens the LARGE view directly). Harmless if the
@@ -88,7 +88,7 @@
   justify-content: center;
   height: 32px;
   width: 32px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
   background: transparent;
   color: var(--fg-muted);
@@ -96,7 +96,7 @@
   transition: background-color 150ms ease, color 150ms ease;
 }
 .roster-sheet-close:hover { background: var(--surface-3); color: var(--fg); }
-.roster-sheet-close:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.roster-sheet-close:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 .roster-sheet-bio { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--fg-muted); }
 
@@ -122,17 +122,17 @@
   justify-content: center;
   gap: 8px;
   padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--accent-brass);
+  border-radius: 10px;
+  border: 1px solid var(--accent-marker);
   background: transparent;
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
   font-size: 0.875rem;
   font-weight: 460;
   cursor: pointer;
   transition: background-color 150ms ease, color 150ms ease;
 }
-.roster-sheet-large-btn:hover { background: var(--accent-brass); color: var(--text-on-brass); }
-.roster-sheet-large-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.roster-sheet-large-btn:hover { background: var(--accent-marker); color: var(--text-on-marker); }
+.roster-sheet-large-btn:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 /* ---- LARGE view (member as a NOTE PAGE) ------------------------------------ */
 /* Reuses NoteView's .note-view / .note-grid / .note-side / .side-panel CSS; only
@@ -238,12 +238,12 @@
 .team-feed-empty {
   display: flex; flex-direction: column; align-items: center; text-align: center;
   gap: 8px; padding: 40px 20px;
-  border: 1px dashed var(--border-subtle); border-radius: 12px; background: var(--surface-1);
+  border: 1px dashed var(--border-subtle); border-radius: 16px; background: var(--surface-1);
 }
 
 .team-log {
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface-1);
   padding: 16px 18px;
   display: flex;
@@ -258,7 +258,7 @@
   font-size: 0.6875rem; letter-spacing: 0.04em;
   padding: 2px 8px; border-radius: 999px;
 }
-.team-log-agent { background: var(--accent-soft); color: var(--accent-brass); }
+.team-log-agent { background: var(--accent-marker-soft); color: var(--accent-marker-text); }
 .team-log-type { border: 1px solid var(--border-subtle); color: var(--fg-subtle); }
 .team-log-title { margin: 0; font-size: 1rem; font-weight: 520; color: var(--fg); line-height: 1.3; }
 .team-log-excerpt { margin: 0; font-size: 0.875rem; line-height: 1.55; color: var(--fg-muted); }
@@ -267,13 +267,13 @@
 .team-log-unfold {
   align-self: flex-start;
   display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 8px; border-radius: 6px;
+  padding: 4px 8px; border-radius: 10px;
   border: none; background: transparent; cursor: pointer;
   font-size: 0.8125rem; color: var(--fg-muted);
   transition: color 150ms ease;
 }
-.team-log-unfold:hover { color: var(--accent-brass); }
-.team-log-unfold:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.team-log-unfold:hover { color: var(--accent-marker-text); }
+.team-log-unfold:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 /* ---- Roster list (RIGHT) -------------------------------------------------- */
 .roster-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
@@ -289,8 +289,8 @@
   padding: 12px 14px;
   transition: border-color 150ms ease, background-color 150ms ease;
 }
-.roster-row:hover { border-color: var(--accent-brass); background: var(--surface-2); }
-.roster-row:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.roster-row:hover { border-color: var(--border-emphasis); background: var(--surface-2); }
+.roster-row:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 .roster-row-body { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .roster-row-name { font-size: 0.9375rem; font-weight: 520; color: var(--fg); line-height: 1.25; }
 .roster-row-role { font-size: 0.8125rem; color: var(--fg-subtle); }
@@ -317,11 +317,11 @@
   max-width: 100%;
 }
 .team-conn-chip--nav { cursor: pointer; transition: border-color 150ms ease, color 150ms ease, background-color 150ms ease; }
-.team-conn-chip--nav:hover { border-color: var(--accent-brass); color: var(--fg); background: var(--surface-2); }
-.team-conn-chip--nav:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.team-conn-chip--nav:hover { border-color: var(--border-emphasis); color: var(--fg); background: var(--surface-2); }
+.team-conn-chip--nav:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 .team-conn-kind {
   font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.04em;
-  color: var(--accent-brass);
+  color: var(--accent-marker-text);
 }
 .team-conn-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .team-conn-chip svg { flex-shrink: 0; color: var(--fg-subtle); }
@@ -341,7 +341,7 @@
 .team-conn-list-summary::-webkit-details-marker { display: none; }
 .team-conn-list-summary:hover { color: var(--fg-muted); }
 .team-conn-list-summary:focus-visible {
-  outline: 2px solid var(--accent-brass); outline-offset: 3px; border-radius: 4px;
+  outline: 2px solid var(--accent-marker); outline-offset: 3px; border-radius: 4px;
 }
 .team-conn-list-summary svg { flex-shrink: 0; color: var(--fg-subtle); }
 .team-conn-list-body {
@@ -356,7 +356,7 @@
 .team-journal-li { list-style: none; }
 
 .team-insight {
-  border: 1px solid var(--border-subtle); border-radius: 12px; background: var(--surface-1);
+  border: 1px solid var(--border-subtle); border-radius: 16px; background: var(--surface-1);
   padding: 14px 16px; display: flex; flex-direction: column; gap: 7px;
 }
 .team-insight-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
@@ -425,7 +425,7 @@
   flex-direction: column;
   gap: 7px;
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface-1);
   padding: 14px 16px;
   text-decoration: none;
@@ -435,16 +435,16 @@
   cursor: pointer;
   transition: border-color 150ms ease, background-color 150ms ease;
 }
-.tk-row--nav:hover { border-color: var(--accent-brass); background: var(--surface-2); }
-.tk-row--nav:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
+.tk-row--nav:hover { border-color: var(--border-emphasis); background: var(--surface-2); }
+.tk-row--nav:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; }
 
 .tk-row-head { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
 .tk-row-id {
   flex: 0 0 auto;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono Variable', 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 0.6875rem; letter-spacing: 0.03em;
   padding: 2px 8px; border-radius: 999px;
-  background: var(--accent-soft); color: var(--accent-brass);
+  background: var(--accent-marker-soft); color: var(--accent-marker-text);
 }
 .tk-row-title { font-size: 0.9375rem; font-weight: 520; color: var(--fg); line-height: 1.3; }
 .tk-row-arrow { flex: 0 0 auto; color: var(--fg-subtle); margin-left: auto; }
@@ -455,7 +455,7 @@
   padding: 2px 8px; border-radius: 999px;
   border: 1px solid var(--border-subtle); color: var(--fg-subtle);
 }
-.tk-meta-chip--status { border-color: var(--accent-brass); color: var(--accent-brass); }
+.tk-meta-chip--status { border-color: var(--accent-marker); color: var(--accent-marker-text); }
 
 .tk-row-summary {
   font-size: 0.875rem; line-height: 1.5; color: var(--fg-muted);

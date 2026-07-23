@@ -16,6 +16,14 @@ not skip a step, do not reorder, do not write before the consent gate clears.
 > correctly**; the frontier model is what makes the connections land right. Switch
 > down to a lighter model afterward for routine day-to-day use if you like.
 
+> **Where this package comes from.** The Cockpit ships as a member pack
+> (`mypka-cockpit-v<version>.zip`) on the myICOR Expansion Packs page (see
+> `expansion.yaml` `homepage:`). Before unzipping, verify the download against
+> the sha256 shown on that page: `shasum -a 256 <zip>` on macOS/Linux,
+> `Get-FileHash <zip>` on Windows. Unzipping yields a single `mypka-cockpit/`
+> folder; place it at `Expansions/mypka-cockpit/` inside the user's myPKA
+> (Step 2 covers placement and the folder-name rule in detail).
+
 Companion docs you will reference (relative paths):
 
 - [`DISCLAIMER.md`](./DISCLAIMER.md) — the backup / breaking-changes / AS-IS

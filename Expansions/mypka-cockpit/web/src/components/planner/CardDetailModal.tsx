@@ -183,7 +183,7 @@ function ModalHeader({
   return (
     <div className="flex items-start justify-between gap-md">
       <div className="flex items-start gap-sm">
-        <span className="mt-[2px] text-brass" aria-hidden="true">{glyph}</span>
+        <span className="mt-[2px] text-marker-text" aria-hidden="true">{glyph}</span>
         {/* Full, UNtruncated title — the whole point of the detail view. */}
         <h2 id={titleId} className="text-h3 font-[520] leading-snug text-fg">{title}</h2>
       </div>
@@ -234,7 +234,7 @@ function SourceLink({ href, label }: { href: string; label: string }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-xs rounded-card border border-border bg-surface-bg px-sm py-xs text-meta font-[460] text-fg transition-colors hover:border-brass hover:text-brass focus-visible:border-brass"
+      className="inline-flex items-center gap-xs rounded-card border border-border bg-surface-bg px-sm py-xs text-meta font-[460] text-fg transition-colors hover:border-marker hover:text-marker-text focus-visible:border-marker"
     >
       {label}
       <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />

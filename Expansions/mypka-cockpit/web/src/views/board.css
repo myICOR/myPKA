@@ -35,7 +35,7 @@
 .fnb-back {
   display: inline-flex; align-items: center; justify-content: center;
   width: 30px; height: 30px; flex: 0 0 auto;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   color: var(--fg-muted);
@@ -50,7 +50,7 @@
   min-width: 120px;
   max-width: 28rem;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid transparent;
   background: transparent;
   color: var(--fg);
@@ -60,13 +60,13 @@
   letter-spacing: -0.01em;
 }
 .fnb-name:hover:not(:disabled) { border-color: var(--border-subtle); }
-.fnb-name:focus { outline: none; border-color: var(--accent-brass); background: var(--surface-1); box-shadow: none; }
+.fnb-name:focus { outline: none; border-color: var(--accent-marker); background: var(--surface-1); box-shadow: none; }
 .fnb-name:disabled { opacity: 0.7; }
 
 /* Quiet save-state word. */
 .fnb-save { font-size: 0.75rem; color: var(--fg-subtle); min-width: 0; }
 .fnb-save[data-state='saved'] { color: var(--status-success); }
-.fnb-save[data-state='error'] { color: var(--status-warning); }
+.fnb-save[data-state='error'] { color: var(--status-error-text); } /* §2.5: an ERROR speaks the destructive voice, not amber (A162 sweep) */
 
 .fnb-tools {
   display: flex;
@@ -79,7 +79,7 @@
 .fnb-btn {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 5px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   color: var(--fg-muted);
@@ -90,8 +90,8 @@
 }
 .fnb-btn:hover:not(:disabled) { background: var(--surface-2); color: var(--fg); border-color: var(--fg-subtle); }
 .fnb-btn:disabled { opacity: 0.45; cursor: default; }
-.fnb-btn--danger { color: var(--status-error); border-color: color-mix(in oklch, var(--status-error) 50%, var(--border)); }
-.fnb-btn--danger:hover:not(:disabled) { background: var(--status-error-soft); color: var(--status-error); border-color: var(--status-error); }
+.fnb-btn--danger { color: var(--status-error-text); border-color: color-mix(in oklch, var(--status-error) 50%, var(--border)); }
+.fnb-btn--danger:hover:not(:disabled) { background: var(--status-error-soft); color: var(--status-error-text); border-color: var(--status-error); }
 
 .fnb-confirm { display: inline-flex; align-items: center; gap: 8px; }
 .fnb-confirm-q { font-size: 0.8125rem; color: var(--fg); }
@@ -108,7 +108,7 @@
 }
 .fnb-swatch:hover:not(:disabled) { transform: scale(1.12); }
 .fnb-swatch:disabled { opacity: 0.3; cursor: default; }
-.fnb-swatch:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; box-shadow: none; }
+.fnb-swatch:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 2px; box-shadow: none; }
 .fnb-swatch[data-tint='sun']   { --t: var(--sticky-sun); }
 .fnb-swatch[data-tint='moss']  { --t: var(--sticky-moss); }
 .fnb-swatch[data-tint='sky']   { --t: var(--sticky-sky); }
@@ -129,11 +129,11 @@
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-2);
-  box-shadow: 0 12px 32px oklch(0 0 0 / 0.4);
+  box-shadow: 0 12px 32px var(--shadow-strong-color);
 }
 .fnb-picker-item {
   padding: 7px 9px;
-  border: 0; border-radius: 6px;
+  border: 0; border-radius: 10px;
   background: none;
   color: var(--fg);
   font-family: inherit;
@@ -142,14 +142,14 @@
   cursor: pointer;
 }
 .fnb-picker-item:hover { background: var(--surface-3); }
-.fnb-picker-item:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: -2px; box-shadow: none; }
+.fnb-picker-item:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: -2px; box-shadow: none; }
 .fnb-picker-empty { margin: 0; padding: 8px; font-size: 0.8125rem; color: var(--fg-subtle); }
 
 /* Read-only banner (write path dormant). */
 .fnb-banner {
   margin: 0;
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid color-mix(in oklch, var(--status-warning) 45%, var(--border-subtle));
   background: var(--status-warning-soft);
   font-size: 0.8125rem;
@@ -162,7 +162,7 @@
   flex: 1 1 auto;
   min-height: 0;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface-bg);
   overflow: hidden;
 }
@@ -194,7 +194,7 @@
   display: flex; flex-direction: column;
   border-radius: 10px;
   border: 1px solid color-mix(in oklch, var(--t) 32%, var(--border-subtle));
-  box-shadow: 0 2px 10px oklch(0 0 0 / 0.18);
+  box-shadow: 0 2px 10px var(--shadow-soft-color);
   color: var(--fg);
 }
 .fnb-sticky[data-tint='sun'],   .fnb-doc[data-tint='sun']   { --t: var(--sticky-sun); }
@@ -257,7 +257,7 @@
   display: inline-flex; align-items: center; justify-content: center;
   width: 24px; height: 24px;
   border: 1px solid var(--border-subtle);
-  border-radius: 6px;
+  border-radius: 10px;
   background: color-mix(in oklch, var(--surface-2) 88%, transparent);
   color: var(--fg-muted);
   cursor: pointer;
@@ -268,7 +268,7 @@
 .fnb-doc:hover .fnb-node-action,
 .fnb-node-action:focus-visible { opacity: 1; }
 .fnb-node-action:hover { background: var(--surface-3); color: var(--fg); }
-.fnb-node-action:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 1px; box-shadow: none; }
+.fnb-node-action:focus-visible { outline: 2px solid var(--accent-marker); outline-offset: 1px; box-shadow: none; }
 /* The doc card's open arrow stays quietly visible — it IS the card's purpose. */
 .fnb-node-action--open { opacity: 0.6; }
 
@@ -276,13 +276,13 @@
 /* Selected nodes carry the single brass ring. */
 .fnb-canvas .react-flow__node.selected .fnb-sticky,
 .fnb-canvas .react-flow__node.selected .fnb-doc {
-  border-color: var(--accent-brass);
-  box-shadow: 0 0 0 1px var(--accent-brass), 0 2px 10px oklch(0 0 0 / 0.18);
+  border-color: var(--accent-marker);
+  box-shadow: 0 0 0 1px var(--accent-marker), 0 2px 10px var(--shadow-soft-color);
 }
 /* Keyboard focus on a node wrapper — the brass focus ring (RF zeroes outlines). */
 .fnb-canvas .react-flow__node:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--surface-bg), 0 0 0 4px oklch(0.72 0.13 60 / 0.45);
+  box-shadow: 0 0 0 2px var(--surface-bg), 0 0 0 4px var(--accent-marker-border);
   border-radius: 10px;
 }
 
@@ -298,7 +298,7 @@
    library still maps each control to the right edge/corner and the right
    cursor. Behavior (clamps, delta, persistence) is untouched — NodeResizer
    still drives the resize; only the hittable surface and grip grew.
-   Tokens only: --accent-brass / --surface-bg. */
+   Tokens only: --accent-marker / --surface-bg. */
 
 /* --- Edge bands: a transparent ~10px-wide strip straddling each edge ------- */
 .fnb-canvas .react-flow__resize-control.line.fnb-resize-line {
@@ -323,7 +323,7 @@
 .fnb-canvas .react-flow__resize-control.line.fnb-resize-line::before {
   content: '';
   position: absolute;
-  background: color-mix(in oklch, var(--accent-brass) 60%, transparent);
+  background: color-mix(in oklch, var(--accent-marker) 60%, transparent);
   opacity: 0;
   transition: opacity 120ms ease-out;
 }
@@ -357,8 +357,8 @@
   top: 50%; left: 50%;
   width: 9px; height: 9px;
   transform: translate(-50%, -50%);
-  border-radius: 3px;
-  background: var(--accent-brass);
+  border-radius: 4px;
+  background: var(--accent-marker);
   border: 1px solid var(--surface-bg);
   transition: width 120ms ease-out, height 120ms ease-out;
 }
@@ -387,8 +387,8 @@
 
 /* Rubber-band selection rectangle. */
 .fnb-canvas .react-flow__selection {
-  background: var(--accent-soft);
-  border: 1px dashed var(--accent-brass);
+  background: var(--accent-marker-soft);
+  border: 1px dashed var(--accent-marker);
 }
 
 /* Controls (zoom in / out / fit) restyled to the house chrome. */
@@ -399,7 +399,7 @@
 .fnb-canvas .react-flow__controls-button {
   width: 28px; height: 28px;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--surface-1);
   color: var(--fg-muted);
   transition: background 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out;
@@ -414,7 +414,7 @@
   max-width: 12px; max-height: 12px;
 }
 .fnb-canvas .react-flow__controls-button:focus-visible {
-  outline: 2px solid var(--accent-brass);
+  outline: 2px solid var(--accent-marker);
   outline-offset: 2px;
   box-shadow: none;
 }
@@ -428,23 +428,23 @@
    these custom properties. Setting them on the canvas keeps every value a
    token and never fights the library's specificity. */
 .fnb-canvas {
-  --xy-edge-stroke: color-mix(in oklch, var(--accent-brass) 65%, var(--border));
-  --xy-edge-stroke-selected: var(--accent-brass);
+  --xy-edge-stroke: color-mix(in oklch, var(--accent-marker) 65%, var(--border));
+  --xy-edge-stroke-selected: var(--accent-marker);
   --xy-edge-stroke-width: 1.5;
-  --xy-connectionline-stroke: var(--accent-brass);
+  --xy-connectionline-stroke: var(--accent-marker);
   --xy-connectionline-stroke-width: 1.5;
   --xy-edge-label-background-color: var(--surface-2);
   --xy-edge-label-color: var(--fg-muted);
-  --xy-handle-background-color: var(--accent-brass);
+  --xy-handle-background-color: var(--accent-marker);
   --xy-handle-border-color: var(--surface-bg);
 }
 .fnb-canvas .react-flow__edge { cursor: pointer; }
-.fnb-canvas .react-flow__edge:hover .react-flow__edge-path { stroke: var(--accent-brass); }
+.fnb-canvas .react-flow__edge:hover .react-flow__edge-path { stroke: var(--accent-marker); }
 .fnb-canvas .react-flow__edge.selected .react-flow__edge-path { stroke-width: 2; }
 /* Keyboard focus on an edge — same brass family as node focus. */
 .fnb-canvas .react-flow__edge:focus-visible { outline: none; }
 .fnb-canvas .react-flow__edge:focus-visible .react-flow__edge-path {
-  stroke: var(--accent-brass);
+  stroke: var(--accent-marker);
   stroke-width: 2;
 }
 
@@ -487,15 +487,15 @@
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-2);
-  box-shadow: 0 12px 32px oklch(0 0 0 / 0.4);
+  box-shadow: 0 12px 32px var(--shadow-strong-color);
 }
 .fnb-edgedialog-row { display: flex; align-items: center; gap: 6px; }
 .fnb-edgedialog-title { flex: 1 1 auto; font-size: 0.8125rem; font-weight: 560; color: var(--fg); }
 .fnb-edgedialog-dir { display: inline-flex; gap: 4px; }
 .fnb-btn--dir { padding: 4px 7px; }
 .fnb-btn--dir[aria-pressed='true'] {
-  background: var(--accent-soft);
-  border-color: var(--accent-brass);
+  background: var(--accent-marker-soft);
+  border-color: var(--accent-marker);
   color: var(--fg);
 }
 .fnb-edgedialog-close { padding: 4px 7px; }
@@ -504,7 +504,7 @@
   resize: vertical;
   min-height: 56px;
   padding: 7px 9px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   color: var(--fg);
@@ -512,10 +512,10 @@
   font-size: 0.8125rem;
   line-height: 1.45;
 }
-.fnb-edgedialog-note:focus { outline: none; border-color: var(--accent-brass); box-shadow: none; }
+.fnb-edgedialog-note:focus { outline: none; border-color: var(--accent-marker); box-shadow: none; }
 
 /* Materialize feedback rides the save-status line; failures stay quiet. */
-.fnb-save-warn { color: var(--status-warning); }
+.fnb-save-warn { color: var(--fg-muted); } /* A162: amber never carries the string */
 
 /* ==== APPENDED: Whiteboard v2 (notes-only boards) — doc-card head row +
    in-node note composer, nested-board cards (dotted-grid mini, hub-board
@@ -569,18 +569,18 @@
   align-items: center;
   gap: 8px;
   padding: 3px 6px;
-  border-radius: 6px;
+  border-radius: 10px;
   background: color-mix(in oklch, var(--surface-1) 88%, transparent);
   font-size: 0.6875rem;
   color: var(--fg-subtle);
 }
 .fnb-doc-editor-status[data-state='saved'] { color: var(--status-success); }
 .fnb-doc-editor-status[data-state='conflict'],
-.fnb-doc-editor-status[data-state='error'] { color: var(--status-warning); }
+.fnb-doc-editor-status[data-state='error'] { color: var(--status-error-text); } /* §2.5 destructive voice (A162 sweep) */
 .fnb-doc-editor-err {
   margin: 0;
   font-size: 0.8125rem;
-  color: var(--status-warning);
+  color: var(--status-error-text); /* §2.5 destructive voice (A162 sweep) */
 }
 
 /* Nested-board card — the hub-board recipe shrunk onto the canvas: dashed
@@ -596,7 +596,7 @@
   background:
     radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--t) 26%, var(--border-subtle)) 1px, transparent 0) 0 0 / 14px 14px,
     color-mix(in oklch, var(--t) 7%, var(--surface-1));
-  box-shadow: 0 2px 10px oklch(0 0 0 / 0.18);
+  box-shadow: 0 2px 10px var(--shadow-soft-color);
   color: var(--fg);
   transition: border-color 140ms ease, box-shadow 140ms ease;
 }
@@ -617,16 +617,16 @@
   border-color: color-mix(in oklch, var(--status-warning) 50%, var(--border));
   opacity: 0.75;
 }
-.fnb-boardcard--missing .fnb-boardcard-hint { color: var(--status-warning); }
+.fnb-boardcard--missing .fnb-boardcard-hint { color: var(--fg-muted); } /* A162: the amber border (617) carries the state */
 /* Drop-to-move target glow while a card drag hovers the board card. */
 .fnb-boardcard--target {
-  border-color: var(--accent-brass);
+  border-color: var(--accent-marker);
   border-style: solid;
-  box-shadow: 0 0 0 2px var(--accent-brass), 0 2px 10px oklch(0 0 0 / 0.18);
+  box-shadow: 0 0 0 2px var(--accent-marker), 0 2px 10px var(--shadow-soft-color);
 }
 .fnb-canvas .react-flow__node.selected .fnb-boardcard {
-  border-color: var(--accent-brass);
-  box-shadow: 0 0 0 1px var(--accent-brass), 0 2px 10px oklch(0 0 0 / 0.18);
+  border-color: var(--accent-marker);
+  box-shadow: 0 0 0 1px var(--accent-marker), 0 2px 10px var(--shadow-soft-color);
 }
 
 /* Section frame — a large rounded rect BEHIND the cards (node zIndex -1).
@@ -636,7 +636,7 @@
   --t: var(--sticky-paper);
   position: relative;
   width: 100%; height: 100%;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1.5px solid color-mix(in oklch, var(--t) 38%, var(--border-subtle));
   background: color-mix(in oklch, var(--t) 6%, transparent);
 }
@@ -647,8 +647,8 @@
 .fnb-section[data-tint='clay']  { --t: var(--sticky-clay); }
 .fnb-section[data-tint='paper'] { --t: var(--sticky-paper); }
 .fnb-canvas .react-flow__node.selected .fnb-section {
-  border-color: var(--accent-brass);
-  box-shadow: 0 0 0 1px var(--accent-brass);
+  border-color: var(--accent-marker);
+  box-shadow: 0 0 0 1px var(--accent-marker);
 }
 .fnb-section-label,
 .fnb-section-label-input {
@@ -656,7 +656,7 @@
   top: 8px; left: 12px;
   max-width: calc(100% - 24px);
   padding: 2px 8px;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 0.75rem;
   font-weight: 560;
   letter-spacing: 0.02em;
@@ -669,7 +669,7 @@
 .fnb-section-label-empty { color: var(--fg-subtle); font-weight: 440; }
 .fnb-section-label-input {
   min-width: 140px;
-  border: 1px solid var(--accent-brass);
+  border: 1px solid var(--accent-marker);
   font-family: inherit;
 }
 .fnb-section-label-input:focus { outline: none; box-shadow: none; }
@@ -688,7 +688,7 @@
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-2);
-  box-shadow: 0 12px 32px oklch(0 0 0 / 0.4);
+  box-shadow: 0 12px 32px var(--shadow-strong-color);
 }
 
 /* "+ Board" inline-name popover (rides the .fnb-picker chrome). */
@@ -702,14 +702,14 @@
   flex: 1 1 auto;
   min-width: 0;
   padding: 6px 9px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--surface-1);
   color: var(--fg);
   font-family: inherit;
   font-size: 0.8125rem;
 }
-.fnb-newboard-input:focus { outline: none; border-color: var(--accent-brass); box-shadow: none; }
+.fnb-newboard-input:focus { outline: none; border-color: var(--accent-marker); box-shadow: none; }
 
 /* Fullscreen board: keep tokens/background when the element goes fullscreen. */
 .fnb-board:fullscreen { background: var(--surface-bg); padding: 12px; }
@@ -739,7 +739,7 @@
   width: 100%;
   max-height: none;
   border: 1px solid var(--border);
-  border-radius: 12px;       /* matches the canvas frame, not the editor column */
+  border-radius: 16px;       /* matches the canvas frame, not the editor column */
   background: var(--surface-1);
-  box-shadow: 0 12px 32px oklch(0 0 0 / 0.35);
+  box-shadow: 0 12px 32px var(--shadow-strong-color);
 }

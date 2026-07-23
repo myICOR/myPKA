@@ -128,7 +128,7 @@ export function SettingsSheet({
         <div className="settings-panel h-full overflow-y-auto">
           <div className="flex items-start justify-between gap-md">
             <div className="flex items-center gap-sm">
-              <span className="text-brass" aria-hidden="true">
+              <span className="text-marker-text" aria-hidden="true">
                 <Settings size={18} strokeWidth={1.5} />
               </span>
               <h2 id={titleId} className="text-h3 font-[520] leading-snug text-fg">
@@ -236,7 +236,7 @@ function SettingsForm({
                 onClick={() => toggleWorkday(wd)}
                 className={`inline-flex h-[34px] min-w-[44px] items-center justify-center rounded-card border px-sm text-meta font-[460] transition-colors ${
                   active
-                    ? 'border-transparent bg-brass-soft text-brass'
+                    ? 'border-transparent bg-marker-soft text-marker-text'
                     : 'border-border bg-surface-bg text-fg-subtle hover:bg-surface-2 hover:text-fg'
                 }`}
               >
@@ -257,7 +257,7 @@ function SettingsForm({
           type="time"
           value={settings.am_pm_split}
           onChange={(e) => setSplit(e.target.value)}
-          className="w-[140px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-brass"
+          className="w-[140px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-marker"
         />
         <p className="text-caption text-fg-subtle">
           Meetings before this time go to the morning lane; after, the afternoon.
@@ -278,14 +278,14 @@ function SettingsForm({
             onClick={toggleLunch}
             className={`relative inline-flex h-[22px] w-[38px] shrink-0 items-center rounded-full border transition-colors ${
               lunch.enabled
-                ? 'border-transparent bg-brass-soft'
+                ? 'border-transparent bg-marker-soft'
                 : 'border-border bg-surface-bg hover:bg-surface-2'
             }`}
           >
             <span
               aria-hidden="true"
               className={`inline-block h-[16px] w-[16px] rounded-full transition-transform ${
-                lunch.enabled ? 'translate-x-[18px] bg-brass' : 'translate-x-[3px] bg-fg-subtle'
+                lunch.enabled ? 'translate-x-[18px] bg-marker' : 'translate-x-[3px] bg-fg-subtle'
               }`}
             />
           </button>
@@ -297,7 +297,7 @@ function SettingsForm({
               aria-label="Lunch break start"
               value={lunch.start}
               onChange={(e) => setLunchStart(e.target.value)}
-              className="w-[110px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-brass"
+              className="w-[110px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-marker"
             />
             <span aria-hidden="true" className="text-fg-subtle">–</span>
             <input
@@ -305,7 +305,7 @@ function SettingsForm({
               aria-label="Lunch break end"
               value={lunch.end}
               onChange={(e) => setLunchEnd(e.target.value)}
-              className="w-[110px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-brass"
+              className="w-[110px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-marker"
             />
           </div>
         )}
@@ -336,7 +336,7 @@ function SettingsForm({
                   aria-label={`${WEEKDAY_FULL[wd]} start`}
                   value={hours.start}
                   onChange={(e) => setHours(wd, 'start', e.target.value)}
-                  className="w-[110px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-brass"
+                  className="w-[110px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-marker"
                 />
                 <span aria-hidden="true" className="text-fg-subtle">–</span>
                 <input
@@ -344,7 +344,7 @@ function SettingsForm({
                   aria-label={`${WEEKDAY_FULL[wd]} end`}
                   value={hours.end}
                   onChange={(e) => setHours(wd, 'end', e.target.value)}
-                  className="w-[110px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-brass"
+                  className="w-[110px] rounded-card border border-border bg-surface-bg px-sm py-xs text-meta tabular-nums text-fg outline-none focus-visible:border-marker"
                 />
               </div>
             );

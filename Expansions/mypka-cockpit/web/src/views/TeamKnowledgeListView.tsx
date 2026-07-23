@@ -35,6 +35,10 @@ interface TeamKnowledgeItem {
   summary: string | null;
   version: string | null;
   triggeredBy: string | null;
+  // domain is present on richer mirrors (e.g. a private regen) and absent on the
+  // sample mirror. Optional + nullable so both schemas type-check; rendered only
+  // when present (no broken chip when the column doesn't exist).
+  domain?: string | null;
   filePath: string | null;
 }
 interface TeamKnowledgeResponse {
@@ -90,7 +94,7 @@ function fileHrefFor(item: TeamKnowledgeItem): string | null {
 // from the displayed title so the badge + title don't repeat the id.
 function displayTitle(item: TeamKnowledgeItem): string {
   if (!item.docId) return item.title;
-  const re = new RegExp(`^${item.docId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*[-:–]\\s*`, 'i');
+  const re = new RegExp(`^${item.docId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*[:–-]\\s*`, 'i');
   const stripped = item.title.replace(re, '').trim();
   return stripped || item.title;
 }
@@ -100,6 +104,8 @@ function MetaLine({ item }: { item: TeamKnowledgeItem }) {
   if (item.status) bits.push({ k: 'status', v: item.status });
   if (item.owner) bits.push({ k: 'owner', v: item.owner });
   if (item.version) bits.push({ k: 'version', v: item.version });
+  // domain rides as its own chip only on mirrors that carry it; empty/absent → no chip.
+  if (item.domain) bits.push({ k: 'domain', v: item.domain });
   if (bits.length === 0) return null;
   return (
     <span className="tk-row-meta">
