@@ -177,7 +177,7 @@ Set-in-stone tool patterns and source-format quirks discovered during real impor
 
 ## Expansion Install Triggers (LLM-agnostic)
 
-Any LLM working in this myPKA MUST honor these natural-language triggers and run [[Team Knowledge/Workstreams/WS-003-install-an-expansion]]. The Workstream contains the canonical procedure (manifest validation, Vex security review, Nolan team merge, Mack connector wiring, Silas integrity check, post-install validation, archive). This section is the trigger contract; WS-003 is the executor.
+Any LLM working in this myPKA MUST honor these natural-language triggers and run [[Team Knowledge/Workstreams/WS-003-install-an-expansion]]. The Workstream contains the canonical procedure (manifest validation, security review — routed to Vex if installed (e.g. via the App Developer Pack), otherwise Larry executes the WS-003 §2 security checklist himself — Nolan team merge, Mack connector wiring, Silas integrity check, post-install validation, archive). This section is the trigger contract; WS-003 is the executor.
 
 Trigger phrases → action:
 
@@ -191,7 +191,7 @@ Trigger phrases → action:
 Rules:
 
 - **Boot-time detection.** Larry scans `Expansions/` on every session start. New folders trigger an announcement, not auto-install. The user gives the go-ahead.
-- **Vex is a hard gate.** No install proceeds past §2 of WS-003 without Vex's verdict. Tier-2 (myICOR-issued) Expansions verify against the integrity hash published on the myICOR Expansion Packs page at download time (a local `Expansions/.trusted-sources` pin, if you keep one, works the same way).
+- **The security gate is hard.** No install proceeds past §2 of WS-003 without a recorded security verdict. The review routes to Vex if installed (e.g. via the App Developer Pack); otherwise Larry executes the WS-003 §2 security checklist himself before any Expansion install and records the verdict. Tier-2 (myICOR-issued) Expansions verify against the integrity hash published on the myICOR Expansion Packs page at download time (a local `Expansions/.trusted-sources` pin, if you keep one, works the same way).
 - **No silent overwrites.** If a merge target already exists in `Team/`, `Team Knowledge/SOPs/`, etc., Nolan stops and asks.
 - **Larry NEVER auto-launches runtime Expansions.** Mack announces; the user double-clicks the start script.
 

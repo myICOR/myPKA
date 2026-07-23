@@ -46,7 +46,6 @@ Every Expansion folder MUST contain an `expansion.yaml` at its root. Larry parse
 | `description` | string | One sentence. Goes into `Expansions/INDEX.md`. |
 | `category` | string | Free-text tag for the AI Library (e.g., `agents`, `connector`, `productivity`). |
 | `expansion_type` | enum | `agent_pack` \| `connector` \| `runtime` \| `hybrid` |
-| `requires_scaffold_version` | semver range | e.g. `">=1.7.0 <2.0.0"`. Larry refuses to install on mismatch. |
 | `requires_agents` | list | Pre-hired agents this Expansion uses (e.g., `[Larry, Mack]`). Larry blocks install if any are missing. |
 | `license` | string | SPDX identifier or short string (`proprietary`, `MIT`, `CC-BY-NC-SA-4.0`, …). |
 | `author` | string | Who shipped this Expansion. |
@@ -67,6 +66,7 @@ Every Expansion folder MUST contain an `expansion.yaml` at its root. Larry parse
 | `mcp_servers` | optional, any type | List of MCP server configs. Mack registers these with the user's LLM tool (Claude Code config, Codex config, etc.). Schema: `{ name, command, args, env_vars }`. |
 | `runtime` | `runtime` or `hybrid` | Object describing the long-lived process. See **runtime block** below. |
 | `uninstall` | optional | `{ method: "rm-rf-folder", residual_paths: [...] }`. If omitted, defaults to `rm-rf-folder` with no residuals. |
+| `requires_scaffold_version` | deprecated (removed 5.0.1) | Former semver-range compatibility pin. No longer required, no longer enforced: the install workstream tolerates the field if present and ignores it. Do not add it to new manifests. |
 
 ### Runtime block (when `expansion_type` includes a runtime)
 
@@ -96,7 +96,6 @@ version: 1.0.0
 description: Adds Felix (frontend), Vex (security), Vera (QA) to your team for building, auditing, and quality-gating apps.
 category: agents
 expansion_type: agent_pack
-requires_scaffold_version: ">=1.7.0 <2.0.0"
 requires_agents: [Larry, Nolan, Mack]
 license: proprietary
 author: myICOR
@@ -131,7 +130,6 @@ version: 1.0.0
 description: Use Slack as a chat surface for Larry. Inbound DMs and @-mentions land in Team Inbox; replies post back in-thread.
 category: connector
 expansion_type: runtime
-requires_scaffold_version: ">=1.7.0 <2.0.0"
 requires_agents: [Larry, Mack]
 license: proprietary
 author: myICOR
@@ -185,7 +183,6 @@ version: 1.0.0
 description: OAuth-authenticated Notion API connector. Mack uses it for imports and live reads.
 category: connector
 expansion_type: connector
-requires_scaffold_version: ">=1.7.0 <2.0.0"
 requires_agents: [Larry, Mack, Silas]
 license: proprietary
 author: myICOR
@@ -272,13 +269,14 @@ Symmetric to install. The uninstall flow ([[WS-003-install-an-expansion]] §unin
 
 ## Compatibility — refuse-to-install on mismatch
 
-`requires_scaffold_version` is a semver range checked against the scaffold's `VERSION`. The install workstream refuses to proceed when:
+The install workstream refuses to proceed when:
 
-- The field is missing or malformed → `invalid` row in `INDEX.md`, install blocked.
-- The scaffold version sits outside the declared range → `incompatible` row, install blocked.
+- A required field is missing or malformed → `invalid` row in `INDEX.md`, install blocked.
 - A required pre-hired agent listed in `requires_agents` is not in `Team/agent-index.md` → install blocked with a "install X first" message.
 
 Larry never silently coerces.
+
+**Note on `requires_scaffold_version` (removed 5.0.1).** Older manifests carry a `requires_scaffold_version` semver-range pin. The field is no longer part of the spec: it is tolerated if present, ignored by the install workstream, and never blocks an install. Scaffold compatibility is the Expansion author's testing responsibility, not an install-time gate.
 
 ---
 
@@ -290,7 +288,7 @@ Before zipping your Expansion and shipping it:
 - `expansion.yaml` validates against the schema above.
 - All required fields present.
 - `license` declared; SPDX where possible.
-- `requires_scaffold_version` is honest. Test against the scaffold versions you claim.
+- Tested against the scaffold version(s) you support (there is no install-time version gate — testing is on you).
 - `env_vars` match what the runtime/connector actually reads.
 - `adds_sops` files exist in the Expansion folder and are LLM-agnostic.
 - `adds_agents` folders match `Team/<Name> - <Role>/AGENTS.md` shape.

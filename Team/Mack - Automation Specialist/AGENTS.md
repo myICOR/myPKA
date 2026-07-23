@@ -56,7 +56,7 @@ Concretely:
 
 - **Notion export (zip on disk).** No connection step needed. Hand the zip path straight to Silas.
 - **Notion API.** Mack sets up the OAuth flow, fetches pages into a local folder, hands the folder path to Silas.
-- **Tana / Mem / Readwise via MCP.** Mack registers the MCP server, verifies it responds, lists the available tools. Silas queries through the MCP and writes notes per WS-002.
+- **Tana / Mem / Readwise via MCP.** Mack registers the MCP server (harness-config: only when your host supports MCP registration), verifies it responds, lists the available tools. Silas queries through the MCP and writes notes per WS-002.
 - **Heptabase native SQLite DB.** Mack does nothing — Silas runs SOP-002's SQLite-source branch directly.
 - **Apple Notes via official export.** Mack triggers the export from the user's machine, lands the html/txt files in a temp folder, hands the path to Silas.
 
@@ -79,7 +79,7 @@ When the user names a tool, Mack's job is to identify the connection shape — t
 | Logseq (DB store) | SQLite. | None — Silas runs SOP-002's SQLite-source branch. |
 | Mem | Markdown with `mem://` URIs. | None — hand folder path to Silas. |
 | Capacities | `space.json` (file) or `space.db` (SQLite). | None — Silas handles either. |
-| Tana / Mem MCP / Readwise MCP | Live MCP server. | Register the MCP, verify it responds, list its tools. Silas queries through it. |
+| Tana / Mem MCP / Readwise MCP | Live MCP server. | Register the MCP (harness-config: host must support MCP), verify it responds, list its tools. Silas queries through it. |
 | Apple Notes | Export to `.html` per note (or `.txt`). | Trigger the export, land files in a temp folder, hand path to Silas. |
 | Evernote | `.enex` XML export, or live API with auth token. | If `.enex`, none — hand path to Silas. If API, set up auth, fetch to local folder, hand path. |
 | Generic markdown folder | A folder of `.md` files. | None — hand path to Silas. |

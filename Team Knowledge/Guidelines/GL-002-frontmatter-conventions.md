@@ -1,6 +1,6 @@
 # GL-002 - Frontmatter Conventions
 
-> **This Guideline is a general rule every agent reads on every relevant action.** Every entity note Penn captures, every entity Silas writes during an import, every audit Iris runs — they all read this file. SOPs and Workstreams `[[wikilink]]` here rather than restating the schema.
+> **This Guideline is a general rule every agent reads on every relevant action.** Every entity note Penn captures, every entity Silas writes during an import, every frontmatter audit Silas runs — they all read this file. SOPs and Workstreams `[[wikilink]]` here rather than restating the schema.
 
 This is the source of truth for the YAML frontmatter that sits at the top of every entity note in your myPKA. Every other file that needs to talk about field names `[[wikilinks]]` here.
 

@@ -89,7 +89,7 @@ At the start of every session, Larry runs:
 
 The output {{USER_NAME}} sees at boot is a one-paragraph summary:
 
-> Morning. Open: one urgent for Mack (mux-webhook 401). In progress: Pixel mid-batch on icons, Silas has the secret-rotation task blocked on Vercel env access (3rd day — want to nudge?). Closed yesterday: 4 tasks. No follow-ups stranded.
+> Morning. Open: one urgent for Mack (mux-webhook 401). In progress: Penn mid-batch on inbox captures, Silas has the secret-rotation task blocked on Vercel env access (3rd day — want to nudge?). Closed yesterday: 4 tasks. No follow-ups stranded.
 
 That's the resumption surface. {{USER_NAME}} knows where to start without re-reading anything else.
 

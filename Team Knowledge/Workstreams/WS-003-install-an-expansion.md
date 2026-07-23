@@ -2,7 +2,7 @@
 
 - **Status:** Active (since v1.7.0)
 - **Type:** Workstream — a multi-agent composition. The agents below collaborate to deliver the outcome. New Workstreams emerge when patterns repeat across session-logs; this one ships pre-canonicalized because Expansions are a day-1 install/uninstall flow that needs the multi-agent choreography (Larry → Vex → Nolan → Mack → Silas → Larry) wired correctly out of the box. **Pre-canonicalized exception**, alongside [[WS-001-daily-journaling]] and [[WS-002-import-external-knowledge-base]].
-- **Owners:** **Larry** (orchestrator, pre-flight, post-install validation, archive, announcement). **Vex** (security review — gate). **Nolan** (team merge — copies agents, SOPs, guidelines, templates into your myPKA). **Mack** (connector wiring — env vars, MCP servers, runtime announcement). **Silas** (post-merge integrity check).
+- **Owners:** **Larry** (orchestrator, pre-flight, post-install validation, archive, announcement). **Vex** (security review — gate; Vex ships with the App Developer Pack — when Vex is not installed, Larry executes the §2 security checklist himself and records the verdict; the gate never disappears). **Nolan** (team merge — copies agents, SOPs, guidelines, templates into your myPKA). **Mack** (connector wiring — env vars, MCP servers, runtime announcement). **Silas** (post-merge integrity check).
 - **References:** `Expansions/docs/expansion-spec.md` (locked manifest schema), [[GL-001-file-naming-conventions]], [[GL-002-frontmatter-conventions]], [[SOP-001-how-to-add-a-new-specialist]] (Nolan's hire procedure — adapted here for pack-shaped hires), [[Team/agent-index]].
 - **Triggered by:** any user phrasing that signals "install or uninstall an Expansion." See **Trigger contract** below. Also: Larry detects new folders in `Expansions/` on session boot and offers to run this workstream.
 
@@ -13,7 +13,7 @@ Take a folder dropped into `Expansions/`, validate it, security-review it, merge
 ## What this Workstream does not do
 
 - Does not author Expansion manifests. That's the Expansion author's job (per `Expansions/docs/expansion-spec.md`).
-- Does not bypass Vex's security review. Tier-2 (myICOR-issued) Expansions verify against the integrity hash published on the myICOR Expansion Packs page (or a local `Expansions/.trusted-sources` pin, if you keep one), only after Vex clears them. Tier-3 (community) Expansions get an interactive trust prompt. Either way, Vex is the gate.
+- Does not bypass the security review. Tier-2 (myICOR-issued) Expansions verify against the integrity hash published on the myICOR Expansion Packs page (or a local `Expansions/.trusted-sources` pin, if you keep one), only after the review clears them. Tier-3 (community) Expansions get an interactive trust prompt. Either way, §2 is the gate — run by Vex if installed (e.g. via the App Developer Pack), otherwise executed by Larry himself.
 - Does not silently overwrite existing files in the your myPKA. If a merge target already exists, the workstream stops and asks.
 - Does not auto-launch runtime Expansions. That rule is hard. Mack announces; the user launches.
 
@@ -36,10 +36,9 @@ Larry confirms the Expansion folder exists at `Expansions/<slug>/` and contains 
 
 Larry reads `Expansions/<slug>/expansion.yaml` and validates against the schema in `Expansions/docs/expansion-spec.md`:
 
-1. **Required fields present?** `name`, `slug`, `version`, `description`, `category`, `expansion_type`, `requires_scaffold_version`, `requires_agents`, `license`, `author`. Missing or malformed → `invalid` row in `INDEX.md`, install blocked, surface the error to the user.
-2. **`requires_scaffold_version` matches?** Larry compares against `VERSION`. Mismatch → `incompatible` row, install blocked.
-3. **`requires_agents` present?** Larry checks each entry against `Team/agent-index.md`. Missing pre-hire → block install with "install [X] Expansion first" or "run SOP-001 to hire [X]".
-4. **Folder name = `slug`?** If not, Larry stops and asks the user to rename.
+1. **Required fields present?** `name`, `slug`, `version`, `description`, `category`, `expansion_type`, `requires_agents`, `license`, `author`. Missing or malformed → `invalid` row in `INDEX.md`, install blocked, surface the error to the user. A `requires_scaffold_version` field is tolerated if present but **ignored** — it is no longer part of the spec (removed in 5.0.1) and never blocks an install.
+2. **`requires_agents` present?** Larry checks each entry against `Team/agent-index.md`. Missing pre-hire → block install with "install [X] Expansion first" or "run SOP-001 to hire [X]".
+3. **Folder name = `slug`?** If not, Larry stops and asks the user to rename.
 
 If all checks pass, Larry presents the **install preview** to the user:
 
@@ -70,6 +69,8 @@ User answers `y` → §2. `n` → stop, write a session-log entry capturing the 
 ## Step 2 — Vex: security review (the gate)
 
 Vex audits the Expansion folder before any merge happens. This is a hard gate — Larry does not advance to §3 until Vex returns green or the user explicitly accepts a yellow flag.
+
+**Fallback when Vex is not on the team.** Vex ships with the App Developer Pack (a membership Expansion), so a fresh scaffold does not have Vex yet. The gate does not disappear: Larry executes this §2 checklist himself, item by item, records the verdict in the install session-log, and applies the same GREEN / YELLOW / RED outcomes below. The gate is the checklist, not the agent. Once Vex is installed, Vex owns this step again.
 
 Vex's checks:
 
@@ -258,6 +259,7 @@ Write the uninstall session-log entry. Update `Expansions/INDEX.md` to remove th
 |---|---|
 | Vex flags YELLOW, user overrides | Logged in the session-log with explicit user-consent line. Vex re-audits if the Expansion is later updated. |
 | Vex flags RED | Install blocked. No override. Larry tells the user the specific concern. |
+| Vex is not installed (no App Developer Pack) | The §2 gate stays hard: Larry executes the §2 security checklist himself before any Expansion install, records the verdict in the session-log, and applies the same GREEN/YELLOW/RED outcomes. |
 | `requires_agents` missing | Install blocked. Larry tells the user "install <X> Expansion first" or "run SOP-001 to hire <X>". |
 | Collision: `Team/<folder>/` already exists | Nolan stops at §3. User chooses: rename (suffix `-from-<slug>`), skip that agent, or abort install. |
 | Collision: SOP slug already taken | Nolan auto-resolves by appending `-<slug>` to the SOP slug (e.g., `SOP-NNN-post-message-slack.md`). |
@@ -269,6 +271,6 @@ Write the uninstall session-log entry. Update `Expansions/INDEX.md` to remove th
 
 ## Owner agency
 
-Each agent in this workstream owns their step. If Vex's audit logic improves, Vex updates §2 directly (and tells Larry). If Nolan finds a better merge sequence, Nolan updates §3. Larry owns the orchestration shell (§1, §6, §7) and the trigger contract.
+Each agent in this workstream owns their step. If Vex's audit logic improves, Vex updates §2 directly (and tells Larry); when Vex is not installed, §2 as written is the canonical checklist Larry executes himself. If Nolan finds a better merge sequence, Nolan updates §3. Larry owns the orchestration shell (§1, §6, §7) and the trigger contract.
 
 The Expansion author owns their `expansion.yaml`, their bundled files, and the `post_install_validation` rules. They do not own this workstream — the scaffold owns the install procedure, every Expansion plugs into the same one.

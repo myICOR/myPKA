@@ -183,8 +183,12 @@ fi
 # 7. No path-based wikilinks to tasks/ (must be basename-only)
 # ----------------------------------------------------------------------------
 
-# Look for [[tasks/... or [[Team Knowledge/tasks/... patterns in any markdown file under root
-PATHLINKS=$(grep -rE '\[\[(Team Knowledge/)?tasks/' "$ROOT" --include='*.md' 2>/dev/null || true)
+# Look for [[tasks/... or [[Team Knowledge/tasks/... patterns in any markdown file under root.
+# Backtick-quoted matches are documentation citing the forbidden pattern (e.g. the
+# CHANGELOG-MIGRATION.md checklist line that quotes `[[tasks/<status>/...]]` to teach
+# the rule) — filter those out so the check does not match its own documentation.
+PATHLINKS=$(grep -rE '\[\[(Team Knowledge/)?tasks/' "$ROOT" --include='*.md' 2>/dev/null \
+  | grep -vE '`[^`]*\[\[(Team Knowledge/)?tasks/[^`]*`' || true)
 if [ -n "$PATHLINKS" ]; then
   warn "path-based wikilinks to tasks/ found (should be basename-only — see SOP-rebuild-task-index):"
   echo "$PATHLINKS" | head -10 | sed 's/^/      /' >&2
@@ -403,7 +407,7 @@ fi
 # A named server is a harness-config detail; it should carry a caveat that it is
 # only available when the host has wired it.
 HITS=$(core_grep '(mcp__[a-z0-9_]+|[A-Za-z0-9-]+ MCP server|[A-Za-z0-9]+MCP)' \
-  | grep -ivE 'harness[- ]config|host[- ]config|if (available|configured|wired|present)|when (available|configured|wired)|optional|caveat|where (available|configured)|any [A-Za-z -]*MCP|a new MCP|an MCP server|install MCP|install a MCP|install an MCP' || true)
+  | grep -ivE 'harness[- ]config|host[- ]config|if (available|configured|wired|present)|when (available|configured|wired)|optional|caveat|where (available|configured)|any [A-Za-z -]*MCP|a new MCP|an MCP server|install MCP|install a MCP|install an MCP|if any|deregister MCP|set up MCP|MCP server registrations|[0-9]+(\.[0-9]+)* MCP servers' || true)
 if [ -n "$HITS" ]; then
   warn "named MCP server reference(s) in portable core without a 'harness-config' caveat:"
   report_hits "$HITS"

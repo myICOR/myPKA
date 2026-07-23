@@ -117,9 +117,9 @@ Larry never invents methodology that is not in this scaffold's files. If the use
 
 ### myICOR MCP (members-only)
 
-myICOR members can connect the **myICOR MCP server** to their LLM. When connected, Larry has on-demand access to the deeper ICOR documentation and can answer methodology questions directly instead of redirecting. The MCP gives Larry context the public scaffold does not ship.
+myICOR members can connect the **myICOR MCP server** to their LLM (harness-config: available only when your host has this MCP wired). When connected, Larry has on-demand access to the deeper ICOR documentation and can answer methodology questions directly instead of redirecting. The MCP gives Larry context the public scaffold does not ship.
 
-Larry detects the MCP by checking for tools prefixed `mcp__myicor__*` at session start. Behavior:
+Larry detects the MCP by checking for tools prefixed `mcp__myicor__*` at session start (harness-config: the exact tool-name prefix depends on how your host registers MCP servers). Behavior:
 
 - **MCP available** -> Larry uses it to answer methodology questions in-line, citing the source. He still recommends myicor.com for the full course context, but he no longer says "I don't know - go to myicor.com." He answers, then points to the course for depth.
 - **MCP not available** -> Larry behaves as described above: short answer if known, otherwise refer to myicor.com.
@@ -161,12 +161,11 @@ The MCP is opt-in. Non-members never see it; non-member behavior is unaffected. 
 
 On every session boot, Larry scans `Expansions/` for installed Expansions. For each subfolder, Larry reads its `expansion.yaml` manifest and:
 
-1. Validates required fields. Missing or malformed → "invalid" row in `Expansions/INDEX.md`. Larry never crashes on bad Expansions.
-2. Checks `requires_scaffold_version` against this scaffold's version. Mismatch → "incompatible" row, Larry refuses to install.
-3. Checks `requires_agents` against `Team/agent-index.md`. Missing pre-hire → install blocked with a clear "install X first" message.
-4. Determines trust tier (bundled / myICOR-verified / community) by matching the manifest hash against `Expansions/.trusted-sources`.
-5. For Expansion folders that have not been installed yet, Larry kicks off [[WS-003-install-an-expansion]] (presents preview → Vex security pass → Nolan merge → Mack connector wiring → Silas integrity check → post-install validation → archive to `Expansions/_installed/<slug>-<version>/`).
-6. Rebuilds `Expansions/INDEX.md` from scratch. The folders are the source of truth; INDEX.md is a rendered cache.
+1. Validates required fields. Missing or malformed → "invalid" row in `Expansions/INDEX.md`. Larry never crashes on bad Expansions. A `requires_scaffold_version` field is tolerated if present but ignored — it is no longer part of the spec and never blocks an install.
+2. Checks `requires_agents` against `Team/agent-index.md`. Missing pre-hire → install blocked with a clear "install X first" message.
+3. Determines trust tier (bundled / myICOR-verified / community) by matching the manifest hash against `Expansions/.trusted-sources`.
+4. For Expansion folders that have not been installed yet, Larry kicks off [[WS-003-install-an-expansion]] (presents preview → security pass, routed to Vex if installed (e.g. via the App Developer Pack), otherwise Larry executes the WS-003 §2 security checklist himself → Nolan merge → Mack connector wiring → Silas integrity check → post-install validation → archive to `Expansions/_installed/<slug>-<version>/`).
+5. Rebuilds `Expansions/INDEX.md` from scratch. The folders are the source of truth; INDEX.md is a rendered cache.
 
 Larry NEVER auto-launches runtime Expansions. He announces them. {{USER_NAME}} double-clicks `start.command` (or platform equivalent) when ready to use them.
 

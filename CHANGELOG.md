@@ -2,6 +2,29 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [5.0.1] - 2026-07-23
+
+**Install-experience patch.** A fresh v5.0.0 download failed its own `validation-script.sh` out of the box (1 FAIL, 2 WARN) and the canonical Expansion-install path mandated an agent that no longer ships with the base scaffold. This patch makes a fresh download validate clean (exit 0, zero FAIL, zero WARN) and closes the reported install-path gaps. No structural changes.
+
+### Fixed
+
+- **Fresh-download validation failure (community report, 2026-07-15).** Five documentation lines that legitimately cite the host-adapter layer (`Team Knowledge/Guidelines/INDEX.md` GL-005 row; four shim-authoring lines in `Team/Nolan - HR/AGENTS.md`) now carry the validator's own `agnosticism-audit:allow` marker. The agnosticism-audit no longer hard-fails a clean install.
+- **Expansion security gate referenced a non-shipped agent (community report, 2026-07-10).** WS-003 mandated Vex as the install security gate, but Vex ships with the App Developer Pack (a membership Expansion), not the base scaffold. WS-003 §2, its owner line and edge-case table, root `AGENTS.md`, Larry's contract, and the Workstreams INDEX now carry the fallback: security review routes to Vex if installed (e.g. via the App Developer Pack); otherwise Larry executes the §2 security checklist himself before any Expansion install and records the verdict. The gate stays hard; the missing-agent dependency is gone.
+- **Internal session log leaked into the download.** Removed `Team Knowledge/session-logs/2026/06/2026-06-22-13-26_silas_governance-docs-mirror-tables.md`, a myICOR-internal dev-instance log that shipped inside every member download. Session logs seed empty again (`2026/05/.gitkeep`).
+- **Validator check 7 matched its own documentation.** The path-based-task-wikilink check flagged the `CHANGELOG-MIGRATION.md` checklist line that quotes the forbidden pattern in backticks. Backtick-quoted documentation citations are now excluded.
+- **Validator MCP-caveat check over-breadth.** Generic prose about MCP servers ("MCP servers (if any)", "5.2 MCP servers", "set up MCP servers", "deregister MCP servers", "MCP server registrations") no longer trips the named-MCP-server warning. The four genuinely named MCP references (Larry's myICOR MCP, Mack's Tana/Mem/Readwise MCP examples) now carry explicit harness-config caveats.
+- **Stale agent names in core docs.** `GL-002` no longer names Iris for frontmatter audits (Silas runs them), `SOP-list-open-tasks`'s example output no longer narrates Pixel as active (now Penn), and the Workstreams INDEX no longer uses a Charta+Pixel handoff as its canonical example.
+
+### Changed
+
+- **`requires_scaffold_version` removed from the Expansion manifest spec** (deliberate backport of the 2026-06-16 spec change from the private reference instance). The field is no longer required and no longer enforced anywhere: WS-003 §1, Larry's Expansion Discovery, and `Expansions/docs/expansion-spec.md` (required-fields table, examples, compatibility section, authoring checklist) all drop it. Manifests that still carry the field are tolerated; the field is ignored and never blocks an install. Compatibility testing is the Expansion author's responsibility, not an install-time gate.
+
+### Version files
+
+- `manifest.json` → `scaffold_version` `5.0.1` (authoritative SSOT), `breaking: false`.
+- `VERSION` → `5.0.1` (mirror of the manifest).
+- `.scaffold-version` → `5.0.1` (mirror of the manifest).
+
 ## [5.0.0] - 2026-07-07
 
 **The scaffold returns to its basic shape: the six core specialists plus the bundled myPKA Cockpit, free.** The two agent packs that earlier downloads bundled into this repo (the App Developer Pack and the Designer Pack) are unbundled. They are now Expansion Packs, part of the myICOR membership, available on the **Expansion Packs page** in the myICOR app. The scaffold itself, including the Cockpit, stays free: it is the basic structure you need to build your AI team, with the core agents everyone needs, and you can build whatever you like on top of it.

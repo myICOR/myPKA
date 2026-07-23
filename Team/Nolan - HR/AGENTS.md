@@ -20,12 +20,12 @@ Run this sequence. In order.
 6. **Draft the host subagent shim for every host the team operates in.** Without a shim, Larry can only role-play the new specialist within the main context — Larry cannot dispatch them as a parallel subagent via the host's agent-tool. The shim is host-specific (see matrix in [[SOP-001-how-to-add-a-new-specialist]] §5), but the principle is identical across hosts: a thin pointer that references `Team/<Name> - <Role>/AGENTS.md`, never duplicates it.
 
    Hosts and their shim paths:
-   - **Claude Code** → `.claude/agents/<slug>.md` (YAML frontmatter `name`, `description`, `tools` + body)
+   - **Claude Code** → `.claude/agents/<slug>.md` (YAML frontmatter `name`, `description`, `tools` + body) <!-- agnosticism-audit:allow -->
    - **Codex CLI** → `.codex/agents/<slug>.md` if supported by the active version, otherwise note in `AGENTS.md.codex`
    - **Gemini CLI** → per Gemini spec at hire time (e.g. `.gemini/extensions/`)
    - **Cursor / chat-only** → no parallel dispatch; document the limitation in the tool-specific pointer file
 
-   When hiring, generate shims for **every host the user has activated** (detect by presence of `CLAUDE.md`, `AGENTS.md.codex`, `GEMINI.md`, `.cursor/rules/main.md`). Use existing shims as structural templates (`.claude/agents/silas.md` etc. for Claude Code). The shim's `description:` reads as a routing instruction for Larry ("Use proactively when…"). The shim's `tools:` (where the host expects one) is minimal — only what the role actually needs.
+   When hiring, generate shims for **every host the user has activated** (detect by presence of `CLAUDE.md`, `AGENTS.md.codex`, `GEMINI.md`, `.cursor/rules/main.md`). Use existing shims as structural templates (`.claude/agents/silas.md` etc. for Claude Code). The shim's `description:` reads as a routing instruction for Larry ("Use proactively when…"). The shim's `tools:` (where the host expects one) is minimal — only what the role actually needs. <!-- agnosticism-audit:allow -->
 7. Register the new specialist in [[agent-index]]. Add slug, role, folder path, and "Use For".
 8. Report back to Larry. One line. Name, role, folder path, **shim path**, link to Pax's research brief.
 
@@ -49,8 +49,8 @@ Filenames and slugs follow [[GL-001-file-naming-conventions]]. Read it. Do not d
 
 - Hire without consulting [[SOP-001-how-to-add-a-new-specialist]].
 - Write a generic AGENTS.md. Every spec is role-specific.
-- **Ship a hire without the matching host subagent shim(s).** For every host the user has activated (Claude Code → `.claude/agents/<slug>.md`, Codex CLI → `.codex/agents/<slug>.md` or `AGENTS.md.codex` note, Gemini CLI → per spec, Cursor/chat-only → noted limitation), the binding must exist alongside the wiki contract. Two artifacts always go together: the wiki contract at `Team/<Name> - <Role>/AGENTS.md` (canonical, host-agnostic) AND the host shim(s) (host-specific binding so Larry can dispatch as a real parallel subagent in that host). Missing the shim means Larry can only role-play the specialist — not dispatch them.
-- Write a `CLAUDE.md` (or `GEMINI.md`, `AGENTS.md.codex`, etc.) inside `Team/<Name>/`. The wiki contract is host-agnostic. Host-specific binding lives at the project root in `.claude/agents/`, `.codex/agents/`, etc. Three layers (`AGENTS.md` + per-folder host-pointer + project-root host shim) violates SSOT.
+- **Ship a hire without the matching host subagent shim(s).** For every host the user has activated (Claude Code → `.claude/agents/<slug>.md`, Codex CLI → `.codex/agents/<slug>.md` or `AGENTS.md.codex` note, Gemini CLI → per spec, Cursor/chat-only → noted limitation), the binding must exist alongside the wiki contract. Two artifacts always go together: the wiki contract at `Team/<Name> - <Role>/AGENTS.md` (canonical, host-agnostic) AND the host shim(s) (host-specific binding so Larry can dispatch as a real parallel subagent in that host). Missing the shim means Larry can only role-play the specialist — not dispatch them. <!-- agnosticism-audit:allow -->
+- Write a `CLAUDE.md` (or `GEMINI.md`, `AGENTS.md.codex`, etc.) inside `Team/<Name>/`. The wiki contract is host-agnostic. Host-specific binding lives at the project root in `.claude/agents/`, `.codex/agents/`, etc. Three layers (`AGENTS.md` + per-folder host-pointer + project-root host shim) violates SSOT. <!-- agnosticism-audit:allow -->
 - Forget to update [[agent-index]].
 - Pick a slug that collides with an existing specialist.
 - Skip the clarifying question when the scope is fuzzy.
