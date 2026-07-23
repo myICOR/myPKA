@@ -282,13 +282,25 @@ echo "--- agnosticism-audit (v4 tool-agnostic core) ---"
 
 # Build the list of files that make up the portable core.
 # PKM/ and Team Knowledge/ in full; from Team/ only the per-agent AGENTS.md files.
+#
+# SCOPE (v5.1.0): the audit checks portable-core DOCTRINE, not operational
+# record and not third-party pack content. Excluded from the scan:
+#   - Team Knowledge/session-logs/** — user-generated operational record. A
+#     session log that truthfully names a host path (e.g. documenting shim
+#     work per WS-003) must not fail the member's validator.
+#   - Expansions/** — Expansion content is governed by the pack author and the
+#     WS-003 security gate, not by this audit.
+#   - Team/<folder>/AGENTS.md for agents installed BY an Expansion — same
+#     ruling: pack-shipped contract bytes must not be able to fail or warn the
+#     member's scaffold validator. Installed-pack agent folders are read from
+#     Expansions/_installed/*/.manifest.json and Expansions/*/expansion.yaml.
 CORE_FILES=""
 for d in "PKM" "Team Knowledge"; do
   if [ -d "$ROOT/$d" ]; then
     while IFS= read -r f; do
       CORE_FILES="$CORE_FILES
 $f"
-    done < <(find "$ROOT/$d" -type f -name '*.md' 2>/dev/null)
+    done < <(find "$ROOT/$d" -type f -name '*.md' -not -path '*/session-logs/*' 2>/dev/null)
   fi
 done
 if [ -d "$ROOT/Team" ]; then
@@ -297,8 +309,29 @@ if [ -d "$ROOT/Team" ]; then
 $f"
   done < <(find "$ROOT/Team" -mindepth 2 -maxdepth 2 -name "AGENTS.md" -type f 2>/dev/null)
 fi
-# Strip the leading blank line and any path under a .claude/ segment (belt and braces).
-CORE_FILES=$(printf '%s\n' "$CORE_FILES" | grep -v '^$' | grep -v '/\.claude/' || true)
+# Strip the leading blank line and any path under a .claude/ or Expansions/
+# segment (belt and braces).
+CORE_FILES=$(printf '%s\n' "$CORE_FILES" | grep -v '^$' | grep -v '/\.claude/' | grep -v '/Expansions/' || true)
+
+# Drop pack-installed agent contracts: collect `folder:` values from installed
+# Expansion manifests (JSON snapshot or live expansion.yaml) and exclude each
+# Team/<folder>/AGENTS.md from the scan.
+PACK_AGENT_EXCLUDED=0
+PACK_FOLDERS=$( { cat "$ROOT"/Expansions/_installed/*/.manifest.json "$ROOT"/Expansions/*/expansion.yaml 2>/dev/null || true; } \
+  | grep -oE '"?folder"?[[:space:]]*:[[:space:]]*"[^"]+"' \
+  | sed -E 's/.*:[[:space:]]*"([^"]+)"/\1/' | sort -u)
+if [ -n "$PACK_FOLDERS" ]; then
+  while IFS= read -r pf; do
+    [ -n "$pf" ] || continue
+    if printf '%s\n' "$CORE_FILES" | grep -qF "/Team/$pf/AGENTS.md"; then
+      CORE_FILES=$(printf '%s\n' "$CORE_FILES" | grep -vF "/Team/$pf/AGENTS.md" || true)
+      PACK_AGENT_EXCLUDED=$((PACK_AGENT_EXCLUDED + 1))
+    fi
+  done <<< "$PACK_FOLDERS"
+fi
+if [ "$PACK_AGENT_EXCLUDED" -gt 0 ]; then
+  pass "agnosticism scope: excluded $PACK_AGENT_EXCLUDED pack-installed agent contract(s) (governed by the pack author, not this audit)"
+fi
 
 # Meta-documentation allowlist: files whose SUBJECT is the host-coupling boundary
 # itself, so they MUST cite the forbidden tokens to teach the rule. These are the

@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working in this
 Do not answer the user's request yet. Do not just summarize this repository. Instead:
 
 1. Read `ADAPTER-PROMPT.md` at this folder root and **execute ALL of it now, in order** — do not skip steps:
-   - personalize the scaffold (capture the user's first name → `PKM/.user.yaml`, replace every `{{USER_NAME}}` token);
+   - personalize the scaffold (capture the user's first name → `PKM/.user.yaml`, replace every genuine `{{USER_NAME}}` token — replacement scope is defined in ADAPTER-PROMPT step 4; the instructional mentions there, in this file, in root `AGENTS.md`, and in `CHANGELOG.md` stay);
    - offer + set up local version history (the "time machine" git baseline);
    - bind the specialist subagent shims under `.claude/agents/`;
    - bind the host slash commands;

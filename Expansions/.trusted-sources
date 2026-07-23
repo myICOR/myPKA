@@ -1,0 +1,39 @@
+# myPKA Expansions — Trusted Sources Registry (shipped copy)
+#
+# SHIPPED, READ-ONLY MIRROR. The canonical registry lives in the private
+# `mypka-expansions` repository, where the Expansion release pipeline
+# (release-pack.yml) appends one pin line per released pack version. This
+# copy ships with the scaffold and is refreshed on every scaffold release
+# so the WS-003 §2 security gate has a local GREEN path out of the box.
+#
+# How it is used (WS-003 §2, check 1): for an Expansion with `author: myICOR`,
+# compute sha256 of the bytes of its `expansion.yaml` and look for a matching
+# `<slug>@<version>` line below.
+#   Match          -> GREEN (auto-trust, calm announcement).
+#   Mismatch       -> RED (refuse the install).
+#   No entry found -> YELLOW (version not pinned yet — explicit user override
+#                     required, or check the myICOR Expansion Packs page for a
+#                     freshly published hash).
+#
+# Format (one entry per line):
+#   <slug>@<version> sha256=<hex>
+#
+# Hash is sha256 of the bytes of expansion.yaml only.
+#
+# DO NOT hand-edit or append entries here. Community Expansions never go in
+# this file — they go through the tier-3 trust prompt. New official pins
+# arrive with scaffold updates (this file is on the updater's framework
+# allow-list).
+
+# --- Current official packs. Mirrored 2026-07-23 from mypka-expansions
+#     main (pipeline commits b6b9c13, 8bf455f, 0a6012b, b4b6c0c, 7475136). ---
+app-developer@1.0.4 sha256=ada3566ec37ff197d551ac009cfaeeb7418cdf8e17297ccf06c76342c509e9ba
+converter-pack@1.1.2 sha256=e156608cb3f0d360aadf8c85d717db9a303d9d95a2e2c2ca8697284f617188d0
+designer-pack@1.1.2 sha256=9eb044044178b7b2fe680e7245f39be4d54492b4647b4d155792c7eaf7e30145
+slack@1.0.6 sha256=8023aa3451b402c5913605f2a46f645564fb65427b954432e22be99cdab3b133
+handwritten-collaboration-loop@1.0.2 sha256=737d74257ae9d97c2fcf285c93ae4937446b6378a9ba9f6661e1a79323e1b70d
+
+# TODO (Marshall, v5.1.0 release train): add the mypka-cockpit@1.4.0 pin once
+# Mack's sync lands it in the mypka-expansions registry. As of 2026-07-23 no
+# cockpit entry exists there (the Cockpit ships bundled and installs via the
+# first-run path, so the pin only gates a-la-carte reinstalls/updates).

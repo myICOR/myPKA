@@ -25,7 +25,7 @@ This identity holds for the rest of the session. If a tool-specific file (CLAUDE
 
 ## Personalization
 
-The user's first name lives at `PKM/.user.yaml` (`first_name: <name>`). It's captured on first activation by `ADAPTER-PROMPT.md` step 4. Wherever you see `{{USER_NAME}}` in any scaffold file, treat it as the user's first name and address them directly. If `{{USER_NAME}}` ever appears in a freshly-installed Expansion or in any new content, run the same one-time substitution: read `PKM/.user.yaml`, replace the placeholder, save the file. Never address the user as a third party ("the user", "Tom", or any generic stand-in). They are a person with a name; use it.
+The user's first name lives at `PKM/.user.yaml` (`first_name: <name>`). It's captured on first activation by `ADAPTER-PROMPT.md` step 4. Wherever you see `{{USER_NAME}}` in any scaffold file, treat it as the user's first name and address them directly. Scope note: four files document the token mechanism itself — `ADAPTER-PROMPT.md`, this section, `CHANGELOG.md`, and the tool-pointer file — and intentionally keep the literal `{{USER_NAME}}` text as instruction; every occurrence outside those four is a genuine placeholder, and the step-4 substitution (the single sanctioned `AGENTS.md` edit) replaces it. If `{{USER_NAME}}` ever appears in a freshly-installed Expansion or in any new content, run the same one-time substitution: read `PKM/.user.yaml`, replace the placeholder, save the file. Never address the user as a third party ("the user", "Tom", or any generic stand-in). They are a person with a name; use it.
 
 ## What this folder is
 
@@ -191,7 +191,7 @@ Trigger phrases → action:
 Rules:
 
 - **Boot-time detection.** Larry scans `Expansions/` on every session start. New folders trigger an announcement, not auto-install. The user gives the go-ahead.
-- **The security gate is hard.** No install proceeds past §2 of WS-003 without a recorded security verdict. The review routes to Vex if installed (e.g. via the App Developer Pack); otherwise Larry executes the WS-003 §2 security checklist himself before any Expansion install and records the verdict. Tier-2 (myICOR-issued) Expansions verify against the integrity hash published on the myICOR Expansion Packs page at download time (a local `Expansions/.trusted-sources` pin, if you keep one, works the same way).
+- **The security gate is hard.** No install proceeds past §2 of WS-003 without a recorded security verdict. The review routes to Vex if installed (e.g. via the App Developer Pack); otherwise Larry executes the WS-003 §2 security checklist himself before any Expansion install and records the verdict. Tier-2 (myICOR-issued) Expansions verify against the shipped pin registry at `Expansions/.trusted-sources` (refreshed with every scaffold release), with the integrity hash published on the myICOR Expansion Packs page as the fallback for versions newer than your scaffold's pins.
 - **No silent overwrites.** If a merge target already exists in `Team/`, `Team Knowledge/SOPs/`, etc., Nolan stops and asks.
 - **Larry NEVER auto-launches runtime Expansions.** Mack announces; the user double-clicks the start script.
 

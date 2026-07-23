@@ -74,7 +74,7 @@ Vex audits the Expansion folder before any merge happens. This is a hard gate �
 
 Vex's checks:
 
-1. **Trust tier check.** If `author: myICOR`, compute sha256 of `expansion.yaml` and verify it against the integrity hash published on the myICOR Expansion Packs page for that pack version (or against a local `Expansions/.trusted-sources` pin, if you keep one; the scaffold does not ship this file). Match → green (auto-trust). Mismatch → red (refuse). No published hash found → yellow (Vex hasn't audited this version yet — proceed only with explicit user override).
+1. **Trust tier check.** If `author: myICOR`, compute sha256 of `expansion.yaml` and verify it against the local pin registry at `Expansions/.trusted-sources` (ships with the scaffold; each scaffold release refreshes it with the current official-pack pins), or — if no entry exists for this slug@version — against the integrity hash published on the myICOR Expansion Packs page. Match → green (auto-trust). Mismatch → red (refuse). No pin and no published hash → yellow (this version hasn't been pinned yet — proceed only with explicit user override).
 2. **Token handling sweep.** Grep the Expansion folder for any committed token-shaped string (`xoxb-`, `xapp-`, `sk-`, `ghp_`, etc.). Hit → red (block install — author shipped a credential).
 3. **`.env.example` review.** Confirm `.env.example` lists only env-var keys, no values, no real tokens.
 4. **Permission surface review.** For `connector` and `runtime` types: confirm the manifest's `env_vars`, `mcp_servers`, and runtime block match what the Expansion code actually does (no smuggled-in network calls, no unannounced spawns).
@@ -125,9 +125,20 @@ Same shape as SOPs, with `WS-NNN-` prefix. Index update at `Team Knowledge/Works
 
 Copy each path under `Team Knowledge/Templates/`. If a template with the same name exists, stop and ask. Update `Team Knowledge/Templates/INDEX.md`.
 
-### 3.6 Failure rollback
+### 3.6 Host subagent shims (make the new agents dispatchable)
 
-If any step in §3 fails after writes have started, Nolan rolls back: undo every file copy, restore every modified `INDEX.md` and root file from git (or from the pre-merge snapshot Nolan took at the start of §3). Vault returns to pre-install state.
+A merged contract alone is not dispatchable: after §3.1 the new agents exist in `Team/` and the indexes, but the host's dispatch layer does not know them yet. For each agent added in §3.1, Nolan creates the host-layer shim in every host the user has activated — the same idempotent walk the activation prompt's host-binding step performs (skip any shim that already exists).
+
+1. **Detect activated hosts** the same way [[SOP-001-how-to-add-a-new-specialist]] does: by the presence of the tool-pointer files (e.g. `CLAUDE.md`, `AGENTS.md.codex`, `GEMINI.md`, `.cursor/rules/main.md`).
+2. **Write one shim per agent per activated host.** The shim is a short pointer file, never a copy of the contract: it instructs the subagent to read its canonical contract at `Team/<folder>/AGENTS.md` on every invocation. Claude Code example: `.claude/agents/<slug>.md` with frontmatter `name`, `description` (phrased as a routing instruction, "Use proactively when..."), a minimal `tools` list, and the pointer body — use an existing shipped shim as the structural template. <!-- agnosticism-audit:allow -->
+3. **Chat-only host:** no shim is possible; note in the install session-log that the agent is role-playable but not dispatchable in that host.
+4. **Equivalent alternative:** re-running the activation prompt's host-binding step (ADAPTER-PROMPT step 8) performs the same walk idempotently and may be used instead of steps 1-2.
+
+Without this step the new specialists are unreachable by dispatch until the user happens to re-activate — do not skip it.
+
+### 3.7 Failure rollback
+
+If any step in §3 fails after writes have started, Nolan rolls back: undo every file copy (including any shims written in §3.6), restore every modified `INDEX.md` and root file from git (or from the pre-merge snapshot Nolan took at the start of §3). Vault returns to pre-install state.
 
 ---
 

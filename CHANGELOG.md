@@ -2,6 +2,24 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [5.1.0] - 2026-07-23
+
+**Install-friction release.** Closes the five scaffold-side findings from the end-to-end member install simulation of v5.0.1 (deliverable 14, 2026-07-23). Conducted as part of Marshall's release train; the bundled Cockpit updates to 1.4.0 on the same train (see the Cockpit's own CHANGELOG).
+
+### Added
+
+- **`Expansions/.trusted-sources` ships with the scaffold.** A read-only mirror of the canonical pin registry (private `mypka-expansions` repo, pipeline-generated), carrying the current official-pack pins: `app-developer@1.0.4`, `converter-pack@1.1.2`, `designer-pack@1.1.2`, `slack@1.0.6`, `handwritten-collaboration-loop@1.0.2`. This makes the WS-003 §2 GREEN (auto-trust) path reachable for members out of the box — previously every official pack install ended in a YELLOW security override, training members to click through the gate. The file is on the updater's framework allow-list, so pins refresh with each scaffold update. (A `mypka-cockpit@1.4.0` pin is added by the release train once the pack registry carries it.)
+- **WS-003 §3.6 "Host subagent shims".** The install workstream now explicitly creates the host-layer shim for each pack-installed agent (idempotent, per activated host, pointer-only — same walk as the activation prompt's host-binding step). Previously a by-the-book install left new specialists rostered but undispatchable until the user happened to re-activate. Failure rollback is now §3.7 and includes shims.
+
+### Fixed
+
+- **Post-install validator honesty trap.** The agnosticism audit no longer scans `Team Knowledge/session-logs/**` (user-generated operational record — a session log truthfully documenting shim work by path must not fail the member's validator), `Expansions/**`, or the `Team/<folder>/AGENTS.md` contracts of agents installed by an Expansion (pack-shipped bytes must not be able to fail or warn the member's scaffold validator; folders are read from the installed-pack manifests). This also removes the permanent 1-WARN floor the served Designer Pack's Pixel contract caused.
+- **Personalization scope was self-contradictory.** ADAPTER-PROMPT step 4 said "replace every `{{USER_NAME}}` token" while four files carry instructional mentions of the token that must survive, and two genuine tokens live inside an `AGENTS.md` that Hard Rule 1 forbids touching. The step now defines the exact replacement scope (everything except the four documentation files: `ADAPTER-PROMPT.md`, root `AGENTS.md` Personalization section, `CHANGELOG.md`, the tool-pointer file), scopes the already-personalized grep check accordingly, and names the substitution as the single sanctioned `AGENTS.md` edit. Hard Rule 1 also now defers explicitly to canonical-Workstream instructions (e.g. WS-003 roster updates), removing the install-time contradiction.
+
+### Changed
+
+- WS-003 §2 trust-tier check, root `AGENTS.md` security-gate rule, and `Expansions/README.md` reworded around the shipped pin registry (local pins first, Expansion Packs page hash as fallback for newer versions).
+
 ## [5.0.1] - 2026-07-23
 
 **Install-experience patch.** A fresh v5.0.0 download failed its own `validation-script.sh` out of the box (1 FAIL, 2 WARN) and the canonical Expansion-install path mandated an agent that no longer ships with the base scaffold. This patch makes a fresh download validate clean (exit 0, zero FAIL, zero WARN) and closes the reported install-path gaps. No structural changes.
