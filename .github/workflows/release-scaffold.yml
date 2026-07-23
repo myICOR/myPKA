@@ -32,6 +32,20 @@
 # scaffold ZIP size (~13 MB). It is currently 10 MB — Tom must raise it
 # before the first scaffold release (see the AUTO-38/39 revision report).
 #
+# COCKPIT (consolidation ruling 2026-07-23, train 3): the Cockpit's live
+# source is IN THIS REPO at Expansions/mypka-cockpit/ (the historical
+# myICOR/mypka-cockpit repo is archived; the cross-repo sync machinery is
+# retired). The `cockpit` job below builds and verifies the Cockpit from the
+# in-repo source on every release — guards ported from the retired cockpit
+# release-pack.yml: slug/version lockstep, no requires_scaffold_version,
+# fresh web/dist build as a verification gate (dist is NEVER shipped; the
+# scaffold carries source-shape, members build on install), deterministic
+# source-shape pack built twice and compared (byte-stability proof), and the
+# Expansions/.trusted-sources pin must match the in-repo expansion.yaml
+# (pin refresh rides the same PR as any cockpit manifest change).
+# The job also runs on pull_request (cockpit paths) and workflow_dispatch as
+# a dry-run; the `release` job runs on version tags only.
+#
 # Tag format:  v<semver>     e.g.  v1.10.3
 # ---------------------------------------------------------------------------
 name: Release myPKA scaffold
@@ -40,6 +54,13 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    paths:
+      - 'Expansions/mypka-cockpit/**'
+      - 'Expansions/.trusted-sources'
+      - '.github/workflows/release-scaffold.yml'
+  # Dry-run: builds + verifies the cockpit from in-repo source, no release.
+  workflow_dispatch:
 
 concurrency:
   group: release-scaffold-${{ github.ref }}
@@ -50,9 +71,141 @@ permissions:
 
 env:
   SUPABASE_URL: ${{ vars.SUPABASE_URL || 'https://fgyukrumymzgsfeadvio.supabase.co' }}
+  COCKPIT_SLUG: mypka-cockpit
+  COCKPIT_DIR: Expansions/mypka-cockpit
 
 jobs:
+  cockpit:
+    name: Cockpit build + guards (in-repo source)
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.guards.outputs.version }}
+      zip_sha256: ${{ steps.pack.outputs.zip_sha256 }}
+      manifest_sha256: ${{ steps.guards.outputs.manifest_sha256 }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guards — slug, version lockstep, gate removal, pin match
+        id: guards
+        run: |
+          set -euo pipefail
+          MANIFEST="$COCKPIT_DIR/expansion.yaml"
+          MSLUG=$(awk -F': *' '/^slug:/ {gsub(/["'"'"']/,"",$2); print $2; exit}' "$MANIFEST")
+          MV=$(awk -F': *' '/^version:/ {gsub(/["'"'"']/,"",$2); print $2; exit}' "$MANIFEST")
+          [ "$MSLUG" = "$COCKPIT_SLUG" ] || { echo "::error::expansion.yaml slug '$MSLUG' != '$COCKPIT_SLUG'"; exit 1; }
+          PV=$(python3 -c "import json;print(json.load(open('$COCKPIT_DIR/package.json'))['version'])")
+          WV=$(python3 -c "import json;print(json.load(open('$COCKPIT_DIR/web/package.json'))['version'])")
+          [ "$PV" = "$MV" ] || { echo "::error::package.json version '$PV' != expansion.yaml version '$MV'"; exit 1; }
+          [ "$WV" = "$MV" ] || { echo "::error::web/package.json version '$WV' != expansion.yaml version '$MV'"; exit 1; }
+          if grep -q '^requires_scaffold_version:' "$MANIFEST"; then
+            echo "::error::expansion.yaml still carries requires_scaffold_version (removed by ruling s7f)"; exit 1
+          fi
+          # Build artifacts must never be tracked — the scaffold ships source-shape.
+          TRACKED_ARTIFACTS=$(git ls-files -- "$COCKPIT_DIR/web/dist" "$COCKPIT_DIR/**/node_modules" | head -5)
+          if [ -n "$TRACKED_ARTIFACTS" ]; then
+            echo "::error::Build artifacts are git-tracked under $COCKPIT_DIR (must be source-shape):"
+            echo "$TRACKED_ARTIFACTS"; exit 1
+          fi
+          # Pin guard: the shipped .trusted-sources mirror must pin exactly this
+          # manifest. Any cockpit version/manifest change must refresh the pin
+          # in the same PR — this closes the cross-repo pin gap permanently.
+          MANIFEST_SHA=$(shasum -a 256 "$MANIFEST" | cut -d' ' -f1)
+          if ! grep -qE "^${COCKPIT_SLUG}@${MV} sha256=${MANIFEST_SHA}$" Expansions/.trusted-sources; then
+            echo "::error::Expansions/.trusted-sources has no pin '${COCKPIT_SLUG}@${MV} sha256=${MANIFEST_SHA}'."
+            echo "::error::Refresh the cockpit pin in the same PR that changes expansion.yaml."
+            grep "^${COCKPIT_SLUG}@" Expansions/.trusted-sources || echo "(no ${COCKPIT_SLUG} pin lines at all)"
+            exit 1
+          fi
+          echo "version=$MV"                   >> "$GITHUB_OUTPUT"
+          echo "manifest_sha256=$MANIFEST_SHA" >> "$GITHUB_OUTPUT"
+          echo "Guards passed: slug=$COCKPIT_SLUG version=$MV lockstep OK, source-shape OK, pin matches ($MANIFEST_SHA)."
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: Expansions/mypka-cockpit/web/package-lock.json
+
+      - name: Build-verification gate — fresh web/dist must build clean
+        run: |
+          set -euo pipefail
+          npm --prefix "$COCKPIT_DIR/web" ci
+          npm --prefix "$COCKPIT_DIR/web" run build
+          [ -f "$COCKPIT_DIR/web/dist/index.html" ] || { echo "::error::web/dist/index.html missing after build"; exit 1; }
+          echo "web/dist built clean ($(find "$COCKPIT_DIR/web/dist" -type f | wc -l | tr -d ' ') files)."
+          # The build must not touch any TRACKED file (dist/node_modules are ignored).
+          if git status --porcelain -- "$COCKPIT_DIR" | grep .; then
+            echo "::error::Building web/dist modified tracked files under $COCKPIT_DIR (see above)."; exit 1
+          fi
+          echo "NOTE: dist is a build gate only; the scaffold ships the cockpit source-shape (members build on install)."
+
+      - name: Package deterministic source-shape pack (built twice, byte-stable)
+        id: pack
+        env:
+          VERSION: ${{ steps.guards.outputs.version }}
+        run: |
+          set -euo pipefail
+          build_pack() {
+            # Exactly the committed tree at HEAD, rooted at the slug.
+            # (Same deterministic recipe as the retired cockpit release-pack.yml
+            #  / mypka-expansions build-pack.sh: git archive, fixed mtime,
+            #  sorted entries, no extra metadata.)
+            local out="$1" stage
+            stage="$(mktemp -d)"
+            git archive --format=tar --prefix="${COCKPIT_SLUG}/" "HEAD:${COCKPIT_DIR}" | tar -x -C "$stage"
+            local fixed_mtime="202601010000.00"
+            find "$stage/$COCKPIT_SLUG" -exec touch -t "$fixed_mtime" {} +
+            rm -f "$out"
+            ( cd "$stage" && find "$COCKPIT_SLUG" -type f -o -type d | LC_ALL=C sort | zip -X -9 "$out" -@ >/dev/null )
+            rm -rf "$stage"
+          }
+          mkdir -p dist-cockpit
+          ZIP="$(pwd)/dist-cockpit/${COCKPIT_SLUG}-v${VERSION}.zip"
+          build_pack "$ZIP"
+          build_pack "$(pwd)/dist-cockpit/rebuild-check.zip"
+          SHA1_A=$(shasum -a 256 "$ZIP" | cut -d' ' -f1)
+          SHA1_B=$(shasum -a 256 "$(pwd)/dist-cockpit/rebuild-check.zip" | cut -d' ' -f1)
+          [ "$SHA1_A" = "$SHA1_B" ] || { echo "::error::Pack build is not byte-stable ($SHA1_A != $SHA1_B)"; exit 1; }
+          rm -f "$(pwd)/dist-cockpit/rebuild-check.zip"
+
+          # Validator-style sanity checks on the artifact itself.
+          BAD_ROOT=$(unzip -l "$ZIP" | awk 'NR>3 && NF>=4 {print $4}' | grep -v '^$' | grep -cv "^${COCKPIT_SLUG}/" || true)
+          [ "$BAD_ROOT" = "0" ] || { echo "::error::Pack contains entries outside ${COCKPIT_SLUG}/ root"; exit 1; }
+          ZV=$(unzip -p "$ZIP" "${COCKPIT_SLUG}/expansion.yaml" | awk -F': *' '/^version:/ {gsub(/["'"'"']/,"",$2); print $2; exit}')
+          [ "$ZV" = "$VERSION" ] || { echo "::error::version inside pack ($ZV) != $VERSION"; exit 1; }
+          ZS=$(unzip -p "$ZIP" "${COCKPIT_SLUG}/expansion.yaml" | awk -F': *' '/^slug:/ {gsub(/["'"'"']/,"",$2); print $2; exit}')
+          [ "$ZS" = "$COCKPIT_SLUG" ] || { echo "::error::slug inside pack ($ZS) != ${COCKPIT_SLUG}"; exit 1; }
+
+          ZIP_SHA=$(shasum -a 256 "$ZIP" | cut -d' ' -f1)
+          echo "zip=$ZIP"            >> "$GITHUB_OUTPUT"
+          echo "zip_sha256=$ZIP_SHA" >> "$GITHUB_OUTPUT"
+          echo "Packaged $(basename "$ZIP"): byte-stable, zip sha256=$ZIP_SHA"
+
+      - name: Keep the pack as a provenance artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cockpit-pack
+          path: ${{ steps.pack.outputs.zip }}
+          retention-days: 30
+
+      - name: Summary
+        run: |
+          {
+            echo "### Cockpit v${{ steps.guards.outputs.version }} verified from in-repo source"
+            echo "- Pack zip sha256 (byte-stable, built twice): \`${{ steps.pack.outputs.zip_sha256 }}\`"
+            echo "- expansion.yaml sha256 (== shipped .trusted-sources pin): \`${{ steps.guards.outputs.manifest_sha256 }}\`"
+            echo "- Distribution: bundled inside the scaffold, source-shape (no standalone channel)."
+          } >> "$GITHUB_STEP_SUMMARY"
+
   release:
+    # Version tags only — pull_request / workflow_dispatch runs are cockpit
+    # verification dry-runs and must never publish anything.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: cockpit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout (the tagged commit)

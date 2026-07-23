@@ -16,14 +16,14 @@ server binds to `127.0.0.1` and your notes never leave your computer.
 
 You don't install this by hand — **your LLM assistant does it for you**:
 
-1. **Download** this folder from the myICOR library.
-2. **Drop it into your myPKA** at `Expansions/mypka-cockpit/`. If it downloaded
-   named **"myPKA Cockpit"** (with a space), rename the folder to
-   **`mypka-cockpit`** — the on-disk folder must match that slug, lowercase with
-   a hyphen.
-3. **Point your assistant at [`INSTALL.md`](./INSTALL.md)** (Claude Code, Codex
+1. **It's already in your myPKA.** The Cockpit ships bundled with the myPKA
+   scaffold (v5.1.0 and later) at `Expansions/mypka-cockpit/` - no separate
+   download. If you obtained this folder another way, place it at exactly that
+   path (the folder name must match the slug `mypka-cockpit`, lowercase with a
+   hyphen).
+2. **Point your assistant at [`INSTALL.md`](./INSTALL.md)** (Claude Code, Codex
    CLI, Cursor, …).
-4. **Say:** *"Install the myPKA Cockpit."*
+3. **Say:** *"Install the myPKA Cockpit."*
 
 > **⚠ Back up your folder first.** Installing lets your assistant **change files
 > in your knowledge base** to fit the interface. Before you start, make a

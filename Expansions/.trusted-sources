@@ -30,7 +30,11 @@
 #     b6b9c13, 8bf455f, 0a6012b, b4b6c0c, 7475136, 4faa561; cockpit pin
 #     5d240e0). Superseded-but-valid earlier pins (e.g. designer-pack@1.1.2)
 #     remain in the canonical registry; this mirror carries the versions
-#     currently served. ---
+#     currently served.
+#     Cockpit exception (consolidation 2026-07-23): mypka-cockpit source lives
+#     in THIS repo (Expansions/mypka-cockpit/), so its pin originates here —
+#     refreshed in the same PR as any cockpit manifest change and enforced by
+#     the release-scaffold.yml cockpit job (release fails on pin mismatch). ---
 app-developer@1.0.4 sha256=ada3566ec37ff197d551ac009cfaeeb7418cdf8e17297ccf06c76342c509e9ba
 converter-pack@1.1.2 sha256=e156608cb3f0d360aadf8c85d717db9a303d9d95a2e2c2ca8697284f617188d0
 designer-pack@1.1.2 sha256=9eb044044178b7b2fe680e7245f39be4d54492b4647b4d155792c7eaf7e30145

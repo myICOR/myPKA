@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The version in `expansion.yaml` is the single source of truth for a release; the
 root `package.json` and `package-lock.json` mirror it.
 
+## [Unreleased]
+
+### Changed
+
+- **Distribution: the Cockpit ships inside the myPKA scaffold again** (Tom
+  ruling 2026-07-23). Every scaffold download carries this pack at
+  `Expansions/mypka-cockpit/` (scaffold v5.1.0 and later); there is no
+  standalone zip on the Expansion Packs page, no bucket object, and no catalog
+  row. The 1.3.0 note below ("first standalone Expansion Pack release")
+  described an intent that was never executed: no release pipeline, bucket
+  object, or catalog row ever existed, so 1.3.0 was never distributed anywhere
+  and no member migration concern exists.
+- **Source of truth consolidated into the scaffold repo** (Tom ruling
+  2026-07-23, train 3). Cockpit source now lives directly in `myICOR/myPKA` at
+  `Expansions/mypka-cockpit/` — this folder IS the live source, not a synced
+  copy. The historical `myICOR/mypka-cockpit` repo is archived as read-only
+  history, and the cross-repo sync machinery (its `release-pack.yml` sync job
+  and the AUTO-28 snapshot-notify pathway) is retired. Cockpit changes ride
+  the scaffold release train: every scaffold release builds this folder from
+  source and verifies it (slug/version lockstep, fresh `web/dist` build gate,
+  deterministic source-shape pack, `.trusted-sources` pin match) before the
+  scaffold artifact is cut. Version bumps here bump `expansion.yaml`,
+  `package.json`, and `web/package.json` in lockstep plus the
+  `Expansions/.trusted-sources` pin, all in the same scaffold PR.
+
 ## [1.4.0] - 2026-07-23
 
 ### Changed

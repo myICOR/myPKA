@@ -2,6 +2,13 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [Unreleased]
+
+### Changed
+
+- **The myPKA Cockpit's source of truth now lives in this repository** at `Expansions/mypka-cockpit/` (consolidation, 2026-07-23). What ships is what you see: the bundled Cockpit folder IS the live source, not a copy synced from elsewhere. The historical `myICOR/mypka-cockpit` repository is archived as read-only history, and the cross-repo sync machinery is retired. Every scaffold release now builds and verifies the Cockpit from this in-repo source before the scaffold artifact is cut: slug/version lockstep across `expansion.yaml` / `package.json` / `web/package.json`, a fresh `web/dist` build as a verification gate (the scaffold still ships source-shape; your assistant builds on install), a byte-stable deterministic pack check, and a hard match between `expansion.yaml` and its `Expansions/.trusted-sources` pin. Licensing is unchanged: the Cockpit folder remains under the myICOR Cockpit Personal-Use License (based on PolyForm Noncommercial 1.0.0) per its own `LICENSE` file and the per-path scheme in `LICENSE-MAP.md`; the rest of the scaffold stays CC BY-NC-SA 4.0.
+- **Bundled Cockpit docs refreshed** to the bundled-distribution wording (Cockpit `CHANGELOG.md`, `INSTALL.md`, `README.md`): the Cockpit ships inside the scaffold, there is no separate download or checksum step, and its version bumps ride the scaffold release train.
+
 ## [5.1.0] - 2026-07-23
 
 **Install-friction release.** Closes the five scaffold-side findings from the end-to-end member install simulation of v5.0.1 (deliverable 14, 2026-07-23). Conducted as part of Marshall's release train; the bundled Cockpit updates to 1.4.0 on the same train (see the Cockpit's own CHANGELOG).
