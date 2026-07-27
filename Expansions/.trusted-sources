@@ -73,8 +73,14 @@ mypka-cockpit@1.4.1 sha256=2ac6ec6fd7d40694101a2455ef38c2a92af49ebe16bfece6654e6
 #     an always-on background listener holding live Slack workspace tokens is
 #     more than myICOR is willing to keep standing behind.
 #
+#     Nothing is being taken away from you. If you already have it installed
+#     it keeps running until you retire it yourself, on your own timing. This
+#     notice is the record, and it lives here in your own folder; there is no
+#     separate announcement to wait for.
+#
 #     If you are still running it, three steps, in this order. Step 2 is the
-#     one that matters: deleting local files revokes nothing.
+#     one that matters: deleting local files revokes nothing, so skipping it
+#     leaves a live bot token in your Slack workspace indefinitely.
 #       1. Stop the listener. Run Expansions/slack/scripts/uninstall.sh if you
 #          still have it. Otherwise unload the launch agent:
 #          launchctl unload ~/Library/LaunchAgents/com.mypka.slack-listener.plist
