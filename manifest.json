@@ -1,8 +1,8 @@
 {
   "_about": "This is the single source of truth (SSOT) for the myPKA scaffold version and for the framework/user-state seam. The scaffold version lives HERE, authoritatively. VERSION and .scaffold-version are kept for back-compat with older tooling, but they mirror this file; if they ever disagree, manifest.json wins. The framework_paths and user_state_paths blocks are machine-readable: the updater (scripts/update-scaffold.py) reads them to decide which files it MAY overwrite (framework, ours, upgradable) and which it must NEVER touch (user state, yours, sacred). Markdown is canonical; this JSON is the control plane that lets the folder update itself safely.",
-  "scaffold_version": "5.2.0",
+  "scaffold_version": "5.2.1",
   "released": "2026-07-27",
-  "from": "5.1.3",
+  "from": "5.2.0",
   "breaking": false,
   "version_files": {
     "authoritative": "manifest.json",

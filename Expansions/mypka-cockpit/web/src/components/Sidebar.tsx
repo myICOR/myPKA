@@ -7,7 +7,7 @@
 // contract reproduced, not the package).
 import { useEffect, useId, useRef, useState } from 'react';
 import {
-  NotebookPen, Sparkles, Users, Hash, FolderKanban,
+  NotebookPen, Users, Hash, FolderKanban,
   KeyRound, Repeat2, Target, Building2, FileText, Package, PanelLeftClose,
   UsersRound, LayoutDashboard, StickyNote, Plug, SlidersHorizontal, Search,
   ScrollText, ListChecks, BookText, ChevronRight, BarChart3
@@ -15,6 +15,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import type { NavType, EntityType } from '../lib/cockpitTypes';
 import { type Route, hrefFor } from '../lib/router';
+import { InklineMark } from './InklineMark';
 import { modulesForSection, type ModuleNavSection } from '../lib/moduleRegistry';
 import { QuickTerminalButton } from './QuickTerminalButton';
 import { S } from '../lib/strings';
@@ -262,7 +263,7 @@ export function Sidebar({ navTypes, route, open, onToggle, onNavigate, onOpenSea
       <nav className={`cockpit-sidebar ${open ? 'is-open' : ''}`} aria-label="Cockpit navigation">
         <div className="sidebar-header">
           <span className="sidebar-brand-mark" aria-hidden="true">
-            <Sparkles size={18} strokeWidth={1.5} />
+            <InklineMark size={26} />
           </span>
           <div className="sidebar-brand-text">
             <span className="sidebar-brand-title">myPKA Cockpit</span>

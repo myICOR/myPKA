@@ -2,6 +2,15 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [5.2.1] - 2026-07-27
+
+Cockpit branding and a header layout fix. No structural changes.
+
+### Cockpit (bundled, 1.5.0 to 1.5.1)
+
+- **The sidebar now carries the INKLINE infinity mark** instead of a generic sparkle icon, as a reusable `InklineMark` component using the canonical brand geometry from `mark-marker.svg`. Drawn naively the two lobes merely touch and the mark reads as "OO"; the component carries a note about that so it is not redrawn by hand.
+- **Brand header no longer wraps.** The rail is 17rem, which leaves roughly 152px for the text column after the mark, gaps and collapse button, while the subtitle needed about 174px. It wrapped to a third line and pushed the header out of shape. Both lines are single-line with an ellipsis fallback and the subtitle is sized to fit.
+
 ## [5.2.0] - 2026-07-27
 
 **The Week in Ink**: a Friday weekly recap your myPKA assembles from what you already captured, and **Team Analytics** in the Cockpit. Purely additive. No folders move, no existing note changes, no migration.
