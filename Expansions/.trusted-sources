@@ -60,8 +60,32 @@ mypka-cockpit@1.4.1 sha256=2ac6ec6fd7d40694101a2455ef38c2a92af49ebe16bfece6654e6
 #     record, and members who already hold a downloaded artifact must keep
 #     being able to verify its bytes.
 #
-#     Slack Expansion, withdrawn 2026-07-27. Removed from the offering; the
-#     download and its catalog entry are retired app-side. If you already run
-#     it, WS-003 §Uninstall returns your myPKA to its prior shape and your
-#     Slack app tokens should be revoked in the Slack admin console.
+#     The notice under each slug below is the SOURCE TEXT for the WS-003 §2
+#     RED verdict. Read it out; do not improvise around it.
+#
+# ---- slack, withdrawn 2026-07-27 --------------------------------------------
+#     The Slack Expansion is discontinued and unsupported. It receives no
+#     further updates, and there is no newer version to move to: the
+#     supported path is to retire it, not to upgrade.
+#
+#     This is NOT a security advisory. No vulnerability was found in the
+#     pack, nothing was exploited, and no data leaked. It is retired because
+#     an always-on background listener holding live Slack workspace tokens is
+#     more than myICOR is willing to keep standing behind.
+#
+#     If you are still running it, three steps, in this order. Step 2 is the
+#     one that matters: deleting local files revokes nothing.
+#       1. Stop the listener. Run Expansions/slack/scripts/uninstall.sh if you
+#          still have it. Otherwise unload the launch agent:
+#          launchctl unload ~/Library/LaunchAgents/com.mypka.slack-listener.plist
+#          and delete that plist. If you started it by hand, Ctrl+C is enough.
+#       2. Revoke the tokens AT SLACK. Open api.slack.com/apps, select your
+#          app, and delete it. That invalidates the xoxb bot token and the
+#          xapp app-level token in one move and removes the bot from your
+#          workspace. Deleting the local .env does none of this: a copy
+#          survives in Time Machine and the bot stays installed.
+#       3. Clear local artifacts. Expansions/slack/, and, if you do not want
+#          the captured message history, Team Inbox/slack-incoming/,
+#          Team Inbox/slack-outgoing/, and /tmp/mypka-slack-listener.log/.err.
+#     WS-003 §Uninstall walks the scaffold side of this with you.
 slack WITHDRAWN 2026-07-27 reason=discontinued-by-myicor
