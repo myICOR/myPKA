@@ -1,6 +1,6 @@
 <!--
 myPKA Scaffold - © 2026 Paperless Movement®, S.L.
-Licensed under CC BY-NC-SA 4.0 - see LICENSE
+Licensed under the terms in LICENSE. Per-subtree map: LICENSE-MAP.md
 ICOR® and Paperless Movement® are registered trademarks. See NOTICE.md
 -->
 
@@ -8,8 +8,8 @@ ICOR® and Paperless Movement® are registered trademarks. See NOTICE.md
 
 **An AI powered Personal Knowledge Assistance system, based on our business-proven ICOR methodology. Plain markdown. Any LLM. Yours forever.**
 
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg)](LICENSE)
-![Version](https://img.shields.io/badge/version-5.0.0-blue)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)](LICENSE)
+![Version](https://img.shields.io/badge/version-5.3.0-blue)
 ![Built on ICOR](https://img.shields.io/badge/built%20on-ICOR-C99A57)
 
 myPKA is a folder. You drop it on your machine, point your LLM at it, and you have a **six-specialist AI team** that organizes your life end to end. **It works on its own.** No database to set up, no SaaS to log into, no vendor to lose your data to.
@@ -182,15 +182,15 @@ Membership also includes office hours and walkthroughs with the team that builds
 
 > **Built on the myPKA™ Scaffold by Paperless Movement® / ICOR®.**
 > Source: https://github.com/myICOR/myPKA
-> Licensed under CC BY-NC-SA 4.0. See [`LICENSE`](LICENSE), [`NOTICE.md`](NOTICE.md), and [`LICENSE-MAP.md`](LICENSE-MAP.md).
+> Licensed under CC BY-SA 4.0. See [`LICENSE`](LICENSE), [`NOTICE.md`](NOTICE.md), [`TRADEMARK.md`](TRADEMARK.md), and [`LICENSE-MAP.md`](LICENSE-MAP.md).
 
-- **Content and code**: [CC BY-NC-SA 4.0](LICENSE). Free for personal and non-commercial use, with attribution and share-alike. Per-subtree license boundaries (base scaffold and the bundled Cockpit) are mapped in [`LICENSE-MAP.md`](LICENSE-MAP.md); Expansion Packs installed from the myICOR app carry their own licenses.
+- **Content and code**: [CC BY-SA 4.0](LICENSE). Free to use for any purpose, including commercially and inside your own business, with attribution and share-alike. Per-subtree license boundaries (base scaffold and the bundled Cockpit) are mapped in [`LICENSE-MAP.md`](LICENSE-MAP.md); Expansion Packs installed from the myICOR app carry their own licenses.
 - **Registered trademarks (US)**:
   - PAPERLESS MOVEMENT® - USPTO Reg. No. 6,689,873
   - ICOR® - USPTO Reg. Nos. 6,607,819 and 6,608,200
 - **Common-law marks**: myICOR™, myPKA™
-- See [NOTICE.md](NOTICE.md) for trademark usage guidelines.
-- Commercial licensing: contact@myicor.com
+- See [NOTICE.md](NOTICE.md) and [TRADEMARK.md](TRADEMARK.md) for trademark usage guidelines.
+- Trademark permission and OEM licensing: contact@myicor.com
 
 ## Disclaimer
 
@@ -198,7 +198,7 @@ The myPKA scaffold is a teaching artifact and a starting point, not a production
 
 You are responsible for what you do with this scaffold. That includes your own backups, your own data hygiene, your choice of LLM and AI tooling, and what you allow those tools to read or write on your machine. We are not liable for data loss, downtime, broken setups, or any other damage arising from use of the scaffold or its examples. Use at your own risk.
 
-The binding legal terms are in the [LICENSE](LICENSE) (CC BY-NC-SA 4.0), which includes the full disclaimer of warranties and limitation of liability. This section is the plain-English version of what that license already says.
+The binding legal terms are in the [LICENSE](LICENSE) (CC BY-SA 4.0), which includes the full disclaimer of warranties and limitation of liability. This section is the plain-English version of what that license already says.
 
 ## Built by
 

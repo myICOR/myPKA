@@ -1,37 +1,50 @@
 myPKA Scaffold © 2026 Paperless Movement®, S.L. (Madrid, Spain).
 
 This work is licensed under the Creative Commons
-Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0).
+Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0).
 
 To view a copy of this license, visit:
-https://creativecommons.org/licenses/by-nc-sa/4.0/
+https://creativecommons.org/licenses/by-sa/4.0/
 
 You are free to:
   - Share - copy and redistribute the material in any medium or format
   - Adapt - remix, transform, and build upon the material
+  - For any purpose, including commercially. Using myPKA to run your own
+    work or your own business is expressly permitted.
 
 Under the following terms:
-  - Attribution  - You must give appropriate credit to "myPKA Scaffold by
-                   Paperless Movement® / ICOR®", provide a link to the license,
-                   and indicate if changes were made.
-  - NonCommercial - You may not use the material for commercial purposes.
-  - ShareAlike   - If you remix, transform, or build upon the material, you
-                   must distribute your contributions under the same license.
+  - Attribution - You must give appropriate credit to "myPKA Scaffold by
+                  Paperless Movement® / ICOR®", provide a link to the license,
+                  and indicate if changes were made.
+  - ShareAlike  - If you remix, transform, or build upon the material, you
+                  must distribute your contributions under the same license.
+
+No additional restrictions - you may not apply legal terms or technological
+measures that legally restrict others from doing anything the license permits.
 
 TRADEMARK NOTICE: This license covers the copyrightable expression
-(text, structure, examples) only. The following trademarks are owned
-by Paperless Movement®, S.L. and/or its affiliated holding entity, and
-are NOT licensed under CC BY-NC-SA:
+(text, structure, examples) only. Per CC BY-SA 4.0 Section 2(b)(2), no
+trademark or patent rights are granted under the license. The following
+marks are owned by Paperless Movement®, S.L. and/or its affiliated holding
+entity, and are NOT licensed:
 
   - PAPERLESS MOVEMENT® - USPTO Reg. No. 6,689,873
   - ICOR® - USPTO Reg. Nos. 6,607,819 and 6,608,200
   - myICOR™, myPKA™ (common-law / EUTM pending)
 
-You may not use these marks to brand, promote, or endorse derivative
-works without prior written permission. See NOTICE.md for trademark
-usage guidelines.
+You may name them descriptively to say what your work is built on. You may
+not use them as the name, logo, or branding of a derivative or competing
+work. This is trademark law, not an added license restriction: these marks
+were never within the scope of the copyright license. See TRADEMARK.md.
 
-For commercial licensing inquiries: contact@myicor.com
+For trademark permission, OEM licensing, or branded redistribution:
+contact@myicor.com
+
+NOTE ON EARLIER RELEASES: Releases before v5.3.0 were published under
+CC BY-NC-SA 4.0. Creative Commons licenses are irrevocable, so those copies
+and any forks of them remain licensed under CC BY-NC-SA 4.0 and are
+unaffected by this change. The change is forward-looking and strictly more
+permissive; nothing is withdrawn from anyone.
 
 DISCLAIMER OF WARRANTIES AND LIMITATION OF LIABILITY
 

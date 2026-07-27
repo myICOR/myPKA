@@ -10,7 +10,17 @@ myPKA is the working slice of the **ICOR methodology** as practiced by Paperless
 
 **This repo does not accept pull requests.** PRs that arrive will be closed with a friendly note pointing here.
 
-If you want to improve your own version of the scaffold, **fork it freely**. The license (CC BY-NC-SA 4.0) explicitly allows you to adapt, remix, and build on the material with attribution and share-alike. That's the right path for personal customizations and experiments.
+If you want to improve your own version of the scaffold, **fork it freely**. The license (CC BY-SA 4.0) explicitly allows you to adapt, remix, and build on the material with attribution and share-alike. That's the right path for personal customizations and experiments.
+
+## Licensing of contributions
+
+If you send us anything that lands in the scaffold, whether through an issue, an
+accepted WS-002 tool pattern, or any other route, you license it to Paperless
+Movement S.L. under the same terms as the file it lands in (CC BY-SA 4.0 for the
+base scaffold), and you confirm it is yours to give. This keeps the scaffold's
+licensing clean and lets us relicense it in future without having to track down
+every contributor. If that does not work for you, say so in the issue and we will
+leave your suggestion out.
 
 ## Issues
 
@@ -45,4 +55,4 @@ Disabled on this repo for the same reason. Use the [myICOR community](https://my
 
 ## Forks
 
-Encouraged. The license permits non-commercial adaptation with attribution. If you build something useful on top of myPKA, share it through the myICOR community - we'll feature good work.
+Encouraged. The license permits adaptation for any purpose, including commercial, with attribution and share-alike. If you build something useful on top of myPKA, share it through the myICOR community - we'll feature good work.

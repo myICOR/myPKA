@@ -2,6 +2,46 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [5.3.0] - 2026-07-27
+
+**You may now use myPKA commercially.** The base scaffold moves from CC BY-NC-SA 4.0 to **CC BY-SA 4.0**. The NonCommercial term is removed. Consultants, coaches, agencies and teams may run myPKA on client work and inside a commercial operation, and that is an intended use rather than a tolerated one. No files move and no structure changes.
+
+> **Nothing is withdrawn from anyone, and no action is required of you.** Creative Commons licenses are irrevocable. Every copy downloaded before this release, and every fork of one, stays licensed under CC BY-NC-SA 4.0 permanently. This change is forward-looking and strictly more permissive: if you hold an older copy, you may simply take the new terms for a new copy. This is not a retroactive relicensing, and it cannot be one.
+
+### Licensing
+
+- **Base scaffold relicensed to CC BY-SA 4.0** (was CC BY-NC-SA 4.0). The NonCommercial term is removed. **You may now use myPKA for any purpose, including commercially and inside your own business or client work.** Attribution and ShareAlike are unchanged, and the trademark reservation is unchanged.
+
+  The NonCommercial term was the wrong instrument. It blocked members from using myPKA in their own work, which was never the intent, while doing nothing to prevent someone rebranding it. Attribution, ShareAlike, and the trademark reservation do that job directly. New `TRADEMARK.md` sets out where the branding line sits.
+
+- **What this does not reach.** Creative Commons licenses are irrevocable (CC BY-NC-SA 4.0 § 2(a)(1)). Every copy downloaded before this release, and every fork of one, remains licensed under **CC BY-NC-SA 4.0** and is unaffected. Nothing is withdrawn from anyone, no fork is stranded, and no action is required of existing holders. The change is forward-looking and strictly more permissive: if you hold an older copy, you may simply take the new terms for a new copy.
+
+- **The Cockpit runtime is unchanged** and remains under the myICOR Cockpit Personal-Use License (PolyForm Noncommercial 1.0.0 based), personal and non-commercial. It is the one subtree in this repository that stays non-commercial, and `LICENSE-MAP.md` says so in both places a reader is likely to look.
+
+- **Contributions:** `CONTRIBUTING.md` now carries an inbound licensing clause, so future licence work does not require tracking down every contributor.
+
+### Added
+
+- **`TRADEMARK.md`**, a new plain-language trademark policy. It exists because removing NonCommercial puts more weight on the trademarks: they are now the main thing preventing someone rebranding myPKA as their own product. It states what you may do without asking (say what your work is built on, use the names descriptively, use myPKA commercially and say so) and what needs written permission (naming a product after ours, using the marks as branding, implying endorsement).
+
+### Changed
+
+- **The licence identifier is removed from file headers rather than updated.** The leading comment block in `AGENTS.md`, `CLAUDE.md`, `ADAPTER-PROMPT.md` and `WAY-FORWARD.md` now reads "Licensed under the terms in LICENSE" and names no licence. The identifier was restated in eight files, against the scaffold's own SSOT Golden Rule, and that duplication was most of what made this change expensive. Headers that name no licence stay true through every future licence action.
+- `NOTICE.md`, `LICENSE-MAP.md`, `README.md`, `CONTRIBUTING.md`, `.github/PULL_REQUEST_TEMPLATE.md`, the Expansion spec's `license` field example, and the weekly-report font notice all updated to CC BY-SA 4.0. `NOTICE.md`'s "Commercial License" heading becomes "Trademark and OEM Licensing", because ordinary commercial use no longer requires anything from us.
+- `README.md`'s version badge was stale at 5.0.0 and now tracks the release.
+
+### Not changed, deliberately
+
+- **Historical CHANGELOG entries.** The v3.0.0 entry records the move *to* NonCommercial, and that was true on its date. A changelog that edits its own past is worth less than one that does not.
+- **Expansion Packs.** The Designer Pack and App Developer Pack are not part of this repository (unbundled in 5.0.0) and carry their own terms. `LICENSE-MAP.md` points at them rather than covering them.
+- **The three worked examples** in the Expansion spec keep `license: proprietary`, which remains a valid value.
+
+### Version files
+
+- `manifest.json` → `scaffold_version` `5.3.0` (authoritative SSOT), `breaking: false`.
+- `VERSION` → `5.3.0` (mirror of the manifest).
+- `.scaffold-version` → `5.3.0` (mirror of the manifest).
+
 ## [5.2.1] - 2026-07-27
 
 Cockpit branding and a header layout fix. No structural changes.

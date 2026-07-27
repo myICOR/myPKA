@@ -47,7 +47,7 @@ Every Expansion folder MUST contain an `expansion.yaml` at its root. Larry parse
 | `category` | string | Free-text tag for the AI Library (e.g., `agents`, `connector`, `productivity`). |
 | `expansion_type` | enum | `agent_pack` \| `connector` \| `runtime` \| `hybrid` |
 | `requires_agents` | list | Pre-hired agents this Expansion uses (e.g., `[Larry, Mack]`). Larry blocks install if any are missing. |
-| `license` | string | SPDX identifier or short string (`proprietary`, `MIT`, `CC-BY-NC-SA-4.0`, …). |
+| `license` | string | SPDX identifier or short string (`proprietary`, `MIT`, `CC-BY-SA-4.0`, …). |
 | `author` | string | Who shipped this Expansion. |
 
 ### Conditional / optional fields

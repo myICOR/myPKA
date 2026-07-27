@@ -1,7 +1,7 @@
 <!--
 myPKA Scaffold - © 2026 Paperless Movement® S.L.
-Licensed under CC BY-NC-SA 4.0 - see LICENSE
-ICOR®, Paperless Movement® are registered trademarks. See NOTICE.md
+Licensed under the terms in LICENSE. Per-subtree map: LICENSE-MAP.md
+ICOR®, Paperless Movement® are registered trademarks. See NOTICE.md and TRADEMARK.md
 -->
 
 # ADAPTER-PROMPT - your LLM reads this to activate the team

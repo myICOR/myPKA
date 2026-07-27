@@ -28,6 +28,6 @@ strips the embedded licence field (nameID 13) to save bytes.
    character-set subsetting, which the licence permits.
 
 The OFL applies to these font binaries only. It does not change the licence of
-the surrounding scaffold (CC BY-NC-SA 4.0, see `LICENSE-MAP.md`).
+the surrounding scaffold (CC BY-SA 4.0, see `LICENSE-MAP.md`).
 
 Full licence text: <https://openfontlicense.org/open-font-license-official-text/>
