@@ -1,7 +1,7 @@
 {
   "name": "mypka-cockpit",
   "private": true,
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "myPKA Cockpit — a navigable, wikilink-aware viewer over your myPKA. Reads mypka.db read-only; Fleeting Notes is the only write surface (PKM/Fleeting Notes/).",
   "type": "module",
   "scripts": {

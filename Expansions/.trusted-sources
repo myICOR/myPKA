@@ -51,6 +51,7 @@ designer-pack@1.1.3 sha256=8a3425f6159691083b3c1e0d6cb2c2087d00a6ee0f2b2ca448371
 handwritten-collaboration-loop@1.0.2 sha256=737d74257ae9d97c2fcf285c93ae4937446b6378a9ba9f6661e1a79323e1b70d
 mypka-cockpit@1.4.0 sha256=d877c41da0c641e704d22a6ae65d8cdae4457d7d2000cb6e53e76ed6ddca6c77
 mypka-cockpit@1.4.1 sha256=2ac6ec6fd7d40694101a2455ef38c2a92af49ebe16bfece6654e6b153f00ae5a
+mypka-cockpit@1.5.0 sha256=cde4c231941d6931bbb06644e24ce568ef5e622e7c58e2a08321562b99839eab
 
 # --- WITHDRAWN (no longer offered or supported by myICOR) ---------------------
 #     A withdrawn pack's pins are dropped from this mirror and its slug is

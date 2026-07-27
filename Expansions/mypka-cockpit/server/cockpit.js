@@ -697,4 +697,100 @@ export function listAgents() {
   return { agents: agentsStmt.all() };
 }
 
+// ---------------------------------------------------------------------------
+// Team analytics — specialist session load over a selectable time range.
+//
+// Source: session_logs (one row per run; agent_id + timestamp). This is the same
+// data the Week in Ink "team at work" slide renders, but unbounded by the weekly
+// window so a range can span any period. Avatars come from agents.avatar_path and
+// are served through the jailed /api/cockpit/avatar route; a specialist with no
+// avatar on disk returns null and the client falls back to initials.
+//
+// Read-only. Dates are compared on substr(timestamp,1,10) because session_logs
+// stores an ISO datetime and the range is day-granular.
+// ---------------------------------------------------------------------------
+const analyticsRangeStmt = db.prepare(`
+  SELECT COALESCE(NULLIF(TRIM(s.agent_id), ''), 'unspecified') AS agent_slug,
+         COUNT(*) AS sessions,
+         MIN(substr(s.timestamp,1,10)) AS first_day,
+         MAX(substr(s.timestamp,1,10)) AS last_day,
+         MAX(a.avatar_path) AS avatar_path,
+         MAX(a.name) AS name
+    FROM session_logs s
+    LEFT JOIN agents a
+      ON a.slug = COALESCE(NULLIF(TRIM(s.agent_id), ''), '~no-agent~')
+   WHERE s.timestamp IS NOT NULL AND s.timestamp <> ''
+     AND substr(s.timestamp,1,10) >= @from
+     AND substr(s.timestamp,1,10) <= @to
+   GROUP BY agent_slug
+   ORDER BY sessions DESC, agent_slug
+`);
+
+const analyticsSeriesStmt = db.prepare(`
+  SELECT substr(s.timestamp,1,10) AS day,
+         COALESCE(NULLIF(TRIM(s.agent_id), ''), 'unspecified') AS slug,
+         COUNT(*) AS sessions
+    FROM session_logs s
+   WHERE s.timestamp IS NOT NULL AND s.timestamp <> ''
+     AND substr(s.timestamp,1,10) >= @from
+     AND substr(s.timestamp,1,10) <= @to
+   GROUP BY day, slug
+   ORDER BY day
+`);
+
+const analyticsBoundsStmt = db.prepare(`
+  SELECT MIN(substr(timestamp,1,10)) AS first_day,
+         MAX(substr(timestamp,1,10)) AS last_day,
+         COUNT(*) AS total
+    FROM session_logs
+   WHERE timestamp IS NOT NULL AND timestamp <> ''
+`);
+
+const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
+
+export function teamAnalytics({ from, to } = {}) {
+  const bounds = analyticsBoundsStmt.get() || {};
+  const lo = ISO_DAY.test(String(from || '')) ? from : (bounds.first_day || '1970-01-01');
+  const hi = ISO_DAY.test(String(to || '')) ? to : (bounds.last_day || '2999-12-31');
+  const rows = analyticsRangeStmt.all({ from: lo, to: hi });
+  const total = rows.reduce((n, r) => n + r.sessions, 0);
+  // agents.name is the full "Name - Role" folder string; the client wants them
+  // apart (RosterView splits the same way).
+  const agents = rows.map((r) => ({
+    slug: r.agent_slug,
+    name: (r.name ? String(r.name).split(' - ')[0]
+                  : r.agent_slug.charAt(0).toUpperCase() + r.agent_slug.slice(1)).trim(),
+    role: r.name && String(r.name).includes(' - ')
+      ? String(r.name).split(' - ').slice(1).join(' - ').trim() : null,
+    sessions: r.sessions,
+    share: total ? Math.round((r.sessions / total) * 100) : 0,
+    avatarPath: r.avatar_path || null,
+    firstDay: r.first_day,
+    lastDay: r.last_day,
+  }));
+
+  // Daily totals, gap-filled so the sparkline has no phantom continuity.
+  const byDay = new Map();
+  for (const r of analyticsSeriesStmt.all({ from: lo, to: hi })) {
+    byDay.set(r.day, (byDay.get(r.day) || 0) + r.sessions);
+  }
+  const series = [];
+  const d = new Date(lo + 'T00:00:00Z');
+  const end = new Date(hi + 'T00:00:00Z');
+  while (d <= end && series.length < 800) {
+    const key = d.toISOString().slice(0, 10);
+    series.push({ day: key, sessions: byDay.get(key) || 0 });
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+
+  return {
+    range: { from: lo, to: hi },
+    bounds: { from: bounds.first_day || null, to: bounds.last_day || null, total: bounds.total || 0 },
+    totals: { sessions: total, specialists: agents.length, days: series.length,
+              meanPerSpecialist: agents.length ? Math.round(total / agents.length) : 0 },
+    agents,
+    series,
+  };
+}
+
 export { ENTITY, ENTITY_SET, ENTITY_TABLES };

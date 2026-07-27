@@ -1,0 +1,180 @@
+/* analytics.css — Team Analytics view.
+   Mirrors the Week in Ink deck's "team at work" slide so the two surfaces read as
+   one system: avatars ride the tip of each bar, the summary card carries the hero
+   plus KPIs.
+
+   TOKENS: this file uses the cockpit's REAL custom properties. Getting these wrong
+   is not a cosmetic slip — an undefined var() makes the whole declaration invalid,
+   so backgrounds and borders silently vanish and the grid collapses. The set in use:
+     surfaces  --surface-1 / --surface-2 / --surface-3
+     text      --fg / --fg-muted / --fg-subtle
+     borders   --border / --border-subtle / --border-emphasis
+     accent    --accent-marker / --accent-marker-soft / --accent-marker-border
+     spacing   --space-sm (8px) / --space-md (16px) / --space-lg (24px)
+   Radii and font sizes are literal (px / rem), matching team.css. */
+
+/* ---- range controls -------------------------------------------------------- */
+.an-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  padding: var(--space-sm) 0 var(--space-md);
+  flex: 0 0 auto;
+}
+.an-chip {
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-2);
+  color: var(--fg-muted);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.an-chip:hover { color: var(--fg); border-color: var(--border-emphasis); }
+.an-chip.on {
+  background: var(--accent-marker-soft);
+  color: var(--fg);
+  border-color: var(--accent-marker-border, var(--accent-marker));
+}
+.an-sep { width: 1px; height: 20px; background: var(--border-subtle); }
+.an-date {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.6875rem; color: var(--fg-subtle);
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.an-date input {
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  color: var(--fg);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 0.75rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.an-date input:focus { outline: none; border-color: var(--accent-marker); }
+.an-hint { font-size: 0.6875rem; color: var(--fg-subtle); }
+
+.an-msg { color: var(--fg-muted); font-size: 0.8125rem; padding: var(--space-md) 0; }
+.an-err { color: var(--fg); }
+
+/* ---- layout ----------------------------------------------------------------
+   Parent is .team-solo-view (flex column). This row must be the growing child and
+   must be allowed to SHRINK, hence min-height:0 here and on every card, or the
+   inner scroll never engages and the lists overrun the page. */
+.an-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: var(--space-md);
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-bottom: var(--space-md);
+}
+@media (max-width: 1000px) {
+  .an-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.an-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+.an-ct { font-size: 0.9375rem; font-weight: 600; color: var(--fg); margin: 0; }
+.an-cs {
+  font-size: 0.6875rem; color: var(--fg-subtle); margin: 4px 0 0;
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.an-sub { font-size: 0.8125rem; font-weight: 600; color: var(--fg); margin: var(--space-md) 0 var(--space-sm); }
+.an-scroll {
+  margin-top: var(--space-sm);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
+  flex: 1 1 auto;
+  padding-right: 6px;
+}
+
+/* ---- the bar chart: avatar rides the tip of its own bar -------------------- */
+.an-row { display: flex; align-items: center; gap: 12px; padding: 7px 0; }
+.an-nm {
+  width: 88px; flex: 0 0 auto;
+  font-size: 0.6875rem; color: var(--fg-muted);
+  text-transform: uppercase; letter-spacing: .08em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.an-track {
+  position: relative; flex: 1 1 auto; min-width: 0;
+  height: 24px; border-radius: 12px;
+  background: var(--surface-3, var(--surface-2));
+}
+.an-fill {
+  position: absolute; inset: 0 auto 0 0; border-radius: 12px;
+  background: linear-gradient(90deg, var(--accent-marker-soft), var(--accent-marker));
+}
+.an-face-pos { position: absolute; top: 50%; transform: translate(-50%, -50%); }
+.an-face, .an-hero-img { display: block; object-fit: cover; border-radius: 50%; }
+.an-face {
+  width: 28px; height: 28px;
+  border: 2px solid var(--surface-1);
+  box-shadow: 0 0 0 1.5px var(--accent-marker);
+  background: var(--surface-2);
+}
+.an-initials {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--fg-muted); background: var(--surface-3, var(--surface-2));
+  font-size: 0.6875rem; letter-spacing: .04em;
+}
+.an-face.an-initials { box-shadow: 0 0 0 1.5px var(--border-emphasis); }
+.an-n {
+  width: 46px; flex: 0 0 auto; text-align: right;
+  font-size: 0.8125rem; color: var(--fg);
+}
+
+/* ---- summary card ---------------------------------------------------------- */
+.an-hero {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 6px; padding: 4px 0 var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.an-hero-img {
+  width: 88px; height: 88px;
+  border: 3px solid var(--accent-marker);
+  box-shadow: 0 0 26px var(--accent-marker-soft);
+}
+.an-hero-img.an-initials { font-size: 1.125rem; }
+.an-hero-nm { font-size: 1rem; font-weight: 600; color: var(--fg); }
+.an-hero-role { font-size: 0.75rem; color: var(--fg-muted); }
+.an-hero-sub {
+  font-size: 0.6875rem; color: var(--fg-subtle);
+  text-transform: uppercase; letter-spacing: .1em;
+}
+.an-kpi {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.an-kpi b { font-size: 1.125rem; font-weight: 600; color: var(--fg); }
+.an-kpi span {
+  font-size: 0.625rem; color: var(--fg-subtle);
+  text-transform: uppercase; letter-spacing: .1em;
+}
+
+/* ---- daily sparkline ------------------------------------------------------- */
+.an-spark {
+  display: flex; align-items: flex-end; gap: 1px;
+  height: 72px; padding: 2px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: var(--space-sm);
+}
+.an-spark i {
+  flex: 1 1 0; min-width: 1px;
+  background: var(--accent-marker); border-radius: 1px 1px 0 0;
+}
+.an-spark i.zero { background: var(--border-subtle); }

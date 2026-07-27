@@ -2,6 +2,28 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [5.2.0] - 2026-07-27
+
+**The Week in Ink**: a Friday weekly recap your myPKA assembles from what you already captured, and **Team Analytics** in the Cockpit. Purely additive. No folders move, no existing note changes, no migration.
+
+### Added
+
+- **`PKM/Weekly Reports/`** - the durable archive for weekly editions, date-nested `YYYY/MM/<slug>/` like Journal and Images. Ships `INDEX.md` and a `_template/`. An edition is a folder holding `metadata.md` (the markdown SSOT) next to a rendered eight-slide deck.
+- **Three scripts in `Team Knowledge/scripts/`**: `weekly-report-gather.py` collects a covered week into a JSON bundle and reports its density; `weekly-report-render.py` turns a bundle into `metadata.md` plus the deck; `weekly-reports-nav.py` injects a foldable archive drawer into every edition so any edition is a complete entry point. `gather --range` walks every Friday in a span, which is how you backfill.
+- **`Team Knowledge/scripts/weekly-report-assets/`** - the shared deck stylesheet, engine and fonts. Deliberately a framework path rather than under `PKM/`, because `manifest.json` marks `PKM/**` as user state the updater must never write; an engine file shipped there could never receive a fix.
+- **GL-002 v2.5** - the `weekly-report` entity schema, including the anchor-versus-span rule, the media SSOT rule, and the body convention.
+
+### Design notes worth knowing
+
+- **Editions are assembled, never invented.** Every line traces to a captured source: a Journal entry, an image, a Deliverable, a session log. A week with no journal entries and no images renders an honest work-only record marked `sparse` rather than padding seven pages with inference.
+- **`iso_week` describes the Friday anchor, not the covered days.** An edition opens the preceding Saturday, which can sit in the previous ISO week. Read the explicit `week_start` to `week_end` range; query coverage with those columns, never by parsing the week number.
+- **Hand-authored editions are protected.** A `.hand-built` file in an edition folder makes the renderer refresh its `metadata.md` but never overwrite its HTML, even with `--force`.
+
+### Cockpit (bundled, 1.4.1 to 1.5.0)
+
+- **Team Analytics** page: specialist session load over a selectable range, with avatar-tipped bars and a daily-volume sparkline.
+- **`session_logs` and `weekly_reports` tables** in the regen. `Team Knowledge/session-logs/` was canonical structure that had never been mirrored; it now is, which is what makes the analytics page work.
+
 ## [5.1.3] - 2026-07-27
 
 **Withdrawal stays silent toward people already running the pack.** 5.1.2 had Larry mark an already-installed withdrawn Expansion in `Expansions/INDEX.md` and state the withdrawal once at session boot. That is removed. Withdrawing a pack ends an offering; it does not open a channel to someone already running one, and the scaffold is not a notification surface. Nothing else about the Slack withdrawal changes.

@@ -80,7 +80,8 @@ DB_PATH = ROOT / "mypka.db"
 OWNED_TABLES = [
     "people", "organizations", "topics", "projects", "goals",
     "key_elements", "habits", "documents", "deliverables",
-    "journal", "journal_media", "agents", "agent_journal", "links", "meta",
+    "journal", "journal_media", "agents", "agent_journal", "session_logs",
+    "weekly_reports", "links", "meta",
     "transactions", "quotes", "outer_world",
     # Governance docs (item: cockpit Team-Knowledge browser). One table per family,
     # indexed from Team Knowledge/Workstreams|SOPs|Guidelines. Their metadata lives
@@ -252,6 +253,35 @@ CREATE TABLE journal_media (
   id INTEGER PRIMARY KEY, journal_id INTEGER NOT NULL,
   file_path TEXT, media_type TEXT, mime_type TEXT, caption TEXT,
   sort_order INTEGER DEFAULT 0);
+CREATE TABLE weekly_reports (
+  -- One row per PKM/Weekly Reports/YYYY/MM/<slug>/metadata.md — an edition of the
+  -- weekly recap (GL-002 §"Weekly reports", type: weekly-report).
+  --
+  -- DATE COLUMNS, READ THIS BEFORE QUERYING: report_date is the FRIDAY ANCHOR and
+  -- the natural key. iso_week is the anchor's ISO week and does NOT describe the
+  -- covered span — an edition anchored on a Friday opens the preceding Saturday,
+  -- which can fall in the previous ISO week. Query coverage with week_start /
+  -- week_end, never by parsing iso_week.
+  id INTEGER PRIMARY KEY, slug TEXT NOT NULL, report_date TEXT,
+  edition INTEGER, week_start TEXT, week_end TEXT, iso_week TEXT,
+  title TEXT, status TEXT, html_path TEXT,
+  podcast_path TEXT, podcast_duration TEXT,
+  source_journal_entries TEXT, source_journal_count INTEGER,
+  source_images TEXT, source_images_count INTEGER,
+  pivotal_moments TEXT, search_expansion TEXT,
+  body TEXT, file_path TEXT, raw_frontmatter TEXT);
+CREATE INDEX idx_weekly_reports_date ON weekly_reports (report_date DESC);
+CREATE INDEX idx_weekly_reports_span ON weekly_reports (week_start, week_end);
+CREATE TABLE session_logs (
+  -- One row per Team Knowledge/session-logs/YYYY/MM/<file>.md. The append-only
+  -- record of every session the team ran, per AGENTS.md §session-log triggers.
+  -- Filename convention: YYYY-MM-DD-HH-MM_<agent>_<topic-slug>.md; agent_id and
+  -- timestamp come from the frontmatter (see session-logs/_template.md) and fall
+  -- back to the filename when a log predates the schema.
+  id INTEGER PRIMARY KEY, slug TEXT NOT NULL, agent_id TEXT, session_id TEXT,
+  timestamp TEXT, type TEXT, title TEXT,
+  linked_sops TEXT, linked_workstreams TEXT, linked_guidelines TEXT,
+  body TEXT, file_path TEXT, raw_frontmatter TEXT);
 CREATE TABLE agents (
   -- One row per Team/<Name - Role>/AGENTS.md. contract_body is the AGENTS.md
   -- markdown body (frontmatter stripped) so the cockpit's member-detail view can
@@ -407,6 +437,8 @@ CREATE INDEX idx_links_target ON links (target_slug);
 CREATE INDEX idx_journal_media_journal ON journal_media (journal_id);
 CREATE INDEX idx_journal_entry_date ON journal (entry_date);
 CREATE INDEX idx_agent_journal_agent ON agent_journal (agent_slug, created);
+CREATE INDEX idx_session_logs_ts    ON session_logs (timestamp DESC);
+CREATE INDEX idx_session_logs_agent ON session_logs (agent_id, timestamp DESC);
 CREATE INDEX idx_transactions_invoice ON transactions (linked_invoice_slug);
 CREATE INDEX idx_documents_payment_status ON documents (payment_status);
 CREATE INDEX idx_outer_world_captured_on ON outer_world (captured_on);
@@ -1268,6 +1300,90 @@ def main():
                     journal_rows += 1
     stats["agents"] = rows
     stats["agent_journal"] = journal_rows
+
+    # ---- session logs ----------------------------------------------------------
+    # Team Knowledge/session-logs/YYYY/MM/YYYY-MM-DD-HH-MM_<agent>_<topic>.md
+    # Powers the cockpit's Team Analytics view (specialist session load over time).
+    # Graceful on an empty tree: a fresh myPKA has the folder + template only.
+    rows = 0
+    FNAME_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})-(\d{2})-(\d{2})_([a-z0-9-]+)_(.+)$")
+    for path in md_files(ROOT / "Team Knowledge" / "session-logs", recursive=True):
+        if path.name.startswith("_") or path.name.lower() == "readme.md":
+            continue
+        fm, body = read_note(path)
+        slug = path.stem
+        m = FNAME_RE.match(slug)
+        # Frontmatter wins; the filename is the fallback so pre-schema logs still land.
+        agent_id = fm_str(fm, "agent_id") or (m.group(6) if m else None)
+        timestamp = fm_str(fm, "timestamp")
+        if not timestamp and m:
+            timestamp = f"{m.group(1)}-{m.group(2)}-{m.group(3)}T{m.group(4)}:{m.group(5)}:00Z"
+        title = title_from(fm, body, slug.replace("-", " "), "title")
+        cur.execute(
+            "INSERT INTO session_logs (slug, agent_id, session_id, timestamp, type, title,"
+            " linked_sops, linked_workstreams, linked_guidelines, body, file_path, raw_frontmatter)"
+            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+            (slug, agent_id, fm_str(fm, "session_id"), timestamp, fm_str(fm, "type"), title,
+             fm_list_json(fm, "linked_sops"), fm_list_json(fm, "linked_workstreams"),
+             fm_list_json(fm, "linked_guidelines"),
+             body.strip(), str(path.relative_to(ROOT)), fm_json(fm)))
+        for raw, tslug, ltype in extract_links(body):
+            link_rows.append(("session_logs", slug, raw, tslug, ltype))
+        rows += 1
+    stats["session_logs"] = rows
+
+    # ---- weekly reports --------------------------------------------------------
+    # PKM/Weekly Reports/YYYY/MM/<slug>/metadata.md, one folder per edition.
+    # Skips any path component starting with "_" so the shipped _template/ and
+    # _assets/ never land as phantom editions. A metadata.md whose report_date is
+    # not a real YYYY-MM-DD (an untouched template copy) is skipped too.
+    rows = 0
+    wr_root = ROOT / "PKM" / "Weekly Reports"
+    if wr_root.exists():
+        for path in sorted(wr_root.rglob("metadata.md")):
+            if any(part.startswith("_") for part in path.relative_to(wr_root).parts):
+                continue
+            fm, body = read_note(path)
+            slug = fm_str(fm, "slug") or path.parent.name
+            report_date = fm_str(fm, "report_date")
+            if not (report_date and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(report_date))):
+                continue
+            html_render = fm_str(fm, "html_render")
+            html_path = (str((path.parent / html_render).relative_to(ROOT))
+                         if html_render else None)
+            # podcast_path is folder-relative in the markdown (the audio lives in
+            # PKM/Audio per the media rule), so resolve it against the edition folder.
+            podcast = fm_str(fm, "podcast_path")
+            podcast_path = None
+            if podcast:
+                try:
+                    podcast_path = str((path.parent / podcast).resolve().relative_to(ROOT))
+                except (OSError, ValueError):
+                    podcast_path = podcast
+            sj = fm.get("source_journal_entries") if isinstance(fm, dict) else None
+            si = fm.get("source_images") if isinstance(fm, dict) else None
+            cur.execute(
+                "INSERT INTO weekly_reports (slug, report_date, edition, week_start, week_end,"
+                " iso_week, title, status, html_path, podcast_path, podcast_duration,"
+                " source_journal_entries, source_journal_count, source_images,"
+                " source_images_count, pivotal_moments, search_expansion, body, file_path,"
+                " raw_frontmatter) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (slug, report_date, fm_int(fm, "edition"), fm_str(fm, "week_start"),
+                 fm_str(fm, "week_end"), fm_str(fm, "iso_week"), fm_str(fm, "title"),
+                 fm_str(fm, "status"), html_path, podcast_path,
+                 fm_str(fm, "podcast_duration"),
+                 fm_list_json(fm, "source_journal_entries"),
+                 len(sj) if isinstance(sj, list) else 0,
+                 fm_list_json(fm, "source_images"),
+                 len(si) if isinstance(si, list) else 0,
+                 fm_list_json(fm, "pivotal_moments"),
+                 fm_list_json(fm, "search_expansion"),
+                 body.strip(), str(path.relative_to(ROOT)), fm_json(fm)))
+            register("weekly_reports", slug)
+            for raw, tslug, ltype in extract_links(body):
+                link_rows.append(("weekly_reports", slug, raw, tslug, ltype))
+            rows += 1
+    stats["weekly_reports"] = rows
 
     # ---- transactions (example bank data; seeded from a JSON file) --------------
     # Markdown is canonical for NOTES; bank transactions are not notes, so the example

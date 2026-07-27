@@ -39,7 +39,7 @@ export type Route =
   // the old combined RosterView into two distinct pages; `workstreams` / `sops` /
   // `guidelines` list the three Team-Knowledge doc families from mypka.db.
   | { name: 'roster' }
-  | { name: 'session-log' }
+  | { name: 'session-log' | 'team-analytics' }
   | { name: 'workstreams' }
   | { name: 'sops' }
   | { name: 'guidelines' }
@@ -95,6 +95,7 @@ export function parseHash(hash: string): Route {
   if (parts[0] === 'journal') return { name: 'journal' };
   if (parts[0] === 'roster') return { name: 'roster' };
   if (parts[0] === 'session-log') return { name: 'session-log' };
+  if (parts[0] === 'team-analytics') return { name: 'team-analytics' };
   if (parts[0] === 'workstreams') return { name: 'workstreams' };
   if (parts[0] === 'sops') return { name: 'sops' };
   if (parts[0] === 'guidelines') return { name: 'guidelines' };
@@ -139,6 +140,7 @@ export function hrefFor(route: Route): string {
     case 'journal': return '#/journal';
     case 'roster': return '#/roster';
     case 'session-log': return '#/session-log';
+    case 'team-analytics': return '#/team-analytics';
     case 'workstreams': return '#/workstreams';
     case 'sops': return '#/sops';
     case 'guidelines': return '#/guidelines';

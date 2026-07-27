@@ -18,6 +18,7 @@ import { spawn } from 'node:child_process';
 import { DB_PATH, REPO_ROOT } from './db.js';
 import {
   getNavCounts, listByType, resolveNote, getNote, listAgents, searchNotes, globalSearch,
+  teamAnalytics
 } from './cockpit.js';
 import { getNeighborhood } from './graph.js';
 import {
@@ -308,6 +309,10 @@ app.get('/api/cockpit/graph/neighborhood/:type/:slug', safe((req) => {
 // Team roster — read-only list of the active specialists (slug, "Name - Role",
 // bio, avatar_path, owner). The client renders avatars via /api/cockpit/avatar.
 app.get('/api/cockpit/agents', safe(() => listAgents()));
+
+// Team analytics — specialist session load across a selectable range (read-only).
+app.get('/api/cockpit/analytics/team', safe((req) =>
+  teamAnalytics({ from: req.query.from, to: req.query.to })));
 
 // ---- Read-only file containment ----------------------------------------------
 // path.relative() is the containment check (NOT a string prefix — a sibling dir

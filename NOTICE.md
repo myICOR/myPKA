@@ -41,3 +41,22 @@ README:
 ## Commercial License
 For commercial use, OEM licensing, or branded redistribution, contact:
 contact@myicor.com
+
+## Third-party assets
+
+### Fonts (SIL Open Font License 1.1)
+
+The weekly-report deck bundles four webfonts in
+`Team Knowledge/scripts/weekly-report-assets/inkline-fonts.css`, all under the
+SIL Open Font License 1.1:
+
+| Font | Copyright |
+|---|---|
+| Bricolage Grotesque | © 2022 The Bricolage Grotesque Project Authors |
+| Instrument Sans | © 2022 The Instrument Sans Project Authors |
+| Caveat | © 2014 The Caveat Project Authors |
+| Spline Sans Mono | © 2022 The Spline Sans Mono Project Authors |
+
+Full attribution and the OFL obligations are in
+`Team Knowledge/scripts/weekly-report-assets/FONT-LICENSES.md`. The OFL governs
+those font binaries only; it does not alter the licence of the scaffold.

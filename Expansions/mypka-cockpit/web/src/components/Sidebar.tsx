@@ -10,7 +10,7 @@ import {
   NotebookPen, Sparkles, Users, Hash, FolderKanban,
   KeyRound, Repeat2, Target, Building2, FileText, Package, PanelLeftClose,
   UsersRound, LayoutDashboard, StickyNote, Plug, SlidersHorizontal, Search,
-  ScrollText, ListChecks, BookText, ChevronRight,
+  ScrollText, ListChecks, BookText, ChevronRight, BarChart3
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { NavType, EntityType } from '../lib/cockpitTypes';
@@ -47,7 +47,7 @@ const IS_MAC = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(naviga
 
 // The five routes the "My AI Team" fly-out leads to. The trigger row stays lit
 // while any of them is the active route.
-const TEAM_ROUTES = ['roster', 'session-log', 'workstreams', 'sops', 'guidelines'] as const;
+const TEAM_ROUTES = ['roster', 'session-log', 'team-analytics', 'workstreams', 'sops', 'guidelines'] as const;
 function isTeamRoute(route: Route): boolean {
   return (TEAM_ROUTES as readonly string[]).includes(route.name);
 }
@@ -108,6 +108,7 @@ function ModuleRows({
 const TEAM_FLYOUT_ITEMS: ReadonlyArray<{ route: Route; label: string; icon: LucideIcon }> = [
   { route: { name: 'roster' }, label: S.team.flyout.roster, icon: UsersRound },
   { route: { name: 'session-log' }, label: S.team.flyout.sessionLog, icon: ScrollText },
+  { route: { name: 'team-analytics' }, label: 'Analytics', icon: BarChart3 },
   { route: { name: 'workstreams' }, label: S.team.flyout.workstreams, icon: Repeat2 },
   { route: { name: 'sops' }, label: S.team.flyout.sops, icon: ListChecks },
   { route: { name: 'guidelines' }, label: S.team.flyout.guidelines, icon: BookText },

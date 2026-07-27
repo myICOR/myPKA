@@ -323,6 +323,49 @@ Notes:
 - `renewal_trigger` is the date you want to be reminded to act. The actual `expiry_date` may be later.
 - Body section conventions: `## Summary`, `## Key terms`, `## Notes`.
 
+### Weekly reports (`type: weekly-report`) - `PKM/Weekly Reports/YYYY/MM/<slug>/metadata.md`
+
+One edition of **The Week in Ink**, the Friday weekly recap. The folder is the unit: `metadata.md` carries this schema plus a markdown mirror of the week, and sits next to the rendered deck. An edition is **assembled from captured sources**, never authored from memory, so the frontmatter is largely a provenance record. See [[PKM/Weekly Reports/INDEX]] for the production scripts.
+
+```yaml
+---
+type: weekly-report                                 # required, always literally 'weekly-report'
+report_date: 2026-07-10                             # required - ISO YYYY-MM-DD, the FRIDAY anchor, natural key
+slug: 2026-07-10-week-in-ink-28                     # required - matches the folder name
+edition: 28                                         # integer, monotonic edition number
+week_start: 2026-07-04                              # first day covered (inclusive)
+week_end: 2026-07-10                                # last day covered (inclusive; equals report_date)
+iso_week: 2026-W28                                  # ISO week of the ANCHOR - see the warning below
+title: "It Has Two Souls"                           # the edition headline
+status: published                                   # draft | published | archived
+html_render: the-week-in-ink-2026-07-10.html        # bare filename of the deck inside the folder
+podcast_path: ""                                    # folder-relative path to episode audio, or "" for none
+podcast_duration: ""                                # mm:ss, or ""
+source_journal_entries: []                          # Journal slugs the edition was gathered from
+source_images: []                                   # PKM/Images filenames behind any renditions/
+pivotal_moments: []                                 # Journal slugs of the week's turning points
+search_expansion: []                                # offline-search vocabulary (see notes)
+specialists: []                                     # contributing specialist slugs
+tags:
+  - weekly-report
+  - week-in-ink
+---
+```
+
+**Required fields:** `type` (always literally `weekly-report`), `report_date`, `slug`.
+
+**Notes:**
+
+- **`iso_week` describes the anchor, NOT the covered span.** An edition is anchored on a Friday but opens the preceding Saturday, which can fall in the previous ISO week: edition 28 is labelled `2026-W28` yet covers 2026-07-04, a Saturday in ISO week 27. Always render and query the explicit `week_start` to `week_end` range. The week number alone is ambiguous to a reader and wrong to parse.
+- `report_date` is the Friday anchor and the natural key (one edition per week). `week_end` equals it by contract.
+- `edition` is monotonic and is not derivable from the date if the series predates the automation, so it is stored.
+- `html_render` is a **bare filename** inside the edition folder. `podcast_path` is **folder-relative**, because original media lives in its canonical PKM home rather than in the edition folder (see the media rule below).
+- **Media placement (SSOT).** Original media produced for an edition lives in `PKM/Audio/YYYY/MM/` or `PKM/Videos/YYYY/MM/`, and recurring brand assets under `Team Knowledge/Brand Assets/`. The edition references them by relative path. The single exception is a `renditions/` folder inside the edition, holding downscaled or format-converted derivatives of `PKM/Images` originals, because browsers cannot render `.heic` and full-resolution originals are far heavier than needed. Renditions are regenerable derivatives, not a competing source of truth, and each must be traceable through `source_images`.
+- `source_journal_entries`, `source_images` and `pivotal_moments` are the provenance chain. They make an edition reproducible and let the mirror answer "which week covered this entry".
+- `search_expansion` is the offline-search vocabulary (topics, synonyms, entities, questions the edition answers) written so a plain keyword match behaves semantically. It backs the in-page filter in the archive drawer, which cannot reach an embedding model from a `file://` page.
+- **Body convention:** the markdown body is a real prose mirror of the week, day by day, not a description of the deck. It is the searchable artefact; a body full of section scaffolding makes the edition unfindable.
+- **Indexing:** the regen walks `PKM/Weekly Reports/**/metadata.md` into the `weekly_reports` table, skipping any path component beginning with `_` (so `_template/` and `_assets/` never land as phantom editions) and any `report_date` that is not a real `YYYY-MM-DD`. Markdown is canonical; the table is derived.
+
 ## Specialist-contract frontmatter
 
 The schemas above govern PKM **entity notes**. Specialist **contracts** carry their own small set of frontmatter keys (`agent_version`, `agent_status`, `owner`, etc.). This section documents one optional contract-level field that is part of the v4 tool-agnostic core: `model`.
@@ -379,5 +422,6 @@ If the rules change, update this file. Do not duplicate the change into SOPs, Wo
 
 ### Version history
 
+- **v2.5** - Added the **Weekly reports** entity schema (`type: weekly-report`, `PKM/Weekly Reports/YYYY/MM/<slug>/metadata.md`) for The Week in Ink, the Friday weekly recap. One folder per edition; `metadata.md` carries the provenance frontmatter plus a prose mirror of the week, next to the rendered deck. Documents the anchor-versus-span trap (`iso_week` describes the Friday anchor, not the covered days, so coverage is queried via `week_start`/`week_end`), the media SSOT rule (originals stay in `PKM/Audio` / `PKM/Videos` / Brand Assets and are referenced; only regenerable image `renditions/` sit inside the edition), and the body convention (a real day-by-day mirror, because the body is the searchable artefact). Mirrored by the new `weekly_reports` table in the cockpit regen. Additive and backward-compatible - no existing note changes.
 - **v2.4** - Added the **`model`** optional contract-level field (new section "Specialist-contract frontmatter"). `model` applies to specialist contracts (`Team/<Name> - <Role>/AGENTS.md`) and their `.claude/agents/<slug>.md` shims, not to PKM entity notes. Value is a portable tier alias (`reasoning` | `balanced` | `fast`); omit to inherit the session/harness default. The harness adapter resolves the alias to a concrete model (e.g. Claude Code maps `reasoning`/`balanced`/`fast` to Opus/Sonnet/Haiku in the shim); the contract stays provider-neutral. An explicit `provider/model-id` string is permitted but flagged by the agnosticism-audit as a coupling warning. OpenRouter documented as the supported BYO-key router (Anthropic-compatible endpoint via `ANTHROPIC_BASE_URL`), with alias-to-slug resolution living in the adapter. Added Lex's ToS INVARIANT: an Anthropic-resolved `model` called by our own code must use an API key / Bedrock / Vertex, never a subscription OAuth token, and never `~/.claude/.credentials.json` (co-enforced with Vex by the agnosticism-audit). Additive and backward-compatible - contracts without `model` stay valid and inherit the default.
 - **v2.3** - My Life model encoded as a first-class schema concept. Added the intro section "The My Life model - buckets, the Goal layer, and the filter test" (four buckets: Key Element = permanent, Project = bounded, Habit = cadenced, Topic = exploration; Goals as an operating layer, not a fifth bucket; a filter-test table for correct placement). **Goal** `key_element` is now REQUIRED and constrained to Key-Element slugs only (the anchor rule; rule-5 required-fields table updated to `name, key_element`); added the **carrier doctrine** (a Goal is carried by exactly one of two siblings - a Project via `linked_projects` OR a Habit via `linked_habits`, never both, never a Topic, no third shape) and `linked_topics` (context only). **Topic** gains `lifecycle` (exploring | promoted | dormant) + `promoted_to` (Key-Element slug) to encode Topic → Key Element graduation as first-class, and the prose now distinguishes graduation from the Open-Question → Project move. **Key Element** gains `promoted_from` (reverse of Topic `promoted_to`) and an `archived` status (the reverse transition - a domain leaving the life). **Habit** gains `linked_goals` (the Habit side of the carrier doctrine). **Project** schema formalized `linked_topics` and documented `linked_goals` as the Project side of the carrier doctrine. All changes additive and backward-compatible - notes without the new fields stay valid; the SQLite migration picks up new optional columns as NULL. Authored under §"Never invent ad-hoc fields" and §"How to extend" path 1. The four My Life templates (goal, topic, key-element, habit) were updated in the same change.

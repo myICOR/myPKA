@@ -15,6 +15,7 @@ import { HubView } from './views/HubView';
 import { JournalView } from './views/JournalView';
 import { RosterView } from './views/RosterView';
 import { SessionLogView } from './views/SessionLogView';
+import { TeamAnalyticsView } from './views/TeamAnalyticsView';
 import { TeamKnowledgeListView } from './views/TeamKnowledgeListView';
 import { ConnectionsView } from './views/ConnectionsView';
 import { SettingsView } from './views/SettingsView';
@@ -109,6 +110,7 @@ export default function App() {
   const teamFull =
     route.name === 'roster' ||
     route.name === 'session-log' ||
+    route.name === 'team-analytics' ||
     route.name === 'workstreams' ||
     route.name === 'sops' ||
     route.name === 'guidelines';
@@ -154,6 +156,7 @@ function ContentRouter({ route }: { route: ReturnType<typeof useRoute> }) {
     case 'journal': return <JournalView />;
     case 'roster': return <RosterView />;
     case 'session-log': return <SessionLogView />;
+    case 'team-analytics': return <TeamAnalyticsView />;
     case 'workstreams': return <TeamKnowledgeListView family="workstreams" />;
     case 'sops': return <TeamKnowledgeListView family="sops" />;
     case 'guidelines': return <TeamKnowledgeListView family="guidelines" />;
