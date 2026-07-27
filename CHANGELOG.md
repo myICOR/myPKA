@@ -2,6 +2,30 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [5.1.3] - 2026-07-27
+
+**Withdrawal stays silent toward people already running the pack.** 5.1.2 had Larry mark an already-installed withdrawn Expansion in `Expansions/INDEX.md` and state the withdrawal once at session boot. That is removed. Withdrawing a pack ends an offering; it does not open a channel to someone already running one, and the scaffold is not a notification surface. Nothing else about the Slack withdrawal changes.
+
+### Removed
+
+- **The session-boot withdrawal notice for already-installed Expansions.** Larry no longer states anything when he finds an installed pack whose slug is withdrawn.
+- **The `withdrawn` marker on that pack's `Expansions/INDEX.md` row.** An installed Expansion's row renders exactly as it did before, and Larry does not annotate it. The row was never false without the marker: it reports name, type, version, what the pack does and that it is installed, all of which stay true after a withdrawal. Adding information is not the same as correcting a falsehood, and this file is one the member reads.
+
+### Changed
+
+- **WS-003's already-installed edge case now records the deliberate non-action**, and Larry's Expansion Discovery carries the matching rule, so neither reads as an oversight a later session should helpfully fill in. Both state the boundary plainly: answer honestly if the user asks, never raise it unprompted.
+
+### Unchanged
+
+- **The RED install gate.** WS-003 §2 check 1 still refuses a withdrawn slug with no override path, and still reads its wording from the notice in `Expansions/.trusted-sources`. That gate faces someone actively trying to install, which is a question they asked, and it still carries the full offboarding steps including revoking tokens at the third party.
+- Everything else in 5.1.2: the `slack@1.0.6` pin stays out, the `WITHDRAWN` block stays in, and the `slack/` slug stays reserved.
+
+### Version files
+
+- `manifest.json` → `scaffold_version` `5.1.3` (authoritative SSOT), `breaking: false`.
+- `VERSION` → `5.1.3` (mirror of the manifest).
+- `.scaffold-version` → `5.1.3` (mirror of the manifest).
+
 ## [5.1.2] - 2026-07-27
 
 **The Slack Expansion is discontinued.** myICOR no longer offers or supports it. Its pin is gone from the shipped trust registry, every scaffold surface that presented it as an available official pack has been reworded, and the security gate now has an explicit way to say "withdrawn" instead of falling back to the much weaker "not pinned yet." No structural changes; nothing in your folder moves.
