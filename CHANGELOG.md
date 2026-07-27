@@ -2,6 +2,39 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [5.1.2] - 2026-07-27
+
+**The Slack Expansion is withdrawn.** myICOR no longer offers or supports the Slack Expansion. Its pin is gone from the shipped trust registry, every scaffold surface that presented it as an available official pack has been reworded, and the security gate now has an explicit way to say "withdrawn" instead of falling back to the much weaker "not pinned yet." No structural changes; nothing in your folder moves.
+
+> **If you already run the Slack Expansion, nothing breaks and nothing is removed.** `Expansions/*/` is user state and the scaffold updater never touches it. Your installed pack keeps running exactly as it did. What changes is that it is no longer supported, no longer downloadable, and a fresh install of it is now refused by the security gate. If you want it off your machine, [[WS-003-install-an-expansion]] §Uninstall returns your myPKA to its prior shape; revoke the pack's bot and app-level tokens in your Slack workspace admin afterwards, because uninstalling locally does not invalidate credentials held by Slack.
+
+### Removed
+
+- **`slack@1.0.6` is no longer pinned in `Expansions/.trusted-sources`.** The shipped file is a mirror of the versions currently served, and Slack is no longer one of them. Historical Slack pins remain in the canonical registry in the private `mypka-expansions` repo: that registry is an append-only audit record, and members who still hold a downloaded artifact must keep being able to verify its bytes.
+- **Slack removed from the roadmap and membership surfaces in `WAY-FORWARD.md`.** The "Slack integration" line in the AI Library section and the Slack mention in the out-of-scope list both described an offering that no longer exists.
+
+### Added
+
+- **A `WITHDRAWN` block in `Expansions/.trusted-sources`, and a matching resolution in WS-003 §2 check 1.** Removing a pin on its own is not a withdrawal signal. An absent pin resolves YELLOW, which means "this version has not been audited yet, override if you are sure" and reads as a temporary state a member is invited to click past. That is the opposite of what withdrawal means. A slug named in the new `WITHDRAWN` block now resolves **RED with no override path**, regardless of hash: a matching hash proves the bytes are authentic, never that the pack is still supported. Larry states the withdrawal date and reason, and offers §Uninstall plus credential revocation to members who already run it. Line format is `<slug> WITHDRAWN <YYYY-MM-DD> reason=<token>`, deliberately without a `sha256=` field so it can never be mistaken for a pin.
+
+### Changed
+
+- **The `slack/` slug stays RESERVED** in the `Expansions/docs/expansion-spec.md` naming table, now marked withdrawn. Withdrawing a pack must not free its slug: an unreserved `slack/` could be claimed by a third-party Expansion trading on the myICOR name. Reservation plus refusal is the correct end state, not deletion.
+- **Expansion-spec Example 2 is now a generic, clearly illustrative chat-relay runtime** (`acme-chat-relay`, MIT, third-party author) instead of the Slack Expansion manifest. The old example doubled as advertising, carried a `homepage:` URL that no longer resolves, and presented `author: myICOR` on a pack that is no longer issued. Every schema feature it demonstrated (runtime block, launchd plist, sensitive env vars, `residual_paths`) is preserved.
+- **Slack dropped from the install-trigger examples** in root `AGENTS.md`, `Team/Larry - Orchestrator/AGENTS.md`, and WS-003's trigger contract, and from Larry's AI Library answer. The triggers themselves are unchanged; only the illustrative pack name moved to one that is actually offered.
+- **The manifest-tampering security table in the Expansion spec gains a "Withdrawn packs" row**, and root `AGENTS.md` plus Larry's Expansion Discovery routine now name the withdrawn-slug refusal alongside the hash check.
+
+### Not changed, deliberately
+
+- **Generic Slack references survive.** The WS-003 §2 check 5 and spec security rule about `unfurl_links: false` / `unfurl_media: false` are guidance for anyone building a chat relay against the Slack API, not an offer of a myICOR pack. Prose examples elsewhere in the folder that merely name Slack as a tool are untouched.
+- **Historical CHANGELOG entries are not rewritten.** Earlier releases that pinned `slack@1.0.2` / `1.0.3` / `1.0.6` describe what actually shipped on those dates. A changelog that edits its own past is worth less than one that does not.
+
+### Version files
+
+- `manifest.json` → `scaffold_version` `5.1.2` (authoritative SSOT), `breaking: false`.
+- `VERSION` → `5.1.2` (mirror of the manifest).
+- `.scaffold-version` → `5.1.2` (mirror of the manifest).
+
 ## [5.1.1] - 2026-07-23
 
 **Consolidation patch.** The bundled Cockpit's source of truth moves into this repository and the release pipeline now builds and verifies it on every cut; the bundled Cockpit becomes **1.4.1** (docs-only patch: the 1.4.0 install docs still described a standalone download that never existed). No functional changes for members beyond corrected install docs.

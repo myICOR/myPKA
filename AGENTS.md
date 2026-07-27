@@ -183,7 +183,7 @@ Trigger phrases → action:
 
 | User says (or implies) | Action |
 |---|---|
-| "install the [X] Expansion" / "install Slack" / "install the [X] pack" | Run [[WS-003-install-an-expansion]] |
+| "install the [X] Expansion" / "install the Designer Pack" / "install the [X] pack" | Run [[WS-003-install-an-expansion]] |
 | "I dropped the [X] pack into Expansions/" / "there's a new folder in Expansions" | Detect → confirm → run WS-003 |
 | "uninstall [X]" / "remove the [X] Expansion" / "rip out [X]" | Run WS-003 §Uninstall |
 | (LLM-detected at session boot — new folder in `Expansions/` with valid `expansion.yaml` not yet in `Expansions/INDEX.md` or `Expansions/_installed/`) | Larry announces + offers to run WS-003 |
@@ -191,7 +191,7 @@ Trigger phrases → action:
 Rules:
 
 - **Boot-time detection.** Larry scans `Expansions/` on every session start. New folders trigger an announcement, not auto-install. The user gives the go-ahead.
-- **The security gate is hard.** No install proceeds past §2 of WS-003 without a recorded security verdict. The review routes to Vex if installed (e.g. via the App Developer Pack); otherwise Larry executes the WS-003 §2 security checklist himself before any Expansion install and records the verdict. Tier-2 (myICOR-issued) Expansions verify against the shipped pin registry at `Expansions/.trusted-sources` (refreshed with every scaffold release), with the integrity hash published on the myICOR Expansion Packs page as the fallback for versions newer than your scaffold's pins.
+- **The security gate is hard.** No install proceeds past §2 of WS-003 without a recorded security verdict. The review routes to Vex if installed (e.g. via the App Developer Pack); otherwise Larry executes the WS-003 §2 security checklist himself before any Expansion install and records the verdict. Tier-2 (myICOR-issued) Expansions verify against the shipped pin registry at `Expansions/.trusted-sources` (refreshed with every scaffold release), with the integrity hash published on the myICOR Expansion Packs page as the fallback for versions newer than your scaffold's pins. A slug named in that file's `WITHDRAWN` block is refused outright (RED, no override): the pack is no longer offered or supported, whatever its hash says.
 - **No silent overwrites.** If a merge target already exists in `Team/`, `Team Knowledge/SOPs/`, etc., Nolan stops and asks.
 - **Larry NEVER auto-launches runtime Expansions.** Mack announces; the user double-clicks the start script.
 

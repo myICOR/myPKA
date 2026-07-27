@@ -11,6 +11,8 @@
 # `<slug>@<version>` line below.
 #   Match          -> GREEN (auto-trust, calm announcement).
 #   Mismatch       -> RED (refuse the install).
+#   Withdrawn slug -> RED (refuse the install) regardless of hash. See the
+#                     WITHDRAWN block at the bottom of this file.
 #   No entry found -> YELLOW (version not pinned yet — explicit user override
 #                     required, or check the myICOR Expansion Packs page for a
 #                     freshly published hash).
@@ -19,6 +21,13 @@
 #   <slug>@<version> sha256=<hex>
 #
 # Hash is sha256 of the bytes of expansion.yaml only.
+#
+# WITHDRAWN packs are a separate, deliberate state, not the same thing as an
+# unpinned version. An absent pin only means "not audited yet" and resolves
+# YELLOW, which is exactly the wrong signal for a pack that has been pulled
+# from the offering. A withdrawn slug is therefore named explicitly below so
+# the gate can say so. Format (one entry per line, no hash by design):
+#   <slug> WITHDRAWN <YYYY-MM-DD> reason=<short-token>
 #
 # DO NOT hand-edit or append entries here. Community Expansions never go in
 # this file — they go through the tier-3 trust prompt. New official pins
@@ -39,7 +48,20 @@ app-developer@1.0.4 sha256=ada3566ec37ff197d551ac009cfaeeb7418cdf8e17297ccf06c76
 converter-pack@1.1.2 sha256=e156608cb3f0d360aadf8c85d717db9a303d9d95a2e2c2ca8697284f617188d0
 designer-pack@1.1.2 sha256=9eb044044178b7b2fe680e7245f39be4d54492b4647b4d155792c7eaf7e30145
 designer-pack@1.1.3 sha256=8a3425f6159691083b3c1e0d6cb2c2087d00a6ee0f2b2ca44837190f5a05e9a9
-slack@1.0.6 sha256=8023aa3451b402c5913605f2a46f645564fb65427b954432e22be99cdab3b133
 handwritten-collaboration-loop@1.0.2 sha256=737d74257ae9d97c2fcf285c93ae4937446b6378a9ba9f6661e1a79323e1b70d
 mypka-cockpit@1.4.0 sha256=d877c41da0c641e704d22a6ae65d8cdae4457d7d2000cb6e53e76ed6ddca6c77
 mypka-cockpit@1.4.1 sha256=2ac6ec6fd7d40694101a2455ef38c2a92af49ebe16bfece6654e6b153f00ae5a
+
+# --- WITHDRAWN (no longer offered or supported by myICOR) ---------------------
+#     A withdrawn pack's pins are dropped from this mirror and its slug is
+#     named here instead. The slug stays reserved: no community Expansion may
+#     claim it. Historical pin lines are NOT deleted from the canonical
+#     registry in mypka-expansions. That registry is an append-only audit
+#     record, and members who already hold a downloaded artifact must keep
+#     being able to verify its bytes.
+#
+#     Slack Expansion, withdrawn 2026-07-27. Removed from the offering; the
+#     download and its catalog entry are retired app-side. If you already run
+#     it, WS-003 §Uninstall returns your myPKA to its prior shape and your
+#     Slack app tokens should be revoked in the Slack admin console.
+slack WITHDRAWN 2026-07-27 reason=discontinued-by-myicor

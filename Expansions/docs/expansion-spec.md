@@ -27,7 +27,7 @@ The OSS scaffold's `Expansions/` folder is **structurally empty by design**. It 
 |---|---|---|
 | `agent_pack` | New specialists (`adds_agents`), their SOPs, optionally Guidelines/Templates | App Developer Pack (Felix + Vex + Vera) |
 | `connector` | OAuth/API/webhook wiring, env vars, MCP server registrations. May add SOPs default-owned by Mack. | Notion, Readwise, Linear |
-| `runtime` | Long-lived background process (`start.command` / launchd plist). Listener/relay shape. | Slack Expansion, mypka-interface |
+| `runtime` | Long-lived background process (`start.command` / launchd plist). Listener/relay shape. | myPKA Cockpit, a chat-relay listener |
 | `hybrid` | Combines two of the above. Rare. Permitted only when splitting into two Expansions would produce a worse user experience. | An agent pack that also ships a runtime listener |
 
 ---
@@ -121,40 +121,44 @@ post_install_validation:
   - { type: "file_exists", path: "Team/Vera - QA Specialist/AGENTS.md" }
 ```
 
-### Example 2 — `runtime` (Slack Expansion)
+### Example 2: `runtime` (chat-relay listener, illustrative)
+
+A worked example of the `runtime` shape: a long-lived listener that relays messages
+between a third-party chat workspace and `Team Inbox/`. Illustrative only. It is not a
+pack anyone ships, and the values below are placeholders.
 
 ```yaml
-name: Slack Expansion
-slug: slack
+name: Chat Relay
+slug: acme-chat-relay
 version: 1.0.0
-description: Use Slack as a chat surface for Larry. Inbound DMs and @-mentions land in Team Inbox; replies post back in-thread.
+description: Use your chat workspace as a surface for Larry. Inbound DMs and @-mentions land in Team Inbox; replies post back in-thread.
 category: connector
 expansion_type: runtime
 requires_agents: [Larry, Mack]
-license: proprietary
-author: myICOR
-homepage: https://myicor.com/library/slack
+license: MIT
+author: Acme Labs
+homepage: https://example.com/chat-relay
 
 adds_agents: []
 adds_sops:
-  - { default_owner: Larry, file: SOP-slack-incoming-routing.md }
-  - { default_owner: Mack,  file: SOP-slack-post-message.md }
-  - { default_owner: Mack,  file: SOP-slack-listener-health.md }
+  - { default_owner: Larry, file: SOP-chat-relay-incoming-routing.md }
+  - { default_owner: Mack,  file: SOP-chat-relay-post-message.md }
+  - { default_owner: Mack,  file: SOP-chat-relay-listener-health.md }
 adds_guidelines: []
 adds_workstreams: []
 adds_templates: []
 env_vars:
-  - { key: SLACK_BOT_TOKEN,         description: "Slack bot token (xoxb-...)",                     required: true,  sensitive: true }
-  - { key: SLACK_APP_TOKEN,         description: "Slack app-level token (xapp-...) for Socket Mode", required: true,  sensitive: true }
-  - { key: SLACK_DEFAULT_CHANNEL,   description: "Default channel ID for outbound posts",          required: false, sensitive: false }
-  - { key: SLACK_NOTIFY_OS,         description: "Surface OS notifications on inbound (true/false)", required: false, sensitive: false }
-  - { key: SLACK_AUTORESPONDER_MIN, description: "Minutes before autoresponder fires (default 30)", required: false, sensitive: false }
+  - { key: CHAT_BOT_TOKEN,         description: "Bot token for the chat workspace",                 required: true,  sensitive: true }
+  - { key: CHAT_SOCKET_TOKEN,      description: "App-level token for the socket connection",        required: true,  sensitive: true }
+  - { key: CHAT_DEFAULT_CHANNEL,   description: "Default channel ID for outbound posts",            required: false, sensitive: false }
+  - { key: CHAT_NOTIFY_OS,         description: "Surface OS notifications on inbound (true/false)", required: false, sensitive: false }
+  - { key: CHAT_AUTORESPONDER_MIN, description: "Minutes before autoresponder fires (default 30)",  required: false, sensitive: false }
 post_install_steps:
-  - "Create a Slack app at https://api.slack.com/apps (paste the manifest from INSTALL.md)."
-  - "Enable Socket Mode, install the app to your workspace, copy xoxb and xapp tokens into .env."
+  - "Create the app in your chat workspace's developer console (see INSTALL.md)."
+  - "Enable the socket connection, install the app to your workspace, copy both tokens into .env."
   - "Double-click scripts/start.command to launch the listener."
 post_install_validation:
-  - { type: "shell", cmd: "test -s Expansions/slack/.env", expect_exit: 0 }
+  - { type: "shell", cmd: "test -s Expansions/acme-chat-relay/.env", expect_exit: 0 }
 runtime:
   start:
     command: ./scripts/start.command
@@ -166,12 +170,12 @@ runtime:
 uninstall:
   method: rm-rf-folder
   residual_paths:
-    - ~/Library/LaunchAgents/com.myicor.mypka-slack-listener.plist
-    - Team Knowledge/SOPs/SOP-slack-incoming-routing.md
-    - Team Knowledge/SOPs/SOP-slack-post-message.md
-    - Team Knowledge/SOPs/SOP-slack-listener-health.md
-    - Team Inbox/slack-incoming/
-    - Team Inbox/slack-outgoing/
+    - ~/Library/LaunchAgents/com.acme.mypka-chat-relay-listener.plist
+    - Team Knowledge/SOPs/SOP-chat-relay-incoming-routing.md
+    - Team Knowledge/SOPs/SOP-chat-relay-post-message.md
+    - Team Knowledge/SOPs/SOP-chat-relay-listener-health.md
+    - Team Inbox/chat-relay-incoming/
+    - Team Inbox/chat-relay-outgoing/
 ```
 
 ### Example 3 — `connector` (Notion-style, illustrative)
@@ -210,7 +214,7 @@ post_install_validation:
 - **Folder name = `slug`.** No exceptions.
 - **Trinity files at root:** `expansion.yaml`, `README.md`, `ADAPT-EXPANSION.md`. The `ADAPT-EXPANSION.md` is the LLM-facing operating manual (what to do when this Expansion is invoked).
 - **Token files never committed.** `.env.example` is committed; `.env` is gitignored and chmod 600 by the install script.
-- **SOPs ship as files in the Expansion folder, not pre-numbered.** The install workstream auto-numbers them into the your myPKA. Filename inside the Expansion is descriptive (`SOP-slack-post-message.md`); the installer renames to the next free `SOP-NNN-…` slot.
+- **SOPs ship as files in the Expansion folder, not pre-numbered.** The install workstream auto-numbers them into the your myPKA. Filename inside the Expansion is descriptive (`SOP-notion-fetch.md`); the installer renames to the next free `SOP-NNN-…` slot.
 - **Agent folder names follow `<Name> - <Role>`** to match scaffold convention.
 - **No code at the scaffold root.** All Expansion code stays inside the Expansion folder. `runtime/` for long-lived processes; `scripts/` for installers and starters.
 
@@ -223,6 +227,7 @@ post_install_validation:
 | Token storage | Always env vars in the Expansion's `.env`. Never inline in `expansion.yaml`. Never logged. |
 | Sensitive env display | `sensitive: true` env vars are echoed masked and never written to session-logs. |
 | Manifest tampering | Tier-2 (myICOR-issued) Expansions are hash-pinned in the canonical `.trusted-sources` registry — maintained in the private `mypka-expansions` repo and generated by the release pipeline. Vex audits before the hash is pinned. Hash mismatch → Larry refuses install. |
+| Withdrawn packs | A pack myICOR has withdrawn from the offering is named in the `WITHDRAWN` block of the shipped `Expansions/.trusted-sources`. Larry refuses to install a withdrawn slug regardless of hash, and the slug stays reserved so no one else can claim it. A hash only proves authorship of the bytes; it never proves the pack is still supported. |
 | Outbound network defaults | Connectors and runtimes that talk to third-party APIs MUST default to least-permissive options. Slack-specific: `unfurl_links: false` and `unfurl_media: false`. Webhook receivers MUST verify signatures. |
 | `requires_agents` enforcement | Larry blocks install if a required pre-hired agent is missing. The user is told which Expansion to install first. |
 | Vex security pass | Recommended before public release for any Expansion that touches the network or executes long-lived processes. Required before tier-2 hash-pinning. |
@@ -247,7 +252,8 @@ Trust is granted to a `(slug, version)` pair. Major version bumps re-prompt.
 
 | Pattern | Use case |
 |---|---|
-| `slack/`, `app-developer/` | RESERVED for myICOR-issued Expansions. Brand-protected via `author: myICOR` + hash pinning. |
+| `app-developer/`, `designer-pack/`, `mypka-cockpit/` | RESERVED for myICOR-issued Expansions. Brand-protected via `author: myICOR` + hash pinning. |
+| `slack/` | RESERVED and WITHDRAWN. myICOR withdrew the Slack Expansion on 2026-07-27; the slug stays reserved so it cannot be claimed by anyone else, and Larry refuses to install it. |
 | `community-<name>/` | Community Expansions seeking visibility under the umbrella. |
 | `<author>-<name>/` | Default third-party namespace. |
 
@@ -257,7 +263,7 @@ Trust is granted to a `(slug, version)` pair. Major version bumps re-prompt.
 
 Symmetric to install. The uninstall flow ([[WS-003-install-an-expansion]] §uninstall):
 
-1. Larry detects an uninstall request ("uninstall the Slack Expansion", "remove App Developer pack").
+1. Larry detects an uninstall request ("uninstall the Designer Pack", "remove App Developer pack").
 2. Nolan reverses the team merge (removes the Expansion's agents from `Team/`, restores `Team/agent-index.md`).
 3. Mack tears down connector wiring (stops runtimes, removes launchd plists, deregisters MCP servers).
 4. Silas validates the post-uninstall myPKA state.

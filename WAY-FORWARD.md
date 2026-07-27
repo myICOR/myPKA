@@ -24,7 +24,7 @@ What this repo does **not** include. Not as a feature gate. As honest scope.
 
 - The reasoning behind why **My Life** has five concepts and not eight, why Larry routes through Penn before filing, and why agent contracts are shaped the way they are. That's methodology, not code.
 - A working library of additional specialists beyond the six shipped here.
-- Slack integration, Obsidian plugins tuned to the scaffold, and the cohort of operators running this for real work.
+- Connectors to outside tools, Obsidian plugins tuned to the scaffold, and the cohort of operators running this for real work.
 - The **Business half** of the methodology: ICOR as it applies to companies, teams, and revenue.
 
 The scaffold runs on its own. The rest of this page tells you where each next layer lives, in case you want it.
@@ -51,7 +51,6 @@ Most people hit this wall around month three. The six shipped specialists handle
 **myICOR membership** at [myicor.com](https://myicor.com) is the layer where the team grows. Membership includes:
 
 - The **AI Library**: prebuilt specialists that drop into your `Team/` folder. Frontend Developer, Marketing Lead, Customer Support Manager, Bookkeeper, and others on a published cadence.
-- **Slack integration** so the team can read and act on conversations from your workspace.
 - **Workstream packs** for hiring, launches, weekly planning, and yearly reviews. The complete versions of what's stubbed in `Team Knowledge/Workstreams/` here.
 - **Obsidian optimizations**: templates, plugins, and views tuned to the scaffold.
 - **Office hours** with the team that builds this scaffold and the operators running it day to day.
