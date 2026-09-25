@@ -45,15 +45,15 @@ More that changed:
 1. **Make a copy of your v5 folder.** Nothing below changes it, but a copy costs you nothing.
 2. **Download both products:**
    - myPKA 6.0.1: `mypka-6.0.1.zip` from https://github.com/myICOR/myPKA/releases
-   - ICOR for Life 2.0.0: `icor-for-life-obsidian-edition-2.0.0.zip` from https://github.com/TomSolid/icor-for-life-scaffold/releases
+   - ICOR for Life 2.0.0: `icor-for-life-obsidian-edition-2.0.0.zip` from https://github.com/myICOR/icor-for-life-scaffold/releases
 3. **Check that both are genuine** with the GitHub CLI (`gh`). Each command is one line. Continue only if both print that verification succeeded:
 
    ```
    gh attestation verify mypka-6.0.1.zip --repo myICOR/myPKA --signer-workflow myICOR/myPKA/.github/workflows/release-mypka.yml --source-ref refs/tags/v6.0.1 --deny-self-hosted-runners
-   gh attestation verify icor-for-life-obsidian-edition-2.0.0.zip --repo TomSolid/icor-for-life-scaffold --signer-workflow TomSolid/icor-for-life-scaffold/.github/workflows/release.yml --source-ref refs/tags/2.0.0 --deny-self-hosted-runners
+   gh attestation verify icor-for-life-obsidian-edition-2.0.0.zip --owner TomSolid --signer-workflow TomSolid/icor-for-life-scaffold/.github/workflows/release.yml --source-ref refs/tags/2.0.0 --deny-self-hosted-runners
    ```
 
-   Note the tags: myPKA's start with `v`, ICOR for Life's don't.
+   Note the tags: myPKA's start with `v`, ICOR for Life's don't. ICOR for Life 2.0.0 was built before its repository moved from `TomSolid` to `myICOR`, so its record carries the old name and is checked with `--owner TomSolid`; later releases use `--repo myICOR/icor-for-life-scaffold`.
 4. **Unpack ICOR for Life into a new, empty folder.** Not into your v5 folder.
 5. **Unpack myPKA into that same folder** (mode A):
 

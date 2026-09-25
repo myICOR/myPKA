@@ -64,7 +64,7 @@ concurrency:
 env:
   ASSET_STEM: mypka
   SCRIPTS: 06 AI Team/AI Team Knowledge/Scripts
-  ICOR_REPO: TomSolid/icor-for-life-scaffold
+  ICOR_REPO: myICOR/icor-for-life-scaffold
   # First release only (M4): ICOR_PIN '' and ICOR_PIN_SHA = the ICOR cut
   # commit. Every later release: ICOR_PIN '2.0.0' (a tag) and its sha.
   ICOR_PIN: ''
