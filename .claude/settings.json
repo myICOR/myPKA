@@ -1,0 +1,42 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3",
+            "args": [
+              "-I",
+              "-B",
+              "-X",
+              "utf8",
+              "${CLAUDE_PROJECT_DIR}/06 AI Team/AI Team Knowledge/Scripts/session-start.py"
+            ],
+            "timeout": 90
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3",
+            "args": [
+              "-I",
+              "-B",
+              "-X",
+              "utf8",
+              "${CLAUDE_PROJECT_DIR}/06 AI Team/AI Team Knowledge/Scripts/write-guard.py"
+            ],
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

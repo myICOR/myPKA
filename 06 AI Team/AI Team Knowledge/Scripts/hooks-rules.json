@@ -1,0 +1,210 @@
+{
+  "schema": 1,
+  "title": "The guard rules, once, host-neutral",
+  "purpose": "One table of what the scaffold guards and with which script. Every host's hook config is RENDERED from this; a matcher typed by hand into a host config is the lock-in this file exists to prevent. Today .claude/settings.json is rendered by hand from this table (see .claude/settings.README.md). When scaffold-init.py lands it owns that rendering, reads this file, and nothing else changes.",
+  "rules_listed_here_are_registered": "This table lists rules that exist and run. A rule that is planned but not written does not belong in it: a table that reads as the enforcement surface, while half of it is aspiration, is the exact defect GL-1005 rule 4 is about.",
+  "tool_kinds": {
+    "file_write": "any tool that creates or changes a file by path. The host names them differently (Write, Edit, MultiEdit, NotebookEdit, apply_patch, str_replace); the adapter owns the names, this table does not.",
+    "shell": "any tool that runs a shell command.",
+    "session": "the host's session lifecycle, not a tool at all."
+  },
+  "host_matchers": {
+    "_note": "Adapter data. The one place a host's matcher STRING is allowed to be written down, so that adding a host is one entry here and not a sweep through the rules. Owned by the generator, never by a rule. Cursor and Gemini CLI have no entry on purpose: Cursor loads Claude Code's hooks for compatibility, and Gemini CLI has no hook system at all.",
+    "claude-code": {
+      "file_write": "Write|Edit|MultiEdit",
+      "shell": "Bash",
+      "session": "startup|resume",
+      "events": {
+        "session-start": "SessionStart",
+        "pre-write": "PreToolUse",
+        "pre-bash": "PreToolUse",
+        "post-write": "PostToolUse",
+        "stop": "Stop"
+      },
+      "deny_exit_code": 2,
+      "timeout_unit": "seconds",
+      "project_dir_var": "CLAUDE_PROJECT_DIR"
+    },
+    "codex": {
+      "_verified": "learn.chatgpt.com/docs/hooks, fetched 2026-09-14: 12 events, config at <repo>/.codex/hooks.json, same {hooks:{Event:[{matcher,hooks:[...]}]}} shape as Claude Code, exit 2 on stderr denies. Matcher aliases: \"apply_patch\", \"Edit\" and \"Write\" all match a file edit, and the shell tool reports as \"Bash\".",
+      "_unverified": "the project-directory variable. Codex documents `cwd` on the hook's stdin payload and names NO environment variable for the project root, and it runs the hook with the SESSION cwd as the working directory. So `${CODEX_PROJECT_DIR:-$PWD}` resolved to whatever folder the session started in: from a subfolder every guard path was wrong, python3 could not open the file and exited 2, and Codex reads exit 2 as a DENY. That was a deny-all from any subfolder, NOT the fail-open this note used to claim. Replaced 2026-09-14 (Vex gate V-05, condition C3) by a bootstrap that reads the payload, walks up from its `cwd` to the folder holding AGENTS.md, and hands the same bytes to the guard. When no AGENTS.md is found it prints one line naming the guard that did not run and exits 0: a guard that never started has reviewed nothing, and saying so beats denying every call in the session.",
+      "_does_not_carry": [
+        "SessionStart takes no matcher here. Codex documents the event but not a startup/resume matcher vocabulary, and a matcher that matches nothing is a hook that never runs while reading as if it does.",
+        "Matchers naming Claude's Agent/Task dispatch tools do not match anything on Codex, whose subagent tool is spawn_agent. Those rules are written into the Codex config and are inert there until somebody verifies the name."
+      ],
+      "file_write": "apply_patch|Edit|Write",
+      "shell": "Bash",
+      "session": null,
+      "events": {
+        "session-start": "SessionStart",
+        "session_start": "SessionStart",
+        "pre-write": "PreToolUse",
+        "pre-bash": "PreToolUse",
+        "pre_tool_use": "PreToolUse",
+        "post-write": "PostToolUse",
+        "post_tool_use": "PostToolUse",
+        "stop": "Stop"
+      },
+      "deny_exit_code": 2,
+      "timeout_unit": "seconds",
+      "project_dir_finder": "walk-up-to-AGENTS.md"
+    }
+  },
+  "rules": [
+    {
+      "id": "session-start-ritual",
+      "event": "session-start",
+      "tool_kinds": [
+        "session"
+      ],
+      "match": {
+        "kind": "session_event",
+        "when": [
+          "startup",
+          "resume"
+        ]
+      },
+      "guard": "06 AI Team/AI Team Knowledge/Scripts/session-start.py",
+      "interpreter": "python3",
+      "severity": "warn",
+      "blocks": false,
+      "timeout_seconds": 90,
+      "unlock_env": null,
+      "returns": "stdout, added to the session as context",
+      "enforces": "AGENTS.md, Session start ritual, steps 0, 3 and 5: check-onboarding.py, check-quality.py --write when quality.json is stale, expansion-pack.py list. Steps 1, 2 and 4 are judgement and stay with the model. Since 2026-09-15 it also runs life-snapshot.py --write --brief, so the six everyday life questions are answered from one measured file before anyone asks them; SOP-1017 is the reading procedure and the snapshot is never regenerated by the model.",
+      "was": "Until 2026-09-16 this row named session-start.sh, a POSIX shell wrapper whose only job beyond `exec python3` was to print one plain line when python3 is missing. A shell-form hook runs through Git Bash on Windows where it exists and PowerShell where it does not, so on a member's machine without Git Bash the wrapper was the reason the ritual never ran at all (Conrad Froehling, 2026-09-16). The row now names session-start.py and the host spawns it directly with no shell in the chain; the missing-interpreter sentence moved to `scaffold-init.py doctor`, which spawns the interpreter the rendered hooks actually name and says in words when it does not start. The wrapper was deleted in 1.28.1; nothing rendered it after 1.28.0 and a file nothing renders is a second entry point nobody maintains.",
+      "does_not_prove": "That the model read any of it. It proves the scripts ran and their output was put in front of the model; whether the ritual then happened is judgement, and no hook can check judgement. It proves nothing at all about the life snapshot's ACCURACY: `degraded` and `findings` inside that brief are the honest part, and a source with no data reports itself rather than being inferred as empty.",
+      "red_tests": [
+        "session-start/clean-control",
+        "session-start/children-isolated",
+        "scaffold-init/doctor-dead-interpreter",
+        "session-start/guards-off-line",
+        "session-start/guards-off-line-control",
+        "life-snapshot-fixtures",
+        "life-snapshot-missing-report"
+      ]
+    },
+    {
+      "id": "protected-paths",
+      "event": "pre-write",
+      "tool_kinds": [
+        "file_write",
+        "shell"
+      ],
+      "match": {
+        "kind": "vault_relative_path",
+        "prefixes": [
+          "00 Daily Scratchpad/"
+        ],
+        "exact": [
+          "AGENTS.md",
+          "CLAUDE.md"
+        ],
+        "patterns": [
+          "06 AI Team/Agents/*/AGENT.md",
+          "06 AI Team/Agents/*/.hiring"
+        ]
+      },
+      "guard": "06 AI Team/AI Team Knowledge/Scripts/write-guard.py",
+      "interpreter": "python3",
+      "severity": "deny",
+      "blocks": true,
+      "timeout_seconds": 5,
+      "unlock_env": "ICOR_UNLOCK_WRITES",
+      "returns": "exit 2 and a plain-words reason on stderr",
+      "enforces": "AGENTS.md hard rules 1 and 3 (the user's original text is sacred; scratchpads are never deleted or moved), and the entry contracts a session is built on.",
+      "does_not_prove": "That a protected file cannot be changed. This guard sees the file-writing tools, apply_patch, and the Bash write SHAPES its shell reader lists (redirects, tee, touch, rm, sed -i, mv/cp into, with `cd` tracked inside the command). A script that writes, a path built from a variable it cannot resolve, an editor outside the session, and any host without hooks reach every one of these paths untouched. It raises the cost of an accident; it is not a permission system.",
+      "notes": [
+        "The sanctioned scratchpad edit does not need the unlock: a processed stamp goes through stamp-processed.py, which names the scratchpad as a script ARGUMENT and not as a write shape, so the shell reader lets it through (red-tested). On Bash the unlock is per call: an `ICOR_UNLOCK_WRITES=1` prefix on the one command, logged to stderr. The .hiring marker is on this list because a marker planted by any tool would open that contract for a day; only new-agent.py writes it and only check-hire.py clears it.",
+        "An interpreter handed its program inline or on stdin (`python3 -`, `python3 -c`, `node -e`, `perl -e`, `sh -c`, a heredoc) is UNRESOLVABLE, not non-writing: the call is allowed, one line says the rule was not applied to the program body, and any protected path spelled out literally in that body is still refused. Silas's Codex re-run 2026-09-14/15, R1."
+      ],
+      "red_tests": [
+        "write-guard/scratchpad",
+        "write-guard/root-agents-md",
+        "write-guard/root-claude-md",
+        "write-guard/specialist-contract",
+        "write-guard/unlock-lets-it-through",
+        "write-guard/ordinary-write-control",
+        "write-guard/shell-redirect",
+        "write-guard/shell-append-redirect",
+        "write-guard/shell-cat-heredoc",
+        "write-guard/shell-tee",
+        "write-guard/shell-sed-i",
+        "write-guard/shell-mv-into",
+        "write-guard/shell-cp-into",
+        "write-guard/shell-read-only-control",
+        "write-guard/shell-stamp-processed-control",
+        "write-guard/shell-cat-into-wip-allowed",
+        "write-guard/shell-unparseable-allowed-with-notice",
+        "write-guard/shell-git-status-untouched",
+        "write-guard/shell-cd-elsewhere-control",
+        "write-guard/shell-glued-semicolon-read-control",
+        "write-guard/shell-blockquote-in-heredoc-control",
+        "write-guard/shell-prefix-unlock",
+        "write-guard/shell-touch-hiring-marker",
+        "write-guard/write-tool-cannot-plant-hiring-marker",
+        "write-guard/apply-patch-cannot-plant-hiring-marker",
+        "write-guard/interpreter-stdin-program-names-a-protected-path",
+        "write-guard/interpreter-inline-program-allowed-with-notice",
+        "write-guard/interpreter-running-a-file-is-untouched",
+        "write-guard/interpreter-inline-program-unlocks-on-the-prefix",
+        "write-guard/interpreter-bare-protected-name-from-the-vault-root",
+        "write-guard/interpreter-bare-protected-name-elsewhere-control",
+        "write-guard/interpreter-bare-name-joined-onto-a-folder-control",
+        "write-guard/interpreter-literal-follows-the-cd",
+        "write-guard/interpreter-read-only-program-beside-a-shell-redirect-control",
+        "write-guard/inline-shell-program-is-read-exactly",
+        "write-guard/inline-shell-program-read-only-control",
+        "write-guard/protected-path-in-cat-heredoc-prose-beside-an-interpreter-control"
+      ],
+      "shell_note": "Registered on the shell kind since the 2026-09-14 evening Vex ruling (the Vex security gate of the 2026-09-14 skills and hooks audit, addendum). Measured before the ruling on 11,619 real Bash calls from this vault's transcripts: 0.04 s per call, 0 crashes, 4 blocks that were all real shell edits to CLAUDE.md, AGENTS.md and settings.json, 0 false blocks after the reader learned `cd` and glued `;`. The reader sees redirects, tee, touch, rm, sed -i, mv/cp INTO a path, and `cd` inside the command; it skips a path it cannot resolve and every heredoc body; it ALLOWS with a stderr notice any command it cannot tokenise, because a guard that denies what it did not understand gets deleted. The secret rule on the shell kind applies only when the command writes INTO the vault and not into .env. The per-call unlock on Bash is an `ICOR_UNLOCK_WRITES=1` prefix in the command text, logged to stderr. Two things it does not do: it does not touch git (no-git-guard owns git; `git status` passes this guard with no output), and it does not block naming a protected file as a read argument. Interpreter rule, narrowed 2026-09-15 morning (Vex, gate addendum): a program handed inline or on stdin (`python3 -`, `-c`, `node -e`, a heredoc) is unresolvable; the call is allowed with a stderr notice, which on Claude Code reaches the debug log only (exit-0 stderr is never shown to the model), and the literal sweep reads the PROGRAM text from the cwd in force at that segment: a protected path with its folders, or a protected file's standalone bare name (`p = \"AGENTS.md\"` from the vault root), in a program that carries a write-shaped construct is refused. A `bash -c` or `sh <<` program is read by the same reader exactly. Measured on 11,623 real Bash calls: 42 refusals (37 real edits to protected files, 5 a writing program whose prose names one), 2,494 notices (21 percent, the python heredoc being the house editing style), 0 crashes, 3.4 ms per call in-process."
+    },
+    {
+      "id": "secret-shaped-value",
+      "event": "pre-write",
+      "tool_kinds": [
+        "file_write",
+        "shell"
+      ],
+      "match": {
+        "kind": "content_pattern",
+        "patterns": "value shapes in write-guard.py SECRET_PATTERNS: JWT, Supabase secret, Resend, OpenAI, Anthropic, GitHub, Slack, Stripe, Telegram, Google refresh, Postgres DSN with a password, PEM private key block, and NAME_KEY=<16+ chars>",
+        "exempt": "values carrying a placeholder token (example, your, redacted, ${...}) so a guideline can document a key shape"
+      },
+      "guard": "06 AI Team/AI Team Knowledge/Scripts/write-guard.py",
+      "interpreter": "python3",
+      "severity": "deny",
+      "blocks": true,
+      "timeout_seconds": 5,
+      "unlock_env": "ICOR_UNLOCK_WRITES",
+      "returns": "exit 2 and a plain-words reason on stderr",
+      "enforces": "AGENTS.md hard rule 10: secrets live only in .env, never in notes or a tracked file.",
+      "does_not_prove": "That no secret reaches disk. It matches high-confidence value shapes in one payload. A key with no recognisable shape, a secret split across two writes, a secret written by a script, or one already in the file being edited all pass. A clean run means these shapes were not in this payload, never that the write is safe.",
+      "red_tests": [
+        "write-guard/secret-value",
+        "write-guard/secret-unlock",
+        "write-guard/placeholder-control",
+        "write-guard/variable-name-control",
+        "write-guard/shell-secret-into-vault-note",
+        "write-guard/shell-secret-into-env-file-control",
+        "write-guard/shell-secret-outside-vault-control"
+      ],
+      "notes": "On the shell kind this rule applies only when the command writes INTO the vault and not into .env: .env is the sanctioned home for a secret, the transcript already holds whatever was typed, and a command with no vault write is not a write. Measured 2026-09-14 on 11,619 real Bash calls: 4 secret-shaped values, all in fixture writes outside the vault, so 0 blocks under this scoping."
+    }
+  ],
+  "unlocks": {
+    "ICOR_UNLOCK_WRITES": {
+      "value": "1",
+      "why": "Hooks configured for a session also run inside dispatched specialists, so a blanket deny on AGENT.md stops a hire halfway with no way through. A guard with no unlock is a guard that gets deleted the first time it blocks real work, and then it protects nothing.",
+      "scope": "Set it for the one command that needs it, never for the session.",
+      "does_not_prove": "That the unlock was deserved. The guard checks that it is set, not that it is true.",
+      "red_tested": true
+    }
+  },
+  "standing_limits": [
+    "Hooks are not a complete enforcement boundary on any host. Some tool paths bypass them, and nothing outside a tool call is visible to them at all. No document in this scaffold may describe a hook as a boundary.",
+    "Every guard fails OPEN on its own errors, with a one-line notice, EXCEPT write-guard.py, which fails CLOSED on its own errors since the 2026-09-14 Vex security gate: an exception inside it blocks the write (exit 2) with the error named, because half of what it guards is a secret reaching a synced note. Exceeding a wall-clock budget still fails open everywhere, because the host's own hook timeout lets the call proceed and a script cannot close that door.",
+    "A guard that is not in run-red-tests.py has never been watched go red, and a gate nobody watched go red is a green that proves nothing (GL-1005 rule 4).",
+    "The shell reader in write-guard.py refuses to guess: a Bash command it cannot tokenise is allowed with a stderr notice, and a path it cannot resolve is skipped. A guard that denies what it did not understand is a guard that gets deleted, and then it protects nothing."
+  ]
+}

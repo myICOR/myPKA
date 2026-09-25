@@ -1,0 +1,49 @@
+# Contribution check, on every pull request. Repo-only: never ships to members.
+#
+# Themis: nothing is merged unless the author actively agreed to the inbound
+# license in CONTRIBUTING.md section 3 (the UNTICKED box in
+# .github/PULL_REQUEST_TEMPLATE.md, ticked by the author) and every commit
+# carries a DCO Signed-off-by line (CONTRIBUTING.md section 2).
+# Make "contribution-check" a required status check on main (branch
+# protection) so the rule cannot be bypassed. The repo takes pull requests
+# (Tom, q3m, 2026-09-25).
+name: contribution-check
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  contribution-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: The inbound-license box is ticked, and every commit is signed off
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # Read through env, never interpolated into the script (the body is
+          # attacker-controlled text).
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          fail=0
+          # The ticked box, Themis's wording (step 11b, section 6): "- [x] I have
+          # read CONTRIBUTING.md and agree to its licensing terms (...3), including
+          # the additional license to Paperless Movement, S.L. in ...3.2. ..."
+          if ! printf '%s\n' "$PR_BODY" | tr -d '\r' | grep -Eq '^[[:space:]]*[-*][[:space:]]+\[[xX]\][[:space:]]+I have read CONTRIBUTING\.md and agree to its licensing terms .*including the additional license to Paperless Movement, S\.L\. in .*3\.2\. Every commit carries my DCO sign-off\.'; then
+            echo "::error::The contributor agreement box is not ticked. Tick the CONTRIBUTING.md section 3 box in the pull request description (use the template)."
+            fail=1
+          fi
+          # Every commit carries a Signed-off-by trailer.
+          missing="$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/commits" \
+            --jq '.[] | select((.commit.message | test("(^|\\n)Signed-off-by: [^\\n]+ <[^>\\n]+@[^>\\n]+>[ \\t]*(\\n|$)")) | not) | .sha[0:12]')"
+          if [ -n "$missing" ]; then
+            echo "::error::These commits have no Signed-off-by line (DCO, CONTRIBUTING.md section 2): $(echo $missing). Use git commit -s, or git rebase --signoff main."
+            fail=1
+          fi
+          [ "$fail" = 0 ] && echo "agreement ticked; every commit signed off"
+          exit "$fail"

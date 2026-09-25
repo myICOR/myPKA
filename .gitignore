@@ -1,46 +1,36 @@
-# --- OS / editor cruft ---
-.DS_Store
-__MACOSX/
-*.swp
-.obsidian/workspace*
-.obsidian/cache
-
-# --- Secrets (NEVER commit) ---
-# Excludes .env at any depth (e.g. Expansions/<slug>/.env). Keys-only
-# templates are kept tracked via the negation below.
+# myPKA repository ignore list (repo-only: never installed into a member folder).
+# Lines taken from the ICOR for Life Scaffold 1.34.1 .gitignore, team part only.
 .env
-.env.*
-**/.env
-**/.env.*
-# ...but always ship the keys-only example template:
-!.env.example
-!**/.env.example
-# Local MCP server configs may embed credentials — never commit:
-.mcp.json
-**/.mcp.json
-.cursor/mcp.json
-# Private keys / certs:
-*.key
-*.pem
-id_rsa
+.claude/settings.local.json
+.DS_Store
 
-# --- Derived database mirror & SQLite sidecars ---
-*.db
-*.db-wal
-*.db-shm
-*.sqlite
-*.sqlite3
+# The machine layer: per device and regenerated. Only the files that describe
+# the release are kept.
+.mypka/*
+!.mypka/VERSION
+!.mypka/manifest.json
+!.mypka/sources.yaml.example
+!.mypka/sources.mode-b.yaml.example
+!.mypka/icor-concepts-1.json
+!.mypka/CHANGELOG.md
 
-# --- Dependencies & build artifacts ---
-node_modules/
-dist/
-build/
-.next/
-.cache/
-*.tsbuildinfo
+# Team state (session.json, receipts/, harness.json) lives in .mypka/state/
+# since ruling j5d and its 2026-09-24 extension, covered by .mypka/* above.
+# No team script writes under .icor-for-life/scripts/ any more; that folder is
+# the content source's life_state and its own repo ignores it.
 
-# --- Logs & runtime state ---
-*.log
-logs/
-tmp/
-*.pid
+# The host link layer written by scaffold-init.py apply (per device).
+.agents/skills/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Proof fixtures written by the updater-poc scripts when they run.
+06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/w*/
+06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/v[0-9]*/
+
+# The member's overrides and the updater's own output (Marshall C). Never
+# tracked, never shipped; both builders refuse to ship either suffix.
+*.local.md
+*.update

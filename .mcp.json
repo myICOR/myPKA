@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "myicor": {
+      "type": "http",
+      "url": "https://app.myicor.com/api/mcp"
+    }
+  }
+}

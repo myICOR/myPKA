@@ -1,0 +1,1721 @@
+{
+  "$comment": "icor-concepts/1: the only contract between myPKA (the team) and a knowledge source such as the ICOR for Life scaffold. Lives once, in myPKA. Human doc: 06 AI Team/AI Team Knowledge/Guidelines/GL-1014-icor-concepts-schema.md. Checked by Scripts/check-icor-concepts.py. Built by Silas 2026-09-24 from the lab's GL-1001 (rooms), GL-1002 (types and fields) and the GL-1002 link rule. Concept ids, slots and max write scopes aligned 2026-09-24 with the sources.yaml ADR (split plan step 2) §2.1 and §2.2.",
+  "id": "icor-concepts/1",
+  "schema_version": "1.0.0",
+  "created": "2026-09-24",
+  "owner": "silas",
+  "derived_from": {
+    "rooms": "06 AI Team/AI Team Knowledge/Guidelines/GL-1001-the-six-rooms.md",
+    "fields": "06 AI Team/AI Team Knowledge/Guidelines/GL-1002-frontmatter-conventions.md",
+    "relative_to": "the source root that declares implements: icor-concepts/1 (mode A: the same folder as myPKA)",
+    "team_fields": "06 AI Team/AI Team Knowledge/Guidelines/GL-1015-team-frontmatter-conventions.md",
+    "team_fields_relative_to": "the myPKA root (the folder holding .mypka/)"
+  },
+  "versioning": {
+    "major": 1,
+    "consumer_range": ">=1 <2",
+    "same_major_allows": [
+      "a new optional field on an existing type",
+      "a new enum value that no required field depends on",
+      "a new concept or type that no consumer is required to use",
+      "wording, notes, examples"
+    ],
+    "needs_new_major": [
+      "renaming or removing a concept, a type, or a field",
+      "adding a required field or making an optional field required",
+      "narrowing an enum, or changing a field's kind",
+      "changing the link rule or a relation's target type",
+      "changing a concept's default_path (mode A byte-identity, plan T3)"
+    ],
+    "on_mismatch": "refuse with the named reason (plan step 9, T5)"
+  },
+  "rooms": [
+    {
+      "path": "00 Daily Scratchpad",
+      "question": "what did the user write down today, raw?",
+      "persistence": "forever, never edited by AI",
+      "side": "source",
+      "concepts": [
+        "scratchpad"
+      ]
+    },
+    {
+      "path": "01 Inbox",
+      "question": "what has been handed to the team and not yet processed?",
+      "persistence": "active part empties; Outer World originals archived forever",
+      "side": "source",
+      "concepts": [
+        "inbox"
+      ]
+    },
+    {
+      "path": "02 Planner",
+      "question": "what external tasks and plans is the user working with this week?",
+      "persistence": "machine-tended by the ICOR Planner plugin; never hand-curated",
+      "side": "source",
+      "concepts": [
+        "planner"
+      ]
+    },
+    {
+      "path": "03 WiP",
+      "question": "what is being worked on right now?",
+      "persistence": "temporary; retires to _archive",
+      "side": "source",
+      "concepts": [
+        "wip"
+      ]
+    },
+    {
+      "path": "04 Inner World",
+      "question": "what does the user know and who do they know?",
+      "persistence": "forever, curated",
+      "side": "source",
+      "concepts": [
+        "journal",
+        "people",
+        "companies",
+        "key_elements",
+        "goals",
+        "projects",
+        "habits",
+        "topics",
+        "notes",
+        "journey_notes"
+      ]
+    },
+    {
+      "path": "05 Assets",
+      "question": "which binary file does this note embed?",
+      "persistence": "forever",
+      "side": "source",
+      "concepts": [
+        "assets"
+      ]
+    },
+    {
+      "path": "06 AI Team",
+      "question": "how does the team operate?",
+      "persistence": "forever, versioned by editing",
+      "side": "shared",
+      "concepts": [
+        "templates",
+        "life_guidelines"
+      ],
+      "note": "Split room. The team concepts under it resolve under the myPKA root; in the ICOR for Life folder it also holds the source concepts templates and life_guidelines (read-only for the team)."
+    },
+    {
+      "path": "07 Databases",
+      "question": "which dataset is too big or too row-shaped for notes?",
+      "persistence": "forever; sources only, never a database anything regenerates",
+      "side": "source",
+      "concepts": [
+        "databases"
+      ]
+    }
+  ],
+  "concepts": {
+    "scratchpad": {
+      "room": "00 Daily Scratchpad",
+      "default_path": "00 Daily Scratchpad",
+      "types": [
+        "scratchpad"
+      ],
+      "ai_writes_body": false,
+      "note": "The user's raw daily writing, and nowhere else. The team only stamps processed fields.",
+      "max_write_scope": "frontmatter"
+    },
+    "inbox": {
+      "room": "01 Inbox",
+      "default_path": "01 Inbox",
+      "types": [
+        "capture"
+      ],
+      "note": "Nothing is organized inside the Inbox. A processed text capture moves to archive/; a binary capture moves to assets/Documents (GL-1002 ruling 2026-09-04).",
+      "slots": {
+        "outer_world": "Outer World",
+        "outer_world_archive": "Outer World/archive",
+        "scanner": "Scanner Inbox"
+      },
+      "write_slot": "outer_world",
+      "max_write_scope": "full",
+      "needs": [
+        "move"
+      ]
+    },
+    "planner": {
+      "room": "02 Planner",
+      "default_path": "02 Planner",
+      "types": [
+        "planner-item",
+        "planner-routine",
+        "planner-habit",
+        "planner-week"
+      ],
+      "note": "Machine-tended. Items are never renamed or moved by hand.",
+      "slots": {
+        "habits": "Habits",
+        "routines": "Routines",
+        "weeks": "Weeks"
+      },
+      "items_pattern": "<Source>",
+      "slots_created_on_demand": true,
+      "max_write_scope": "frontmatter"
+    },
+    "wip": {
+      "room": "03 WiP",
+      "default_path": "03 WiP",
+      "types": [
+        "progress-report",
+        "hire-proposal"
+      ],
+      "dated_work": "YYYY-MM-DD-<slug>, one file, or a folder when it is two files or more",
+      "note": "User room (ruling p2t). Where no source serves wip, a deliverable attaches to its task (ruling k4v): fallback task_attachment, team concept task_deliverables.",
+      "slots": {
+        "workstreams": "Workstreams",
+        "ai_team": "AI Team",
+        "projects": "Projects",
+        "operations": "Operations",
+        "archive": "_archive"
+      },
+      "bucket_order": [
+        "workstreams",
+        "ai_team",
+        "projects",
+        "operations"
+      ],
+      "fallback": "task_attachment",
+      "max_write_scope": "full"
+    },
+    "journal": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/Journal",
+      "types": [
+        "journal"
+      ],
+      "nesting": "YYYY/MM",
+      "max_write_scope": "full"
+    },
+    "notes": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/Notes",
+      "types": [
+        "note",
+        "document",
+        "pdf-highlight"
+      ],
+      "note": "One flat folder, one note per subject. note or document is decided by one question: is there a binary behind it?",
+      "slots": {
+        "highlights": "Highlights"
+      },
+      "highlights_nesting": "<pdf-basename>",
+      "max_write_scope": "full"
+    },
+    "people": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/Contacts/People",
+      "types": [
+        "person"
+      ],
+      "max_write_scope": "full"
+    },
+    "companies": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/Contacts/Companies",
+      "types": [
+        "company"
+      ],
+      "max_write_scope": "full"
+    },
+    "key_elements": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/My Life/Key Elements",
+      "types": [
+        "key-element"
+      ],
+      "max_write_scope": "full"
+    },
+    "goals": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/My Life/Goals",
+      "types": [
+        "goal"
+      ],
+      "max_write_scope": "full"
+    },
+    "projects": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/My Life/Projects",
+      "types": [
+        "project"
+      ],
+      "note": "A project's working folder is derived, never a field: wip bucket Projects/<Project note name>.",
+      "max_write_scope": "full"
+    },
+    "habits": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/My Life/Habits",
+      "types": [
+        "habit"
+      ],
+      "note": "Meaning only. Schedule and log live on the planner-habit note.",
+      "max_write_scope": "full"
+    },
+    "topics": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/My Life/Topics",
+      "types": [
+        "topic"
+      ],
+      "max_write_scope": "full"
+    },
+    "journey_notes": {
+      "room": "04 Inner World",
+      "default_path": "04 Inner World/ICOR Journey Notes",
+      "types": [
+        "icor-reflection"
+      ],
+      "note": "Written create-only by the myICOR Connect plugin.",
+      "max_write_scope": "full"
+    },
+    "assets": {
+      "room": "05 Assets",
+      "default_path": "05 Assets",
+      "types": [],
+      "nesting_optional": "YYYY/MM under Images",
+      "note": "Binaries only; they never carry frontmatter. The wrapper note in notes carries the metadata.",
+      "slots": {
+        "images": "Images",
+        "audio": "Audio",
+        "documents": "Documents"
+      },
+      "max_write_scope": "full",
+      "needs": [
+        "binary"
+      ]
+    },
+    "databases": {
+      "room": "07 Databases",
+      "default_path": "07 Databases",
+      "types": [],
+      "note": "SQLite data with no markdown source. Read-only for the SQLite Viewer plugin.",
+      "max_write_scope": "full",
+      "needs": [
+        "binary"
+      ]
+    },
+    "templates": {
+      "room": "06 AI Team",
+      "default_path": "06 AI Team/AI Team Knowledge/Templates",
+      "types": [],
+      "note": "Entity templates ship with the source.",
+      "max_write_scope": "none"
+    },
+    "life_guidelines": {
+      "room": "06 AI Team",
+      "default_path": "06 AI Team/AI Team Knowledge/Guidelines",
+      "types": [],
+      "members": [
+        "GL-1001",
+        "GL-1002",
+        "GL-1003",
+        "GL-1006",
+        "GL-1007",
+        "GL-1010",
+        "GL-1011"
+      ],
+      "note": "Shares the folder with the team concept guidelines in mode A; the team never writes a life guideline.",
+      "max_write_scope": "none"
+    },
+    "life_state": {
+      "room": null,
+      "machine_layer": true,
+      "default_path": ".icor-for-life/scripts",
+      "types": [],
+      "needs": [
+        "state"
+      ],
+      "note": "snapshot.json and quality.json, written by the source's own scripts.",
+      "max_write_scope": "none"
+    }
+  },
+  "common_fields": {
+    "type": {
+      "required": true,
+      "kind": "enum",
+      "values_from": "types"
+    },
+    "created": {
+      "required": true,
+      "kind": "date",
+      "note": "ISO date on every note the team creates; some types carry an ISO datetime (pdf-highlight, journal-entry). Plugin-written types may carry their own timestamp field instead (created_at, synced_at)."
+    },
+    "tags": {
+      "required": false,
+      "kind": "list",
+      "note": "lowercase, hyphenated"
+    }
+  },
+  "types": {
+    "journal": {
+      "side": "source",
+      "concept": "journal",
+      "template": "journal",
+      "fields": {
+        "date": {
+          "required": true,
+          "kind": "date"
+        },
+        "journal_type": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "interaction",
+            "note",
+            "thought",
+            "milestone"
+          ],
+          "closed": true
+        },
+        "format": {
+          "required": false,
+          "kind": "enum",
+          "values": [
+            "text",
+            "voice",
+            "photo",
+            "meeting-notes",
+            "other"
+          ],
+          "absent_means": "text"
+        },
+        "key_element": {
+          "required": false,
+          "kind": "wikilink",
+          "target": "key-element"
+        },
+        "mood": {
+          "required": false,
+          "kind": "text"
+        },
+        "linked_people": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "person"
+        },
+        "linked_topics": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "topic"
+        },
+        "linked_projects": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "project"
+        },
+        "source": {
+          "required": false,
+          "kind": "text"
+        }
+      },
+      "retired_fields": [
+        "category"
+      ]
+    },
+    "scratchpad": {
+      "side": "source",
+      "concept": "scratchpad",
+      "template": null,
+      "fields": {
+        "date": {
+          "required": true,
+          "kind": "date"
+        },
+        "processed": {
+          "required": false,
+          "kind": "boolean"
+        },
+        "processed_summary": {
+          "required": false,
+          "kind": "text"
+        },
+        "processed_into": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "any"
+        }
+      }
+    },
+    "capture": {
+      "side": "source",
+      "concept": "inbox",
+      "template": "web-clipper-outer-world.json",
+      "fields": {
+        "source_url": {
+          "required": true,
+          "kind": "url"
+        },
+        "captured": {
+          "required": true,
+          "kind": "datetime"
+        },
+        "author": {
+          "required": false,
+          "kind": "text"
+        },
+        "published": {
+          "required": false,
+          "kind": "date"
+        },
+        "my_thought": {
+          "required": false,
+          "kind": "text"
+        },
+        "processed": {
+          "required": false,
+          "kind": "boolean"
+        },
+        "processed_summary": {
+          "required": false,
+          "kind": "text"
+        },
+        "processed_into": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "any"
+        }
+      },
+      "slot": "outer_world"
+    },
+    "person": {
+      "side": "source",
+      "concept": "people",
+      "template": "person",
+      "fields": {
+        "name": {
+          "required": true,
+          "kind": "text"
+        },
+        "role": {
+          "required": false,
+          "kind": "text"
+        },
+        "relation": {
+          "required": false,
+          "kind": "text"
+        },
+        "companies": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "company"
+        },
+        "aliases": {
+          "required": false,
+          "kind": "list"
+        },
+        "email": {
+          "required": false,
+          "kind": "text"
+        },
+        "birthday": {
+          "required": false,
+          "kind": "date"
+        },
+        "last_contact": {
+          "required": false,
+          "kind": "date"
+        },
+        "next_action": {
+          "required": false,
+          "kind": "text"
+        }
+      }
+    },
+    "company": {
+      "side": "source",
+      "concept": "companies",
+      "template": "company",
+      "fields": {
+        "name": {
+          "required": true,
+          "kind": "text"
+        },
+        "industry": {
+          "required": false,
+          "kind": "text"
+        },
+        "people": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "person"
+        },
+        "website": {
+          "required": false,
+          "kind": "url"
+        }
+      }
+    },
+    "note": {
+      "side": "source",
+      "concept": "notes",
+      "template": "note",
+      "required_any_of": [
+        [
+          "projects",
+          "key_elements",
+          "topics"
+        ]
+      ],
+      "fields": {
+        "note_type": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "reference",
+            "idea",
+            "outline",
+            "meeting",
+            "draft",
+            "other"
+          ],
+          "closed": true
+        },
+        "projects": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "project"
+        },
+        "key_elements": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "key-element"
+        },
+        "topics": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "topic"
+        },
+        "people": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "person"
+        },
+        "companies": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "company"
+        },
+        "source_url": {
+          "required": false,
+          "kind": "url",
+          "only_when": {
+            "note_type": [
+              "reference"
+            ]
+          }
+        },
+        "consumed": {
+          "required": false,
+          "kind": "boolean",
+          "only_when": {
+            "note_type": [
+              "reference"
+            ]
+          }
+        },
+        "transcript": {
+          "required": false,
+          "kind": "url_or_wikilink",
+          "only_when": {
+            "note_type": [
+              "meeting",
+              "other"
+            ]
+          }
+        },
+        "transcribed_by": {
+          "required": false,
+          "kind": "text",
+          "only_when": {
+            "note_type": [
+              "meeting"
+            ]
+          }
+        },
+        "ai_summary": {
+          "required": false,
+          "kind": "text",
+          "note": "a model id, never a boolean",
+          "only_when": {
+            "note_type": [
+              "meeting"
+            ]
+          }
+        },
+        "audio_retained": {
+          "required": false,
+          "kind": "boolean",
+          "only_when": {
+            "note_type": [
+              "meeting"
+            ]
+          }
+        },
+        "idea_status": {
+          "required": false,
+          "kind": "enum",
+          "values": [
+            "open",
+            "promoted",
+            "parked",
+            "dropped"
+          ],
+          "default": "open",
+          "only_when": {
+            "note_type": [
+              "idea"
+            ]
+          }
+        }
+      }
+    },
+    "document": {
+      "side": "source",
+      "concept": "notes",
+      "template": "document",
+      "fields": {
+        "doc_type": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "contract",
+            "invoice",
+            "receipt",
+            "id",
+            "certificate",
+            "statement",
+            "letter",
+            "manual",
+            "other"
+          ]
+        },
+        "source_file": {
+          "required": true,
+          "kind": "wikilink",
+          "target_concept": "assets",
+          "target_slot": "documents"
+        },
+        "projects": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "project"
+        },
+        "key_elements": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "key-element"
+        },
+        "topics": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "topic"
+        },
+        "preview_image": {
+          "required": false,
+          "kind": "wikilink",
+          "target_concept": "assets",
+          "target_slot": "images"
+        },
+        "issued_on": {
+          "required": false,
+          "kind": "date"
+        },
+        "expiry_date": {
+          "required": false,
+          "kind": "date"
+        },
+        "amount": {
+          "required": false,
+          "kind": "number"
+        },
+        "currency": {
+          "required": false,
+          "kind": "text"
+        },
+        "people": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "person"
+        },
+        "companies": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "company"
+        },
+        "processed": {
+          "required": false,
+          "kind": "boolean"
+        },
+        "processed_summary": {
+          "required": false,
+          "kind": "text"
+        },
+        "processed_into": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "any"
+        }
+      }
+    },
+    "goal": {
+      "side": "source",
+      "concept": "goals",
+      "template": "goal",
+      "fields": {
+        "status": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "not-achieved",
+            "achieved"
+          ],
+          "closed": true
+        },
+        "target_date": {
+          "required": false,
+          "kind": "date"
+        },
+        "key_elements": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "key-element"
+        },
+        "workstreams": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "workstream"
+        }
+      }
+    },
+    "pdf-highlight": {
+      "side": "source",
+      "concept": "notes",
+      "template": null,
+      "writer": "plugin",
+      "fields": {
+        "highlight_id": {
+          "required": true,
+          "kind": "text",
+          "note": "12 characters, made once, never re-derived"
+        },
+        "source_file": {
+          "required": true,
+          "kind": "wikilink",
+          "target_concept": "assets"
+        },
+        "page": {
+          "required": true,
+          "kind": "integer"
+        },
+        "anchor": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "selection",
+            "rect"
+          ]
+        },
+        "rects": {
+          "required": true,
+          "kind": "list"
+        },
+        "color": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "yellow",
+            "red",
+            "orange",
+            "green",
+            "blue",
+            "purple"
+          ]
+        },
+        "created": {
+          "required": true,
+          "kind": "datetime"
+        },
+        "cssclasses": {
+          "required": true,
+          "kind": "list",
+          "values": [
+            "icor-pdf-highlight"
+          ]
+        },
+        "document": {
+          "required": false,
+          "kind": "wikilink",
+          "target": "document"
+        },
+        "selection": {
+          "required": false,
+          "kind": "list",
+          "only_when": {
+            "anchor": [
+              "selection"
+            ]
+          }
+        },
+        "quote": {
+          "required": false,
+          "kind": "text",
+          "only_when": {
+            "anchor": [
+              "selection"
+            ]
+          }
+        },
+        "image": {
+          "required": false,
+          "kind": "wikilink",
+          "target_concept": "assets",
+          "only_when": {
+            "anchor": [
+              "rect"
+            ]
+          },
+          "target_slot": "images"
+        },
+        "canvases": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "canvas",
+          "owner": "plugin"
+        },
+        "linked_notes": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "any",
+          "owner": "plugin"
+        }
+      },
+      "slot": "highlights"
+    },
+    "key-element": {
+      "side": "source",
+      "concept": "key_elements",
+      "template": "key-element",
+      "fields": {
+        "people": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "person"
+        },
+        "goals": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "goal"
+        }
+      }
+    },
+    "topic": {
+      "side": "source",
+      "concept": "topics",
+      "template": "topic",
+      "fields": {
+        "related_topics": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "topic"
+        }
+      }
+    },
+    "project": {
+      "side": "source",
+      "concept": "projects",
+      "template": "project",
+      "fields": {
+        "status": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "active",
+            "done",
+            "paused",
+            "dropped"
+          ]
+        },
+        "goal": {
+          "required": true,
+          "kind": "wikilink",
+          "target": "goal"
+        },
+        "start_date": {
+          "required": false,
+          "kind": "date"
+        },
+        "end_date": {
+          "required": false,
+          "kind": "date"
+        },
+        "external_links": {
+          "required": false,
+          "kind": "list"
+        },
+        "key_elements": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "key-element"
+        },
+        "focus_rank": {
+          "required": false,
+          "kind": "enum",
+          "values": [
+            1,
+            2,
+            3
+          ],
+          "note": "absent means not in focus; at most three projects carry it"
+        },
+        "workstreams": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "workstream"
+        }
+      }
+    },
+    "habit": {
+      "side": "source",
+      "concept": "habits",
+      "template": "habit",
+      "fields": {
+        "name": {
+          "required": false,
+          "kind": "text",
+          "absent_means": "the filename"
+        },
+        "status": {
+          "required": false,
+          "kind": "enum",
+          "values": [
+            "active",
+            "paused",
+            "abandoned"
+          ]
+        },
+        "planner_habit": {
+          "required": false,
+          "kind": "wikilink",
+          "target": "planner-habit",
+          "full_path": true
+        }
+      },
+      "retired_fields": [
+        "cadence",
+        "cadence_days",
+        "started_on"
+      ]
+    },
+    "icor-reflection": {
+      "side": "source",
+      "concept": "journey_notes",
+      "template": null,
+      "writer": "plugin",
+      "fields": {
+        "myicor_id": {
+          "required": true,
+          "kind": "uuid",
+          "note": "sync key, create-only"
+        },
+        "category": {
+          "required": true,
+          "kind": "text"
+        },
+        "reflected_at": {
+          "required": true,
+          "kind": "date"
+        },
+        "quality_score": {
+          "required": false,
+          "kind": "integer",
+          "range": [
+            0,
+            100
+          ]
+        },
+        "pinned": {
+          "required": false,
+          "kind": "boolean"
+        },
+        "synced_at": {
+          "required": false,
+          "kind": "datetime"
+        }
+      }
+    },
+    "planner-item": {
+      "side": "source",
+      "concept": "planner",
+      "template": null,
+      "writer": "plugin",
+      "sync_key": [
+        "source",
+        "external_id"
+      ],
+      "fields": {
+        "source": {
+          "required": true,
+          "kind": "text"
+        },
+        "external_id": {
+          "required": true,
+          "kind": "text"
+        },
+        "title": {
+          "required": true,
+          "kind": "text"
+        },
+        "status": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "open",
+            "done"
+          ]
+        },
+        "priority": {
+          "required": true,
+          "kind": "integer",
+          "range": [
+            1,
+            5
+          ]
+        },
+        "due": {
+          "required": false,
+          "kind": "date"
+        },
+        "url": {
+          "required": false,
+          "kind": "url"
+        },
+        "tags": {
+          "required": false,
+          "kind": "list"
+        },
+        "source_status": {
+          "required": false,
+          "kind": "text"
+        },
+        "planned_day": {
+          "required": false,
+          "kind": "date",
+          "owner": "plan"
+        },
+        "planned_half": {
+          "required": false,
+          "kind": "enum",
+          "values": [
+            "am",
+            "pm",
+            null
+          ],
+          "owner": "plan"
+        },
+        "planned_order": {
+          "required": false,
+          "kind": "number",
+          "owner": "plan"
+        },
+        "done_local": {
+          "required": false,
+          "kind": "boolean",
+          "owner": "plan"
+        },
+        "weekly_goal": {
+          "required": false,
+          "kind": "boolean",
+          "owner": "plan",
+          "label": "pinned"
+        },
+        "linked_note": {
+          "required": false,
+          "kind": "wikilink",
+          "target": "project",
+          "owner": "plan"
+        },
+        "synced_at": {
+          "required": false,
+          "kind": "datetime"
+        },
+        "done_at": {
+          "required": false,
+          "kind": "datetime"
+        },
+        "created_at": {
+          "required": false,
+          "kind": "datetime"
+        },
+        "parent_id": {
+          "required": false,
+          "kind": "text"
+        },
+        "recurring": {
+          "required": false,
+          "kind": "boolean_or_null"
+        },
+        "due_string": {
+          "required": false,
+          "kind": "text"
+        },
+        "occurrences": {
+          "required": false,
+          "kind": "list"
+        },
+        "reopen_pending": {
+          "required": false,
+          "kind": "boolean"
+        },
+        "last_completed_due": {
+          "required": false,
+          "kind": "date"
+        }
+      },
+      "items_pattern": true
+    },
+    "planner-routine": {
+      "side": "source",
+      "concept": "planner",
+      "template": null,
+      "writer": "plugin",
+      "fields": {
+        "name": {
+          "required": true,
+          "kind": "text"
+        },
+        "routine_type": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "morning",
+            "afternoon",
+            "evening"
+          ]
+        },
+        "start": {
+          "required": true,
+          "kind": "time"
+        },
+        "end": {
+          "required": true,
+          "kind": "time",
+          "note": "after start"
+        },
+        "weekdays": {
+          "required": true,
+          "kind": "list",
+          "values": [
+            "mon",
+            "tue",
+            "wed",
+            "thu",
+            "fri",
+            "sat",
+            "sun"
+          ]
+        },
+        "active": {
+          "required": true,
+          "kind": "boolean"
+        },
+        "created_at": {
+          "required": false,
+          "kind": "datetime"
+        }
+      },
+      "slot": "routines"
+    },
+    "planner-habit": {
+      "side": "source",
+      "concept": "planner",
+      "template": null,
+      "writer": "plugin",
+      "fields": {
+        "name": {
+          "required": true,
+          "kind": "text"
+        },
+        "cadence": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "daily",
+            "weekdays",
+            "weekly",
+            "monthly"
+          ]
+        },
+        "status": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "active",
+            "paused",
+            "archived"
+          ]
+        },
+        "cadence_days": {
+          "required": false,
+          "kind": "list",
+          "values": [
+            "mon",
+            "tue",
+            "wed",
+            "thu",
+            "fri",
+            "sat",
+            "sun"
+          ],
+          "only_when": {
+            "cadence": [
+              "weekly"
+            ]
+          }
+        },
+        "month_day": {
+          "required": false,
+          "kind": "integer",
+          "range": [
+            1,
+            28
+          ],
+          "only_when": {
+            "cadence": [
+              "monthly"
+            ]
+          }
+        },
+        "started_on": {
+          "required": false,
+          "kind": "date"
+        },
+        "linked_note": {
+          "required": false,
+          "kind": "wikilink",
+          "target": "habit",
+          "full_path": true
+        },
+        "created_at": {
+          "required": false,
+          "kind": "datetime"
+        }
+      },
+      "slot": "habits"
+    },
+    "planner-week": {
+      "side": "source",
+      "concept": "planner",
+      "template": null,
+      "writer": "script",
+      "fields": {
+        "week": {
+          "required": true,
+          "kind": "iso_week",
+          "note": "YYYY-Www, matches the filename"
+        },
+        "created_at": {
+          "required": false,
+          "kind": "datetime"
+        }
+      },
+      "slot": "weeks"
+    },
+    "progress-report": {
+      "side": "team",
+      "concept": "wip",
+      "template": null,
+      "writer": "script",
+      "fields": {
+        "status": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "live",
+            "closed"
+          ]
+        },
+        "updated": {
+          "required": true,
+          "kind": "datetime"
+        },
+        "plan": {
+          "required": false,
+          "kind": "wikilink",
+          "target": "any"
+        }
+      }
+    },
+    "hire-proposal": {
+      "side": "team",
+      "concept": "wip",
+      "template": null,
+      "fields": {
+        "owner": {
+          "required": true,
+          "kind": "text"
+        },
+        "title": {
+          "required": true,
+          "kind": "text"
+        },
+        "status": {
+          "required": false,
+          "kind": "enum",
+          "values": [
+            "draft",
+            "decision-ready",
+            "approved"
+          ]
+        },
+        "skills": {
+          "required": false,
+          "kind": "list",
+          "note": "skill slugs, or the literal 'none, judgement role'"
+        }
+      }
+    },
+    "task": {
+      "side": "team",
+      "home": "tasks",
+      "template": null,
+      "writer": "script",
+      "fields": {
+        "status": {
+          "required": true,
+          "kind": "enum",
+          "values": [
+            "open",
+            "in-progress",
+            "done",
+            "cancelled"
+          ]
+        },
+        "assignee": {
+          "required": true,
+          "kind": "text"
+        },
+        "related": {
+          "required": false,
+          "kind": "list"
+        },
+        "due": {
+          "required": false,
+          "kind": "date"
+        }
+      }
+    },
+    "session-log": {
+      "side": "team",
+      "home": "session_logs",
+      "template": null,
+      "writer": "script",
+      "fields": {
+        "date": {
+          "required": true,
+          "kind": "date"
+        },
+        "agents": {
+          "required": true,
+          "kind": "list"
+        }
+      }
+    },
+    "sop": {
+      "side": "team",
+      "home": "sops",
+      "template": null,
+      "fields_ref": "procedure_fields",
+      "excluded_fields": [
+        "wip_folder"
+      ]
+    },
+    "workstream": {
+      "side": "team",
+      "home": "workstreams",
+      "template": null,
+      "fields_ref": "procedure_fields",
+      "extra_fields": {
+        "wip_folder": {
+          "required": false,
+          "kind": "text",
+          "note": "03 WiP/Workstreams/<Name>/, set only when it exists"
+        }
+      }
+    },
+    "guideline": {
+      "side": "team",
+      "home": "guidelines",
+      "template": null,
+      "fields_ref": "procedure_fields",
+      "excluded_fields": [
+        "owner",
+        "skill_name",
+        "skill_summary",
+        "skill_triggers",
+        "skill_prerun",
+        "wip_folder"
+      ]
+    },
+    "journal-entry": {
+      "side": "team",
+      "home": "agents",
+      "template": null,
+      "fields": {
+        "agent_id": {
+          "required": true,
+          "kind": "text"
+        },
+        "created": {
+          "required": true,
+          "kind": "datetime"
+        },
+        "topic": {
+          "required": true,
+          "kind": "slug"
+        },
+        "updated": {
+          "required": false,
+          "kind": "datetime"
+        },
+        "status": {
+          "required": false,
+          "kind": "enum",
+          "values": [
+            "durable",
+            "superseded"
+          ]
+        },
+        "linked_session_logs": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "session-log"
+        },
+        "related_journal_entries": {
+          "required": false,
+          "kind": "wikilink_list",
+          "target": "journal-entry"
+        }
+      }
+    },
+    "agent-bio": {
+      "side": "team",
+      "home": "agents",
+      "template": null,
+      "fields": {
+        "agent": {
+          "required": true,
+          "kind": "text"
+        },
+        "role": {
+          "required": true,
+          "kind": "text"
+        }
+      }
+    },
+    "agent-soul": {
+      "side": "team",
+      "home": "agents",
+      "template": null,
+      "fields": {
+        "agent": {
+          "required": true,
+          "kind": "text"
+        }
+      }
+    },
+    "agent": {
+      "side": "team",
+      "home": "agents",
+      "template": null,
+      "fields": {
+        "myicor_id": {
+          "required": true,
+          "kind": "uuid",
+          "note": "v4, lowercase, immutable"
+        },
+        "name": {
+          "required": true,
+          "kind": "text"
+        },
+        "role": {
+          "required": true,
+          "kind": "text"
+        },
+        "routing_description": {
+          "required": true,
+          "kind": "text",
+          "note": "required on every new hire; Larry carries none"
+        },
+        "shim_reads": {
+          "required": false,
+          "kind": "list"
+        },
+        "owns_gates": {
+          "required": false,
+          "kind": "list"
+        },
+        "brief_waived": {
+          "required": false,
+          "kind": "text"
+        },
+        "tools": {
+          "required": false,
+          "kind": "text"
+        }
+      }
+    }
+  },
+  "procedure_fields": {
+    "id": {
+      "required": true,
+      "kind": "text"
+    },
+    "title": {
+      "required": true,
+      "kind": "text"
+    },
+    "owner": {
+      "required": false,
+      "kind": "slug"
+    },
+    "uses": {
+      "required": false,
+      "kind": "wikilink_list",
+      "target": "any"
+    },
+    "skill_name": {
+      "required": false,
+      "kind": "slug",
+      "required_when": "skill_triggers is non-empty"
+    },
+    "skill_summary": {
+      "required": false,
+      "kind": "text",
+      "host_neutral": true
+    },
+    "skill_triggers": {
+      "required": false,
+      "kind": "list"
+    },
+    "skill_prerun": {
+      "required": false,
+      "kind": "text",
+      "host_neutral": true
+    }
+  },
+  "links": {
+    "value_shape": {
+      "wikilink": "a quoted string \"[[Target]]\"; the target is the note's name, the same value shape goal, key_element and project already use",
+      "wikilink_list": "a flat list of quoted wikilink strings; never a list of maps",
+      "bare_text_is_not_a_link": true,
+      "full_path_when_names_collide": "\"[[folder/Name]]\" where two notes share a name by design (planner_habit, linked_note)"
+    },
+    "rules": [
+      {
+        "id": "link-rule",
+        "applies_to": "note",
+        "require_any_of": [
+          "projects",
+          "key_elements",
+          "topics"
+        ],
+        "may_carry": [
+          "people",
+          "companies"
+        ],
+        "on_fail": "the note failed the Capturing Beast and should not exist; the validator fails it"
+      },
+      {
+        "id": "document-link-rule",
+        "applies_to": "document",
+        "optional_any_of": [
+          "projects",
+          "key_elements",
+          "topics"
+        ],
+        "may_carry": [
+          "people",
+          "companies"
+        ],
+        "note": "same three lists, optional, because a document is often filed for a contact and nothing else"
+      },
+      {
+        "id": "project-needs-goal",
+        "applies_to": "project",
+        "require": "goal",
+        "note": "No project without a goal. If none fits, the goal is created first."
+      },
+      {
+        "id": "document-needs-binary",
+        "applies_to": "document",
+        "require": "source_file",
+        "target_concept": "assets",
+        "note": "Wrapper-note pattern: the binary never carries metadata."
+      },
+      {
+        "id": "processed-stamp",
+        "applies_to": [
+          "scratchpad",
+          "capture",
+          "document"
+        ],
+        "shape": {
+          "processed": true,
+          "processed_summary": "one line",
+          "processed_into": "at least one quoted wikilink"
+        }
+      },
+      {
+        "id": "one-fact-one-note",
+        "note": "A field lives in exactly one note; habit meaning and planner-habit schedule never both carry the same fact. A derivable fact is not a field."
+      }
+    ]
+  },
+  "team_concepts": {
+    "$comment": "ADR §2.2. Fixed under the myPKA root, never bound in sources.yaml (E_TEAM_CONCEPT_REBOUND). task_deliverables takes a task: resolve('task_deliverables', task_id=...) or resolve.py task_deliverables --task ID gives the k4v path for that task (Vera F4, 2026-09-24).",
+    "agents": "06 AI Team/Agents",
+    "sops": "06 AI Team/AI Team Knowledge/SOPs",
+    "workstreams": "06 AI Team/AI Team Knowledge/Workstreams",
+    "guidelines": "06 AI Team/AI Team Knowledge/Guidelines",
+    "skills": "06 AI Team/AI Team Knowledge/Skills",
+    "scripts": "06 AI Team/AI Team Knowledge/Scripts",
+    "tool_profiles": "06 AI Team/AI Team Knowledge/Tool Profiles",
+    "expansions": "06 AI Team/Expansions",
+    "ai_sessions": "06 AI Team/AI Sessions",
+    "session_logs": "06 AI Team/AI Team Knowledge/Session Logs",
+    "tasks": "06 AI Team/AI Team Knowledge/Tasks",
+    "task_deliverables": "06 AI Team/AI Team Knowledge/Tasks/<state>/<task-stem>/deliverables",
+    "team_state": ".mypka/state",
+    "expansion_receipts": ".mypka/expansions",
+    "team_config": ".mypka"
+  },
+  "tools": {
+    "$comment": "ADR §2.1: source scripts are tools, found with resolve_tool(name); the source manifest maps each name to its path.",
+    "names": [
+      "life-snapshot",
+      "find-entity",
+      "new-entity",
+      "new-journal-entry",
+      "planner-week",
+      "check-quality",
+      "link-dates-to-daily-notes",
+      "stamp-processed",
+      "new-base",
+      "open-in-obsidian",
+      "set-property",
+      "check-bases",
+      "validate-scaffold",
+      "test-life-snapshot"
+    ]
+  }
+}

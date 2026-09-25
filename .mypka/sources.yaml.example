@@ -1,0 +1,28 @@
+# .mypka/sources.yaml example, MODE A (co-located)
+# myPKA is unpacked INTO your ICOR for Life folder: one folder holds
+# AGENTS.md, 06 AI Team/Agents/ and the rooms 00 to 07.
+#
+# In mode A this file is OPTIONAL. Without it the team binds every
+# concept to this same folder with write: allow, exactly as before the
+# split. Copy this file to .mypka/sources.yaml only to change that:
+# to make the team show a diff and wait before every write (below), or,
+# from a later 6.x release, to serve some concepts from another source.
+#
+# The file is per device. Obsidian Sync does not carry dot folders, so a
+# second device runs on the built-in mode A binding until you copy it.
+# Rules: GL-1013. Check the result from this folder:
+#   python3 "06 AI Team/AI Team Knowledge/Scripts/resolve.py" --check
+# Mode B (myPKA in its own folder): sources.mode-b.yaml.example
+
+schema: 1
+
+sources:
+  life:
+    kind: folder
+    root: "."
+    serves: all
+    write: ask
+
+fallbacks:
+  wip: task_attachment
+  missing_capability: degrade

@@ -1,58 +1,97 @@
-# Contributing
+# Contributing to myPKA
 
-Thanks for being interested in myPKA. A short note on how this repo handles contributions.
+Thank you for helping. Please read this page before you send anything.
 
-## What this repo is
+## 1. What we accept
 
-myPKA is the working slice of the **ICOR methodology** as practiced by Paperless Movement S.L. The scaffold's structure, agent contracts, and operating rules reflect deliberate methodology choices. Changes flow top-down from the maintainers, not bottom-up from PRs.
+- Issues: bugs, broken links, factual errors, new import patterns for WS-002.
+- Pull requests: accepted and reviewed by the maintainers. Read §3 before you open one. The pull-request form has a box to accept those terms. It starts unticked, and a pull request with the box unticked is not merged.
 
-## Pull Requests
+Every change is reviewed by the maintainers before it is released. Nothing is merged without review.
 
-**This repo does not accept pull requests.** PRs that arrive will be closed with a friendly note pointing here.
+## 2. Sign your work (Developer Certificate of Origin)
 
-If you want to improve your own version of the scaffold, **fork it freely**. The license (CC BY-SA 4.0) explicitly allows you to adapt, remix, and build on the material with attribution and share-alike. That's the right path for personal customizations and experiments.
+Every commit must carry a sign-off line with your real name or a name you are known by, and an email you control:
 
-## Licensing of contributions
+    Signed-off-by: Your Name <you@example.com>
 
-If you send us anything that lands in the scaffold, whether through an issue, an
-accepted WS-002 tool pattern, or any other route, you license it to Paperless
-Movement S.L. under the same terms as the file it lands in (CC BY-SA 4.0 for the
-base scaffold), and you confirm it is yours to give. This keeps the scaffold's
-licensing clean and lets us relicense it in future without having to track down
-every contributor. If that does not work for you, say so in the issue and we will
-leave your suggestion out.
+`git commit -s` adds it. By signing off you make the following statement:
 
-## Issues
+    Developer Certificate of Origin
+    Version 1.1
 
-Issues are accepted for a narrow set of cases:
+    Copyright (C) 2004, 2006 The Linux Foundation and its contributors.
 
-- Typo fixes and broken links in the docs
-- Clearly reproducible bugs in `SOP-002-convert-mypka-to-sqlite.md` (the migration prompt)
-- Reproducible bugs in `Team Knowledge/scripts/migrate-inline-fields-to-frontmatter.py` (the v1.3.0 inline-fields migration helper)
-- Factual errors in scaffold content (a wrong USPTO number, an outdated URL, etc.)
+    Everyone is permitted to copy and distribute verbatim copies of this
+    license document, but changing it is not allowed.
 
-Use the issue templates so the right one gets routed quickly.
 
-## Note shape and frontmatter
+    Developer's Certificate of Origin 1.1
 
-Every entity note (Person, Organization, Project, Goal, Habit, Topic, Key Element, Document) is shaped by `Team Knowledge/Guidelines/GL-002-frontmatter-conventions.md` and starts from a template in `Team Knowledge/Templates/`. Field names match SQLite column names in `SOP-002-convert-mypka-to-sqlite.md`. If you fork and want to add or rename a field, edit GL-002 first, then update the matching template — the SOP and the Templates inherit field names from the Guideline by `[[wikilink]]`, not by copy.
+    By making a contribution to this project, I certify that:
 
-## Adding new tool patterns to WS-002
+    (a) The contribution was created in whole or in part by me and I
+        have the right to submit it under the open source license
+        indicated in the file; or
 
-`Team Knowledge/Workstreams/WS-002-import-external-knowledge-base.md` ships with a starter set of source-tool signatures (Heptabase, Notion, Obsidian, Roam, Logseq, Mem, Capacities, Apple Notes, Evernote, Tana via MCP, etc.). If you run an import and discover a new export format quirk — a fresh signature for sniffing, an undocumented tag-encoding convention, a SQLite schema variant — that's a community contribution candidate. Open an issue with: source tool name + version, the smallest folder/file fingerprint that identifies it, and the mapping that worked for you. Approved patterns land in WS-002 directly.
+    (b) The contribution is based upon previous work that, to the best
+        of my knowledge, is covered under an appropriate open source
+        license and I have the right under that license to submit that
+        work with modifications, whether created in whole or in part
+        by me, under the same open source license (unless I am
+        permitted to submit under a different license), as indicated
+        in the file; or
 
-## Methodology questions, "how do I adapt this for X", anything deeper
+    (c) The contribution was provided directly to me by some other
+        person who certified (a), (b) or (c) and I have not modified
+        it.
 
-The right home for those conversations is the **myICOR community**, where the team and other members can engage on your specific case.
+    (d) I understand and agree that this project and the contribution
+        are public and that a record of the contribution (including all
+        personal information I submit with it, including my sign-off) is
+        maintained indefinitely and may be redistributed consistent with
+        this project or the open source license(s) involved.
 
-Join at **[https://myicor.com](https://myicor.com)**.
+## 3. Licensing of your contribution
 
-This isn't a redirect to upsell - it's a redirect to the venue where these conversations actually go somewhere. Public forums on a methodology repo dilute the canon and split community attention. The membership keeps the depth where the depth lives.
+By submitting a contribution you agree to the following.
 
-## Discussions
+3.1 **Same license as the file.** Your contribution is licensed under the license of the part of the repository it lands in, as listed in `LICENSE-MAP.md`: CC BY-SA 4.0 for prose, MIT for code and configuration.
 
-Disabled on this repo for the same reason. Use the [myICOR community](https://myicor.com) for community Q&A.
+3.2 **An additional license to the maintainer.** You also grant Paperless Movement, S.L. (Madrid, Spain) a non-exclusive, worldwide, royalty-free, perpetual and irrevocable license to reproduce, distribute, publicly communicate (including making available online) and adapt your contribution, in all media and formats known when you submit it, and to grant sublicenses of these rights to others. This includes the right to use your contribution in products that Paperless Movement, S.L. offers under other license terms, including paid products such as Expansion packs. You agree that Paperless Movement, S.L. may transfer this license to any company that takes over the myPKA project.
 
-## Forks
+3.3 **You keep your rights.** This is a license, not a transfer. You keep your copyright and may use your contribution in any other way you like, including under other licenses. You stay the author, and your authorship stays visible in the public project history. You agree that this record is enough credit, also where your contribution is used in other products, so we do not have to name you inside each file.
 
-Encouraged. The license permits adaptation for any purpose, including commercial, with attribution and share-alike. If you build something useful on top of myPKA, share it through the myICOR community - we'll feature good work.
+3.4 **Your right to give it.** You confirm the contribution is yours to license on these terms. If you made it for an employer or client, you confirm they allow it. If you are under 18, a parent or guardian must agree before you submit.
+
+3.5 **Rights the law protects.** Nothing on this page takes away a right that the law of your country does not let you give up in advance.
+
+If you do not agree with 3.2, please do not submit. Tell us in an issue instead, and we will leave your suggestion out or write it ourselves.
+
+## 4. Privacy
+
+**What we record.** The name and email in your sign-off, your GitHub username, and the content and dates of your commits become part of the public project history. You may sign off with a name you are known by instead of your legal name, and with your GitHub no-reply address instead of your private email.
+
+**Who is responsible.** Paperless Movement, S.L., C/ Mahón 8, 28290 Las Rozas, Madrid, Spain, support@myicor.com, is the controller for this record.
+
+**Why, and on what legal basis.** We keep the record to show who wrote what and that they had the right to submit it, to be able to defend the project against claims about where its code and text came from, and to keep the credit the open licenses require. The legal basis is our legitimate interest in a traceable and lawful project history (Art. 6(1)(f) GDPR). Giving a name and an email in your sign-off is required to contribute. Without it we cannot accept the contribution.
+
+**Who can see it.** Everyone. The repository is public and hosted by GitHub, Inc. in the United States. For that hosting your data goes to the United States under the EU-U.S. Data Privacy Framework (Art. 45 GDPR); our privacy policy has the details. Anyone can view, copy and redistribute the history.
+
+**How long.** For as long as the project exists. A record of where code and text came from only works if it is permanent.
+
+**Your rights.** You can ask us for access to your data, correction, erasure or restriction (Arts. 15 to 18 GDPR). We weigh a request for erasure against the purpose above, because the record may be needed to establish or defend legal claims about the origin of the project (Art. 17(3)(e) GDPR). Rewriting published history is a last resort, and we cannot remove the record from copies others have already made. You can also complain to a data protection authority, in particular in the EU country where you live or work. Our authority is the Agencia Española de Protección de Datos (aepd.es).
+
+**Your right to object.** You can object at any time, on grounds relating to your particular situation, to our processing of your data based on legitimate interest (Art. 21(1) GDPR). We then stop, unless we show compelling legitimate grounds that override your interests, or need the record to establish or defend legal claims. Write to support@myicor.com.
+
+Our full privacy policy: https://myicor.com/privacy#github.
+
+## 5. Names
+
+Contributing does not give you the right to use our names or logos. See `TRADEMARK.md`.
+
+## 6. Questions
+
+Methodology questions and "how do I adapt this for X" belong in the myICOR community at https://myicor.com.
+
+This page states our own contribution terms. Where it differs from the license files, the license files win.

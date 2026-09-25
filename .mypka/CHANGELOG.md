@@ -1,0 +1,92 @@
+# myPKA: changelog
+
+One section per version, newest first, opened under the version being cut
+(never under `Unreleased`). Each section says what was added, what changed,
+and what was removed or moved, every removed or moved file named in
+backticks. `check-version-bump.py` refuses a release whose shipped files
+changed without a new VERSION and a section here.
+
+## 6.0.0
+
+The split. myPKA 6.0.0 continues github.com/myICOR/myPKA (v5.x history and
+tags stay) as the team half of the ICOR for Life Scaffold 1.34.1
+(`f7dd5f0`): contracts, SOPs, Workstreams, team Guidelines, team scripts,
+host files, the resolver and `sources.yaml`. It runs co-located (mode A,
+unpacked into an ICOR for Life 2.0.0 folder) or as a sibling (mode B).
+
+- Added (j5v): the license files. Prose is CC BY-SA 4.0 (`LICENSE`, the
+  Creative Commons legal code, verbatim), code and configuration are MIT
+  (`06 AI Team/AI Team Knowledge/Scripts/LICENSE-myPKA`). `LICENSE-MAP.md`
+  says which applies where, `TRADEMARK.md` covers the names, and
+  `CONTRIBUTING.md` sets the sign-off (DCO 1.1) and how a contribution is
+  licensed.
+- Removed: `LICENSE-myPKA.md`, the licence placeholder, replaced by
+  `LICENSE` and `LICENSE-MAP.md`.
+- Changed: `mypka-update.py` counts `LICENSE`, `LICENSE-MAP.md`,
+  `TRADEMARK.md` and `CONTRIBUTING.md` at the folder root as myPKA's
+  territory, so an update can deliver them. An ICOR for Life release still
+  cannot write them.
+- Added, repo-only: `06 AI Team/AI Team Knowledge/Scripts/check-release-blockers.py`,
+  a release gate: no legal text still marked as a draft, no open decision
+  bracket left in a shipped file, the stale placeholder gone, both license
+  files byte-exact and the README written.
+- Added (step 18, Vex, Themis, Lex): `SECURITY-myPKA.md`, the member
+  security policy, and, repo-only, `.github/SECURITY.md`, which points
+  GitHub to it. The release gate also refuses the old security placeholder
+  and an open condition bracket.
+- Changed (Themis, Tom): the security policy makes no time promise.
+  v5 named targets for a first reply and an assessment; "Our timelines"
+  now says we read every report and reply when we can, and keeps only
+  the 90-day window for keeping a finding private.
+- Added, repo-only (v5q): a root `VERSION`, byte-equal to `.mypka/VERSION`,
+  so a v5 folder's update check sees 6.0.0; the manifest build refuses it
+  missing, shipped or different. Also repo-only: the GitHub `README.md` and
+  `MIGRATING-FROM-5.md`.
+- Changed: `06 AI Team/AI Team Knowledge/Scripts/README-myPKA.md` is the
+  reference for the team scripts, the guards and the completion receipt
+  (moved from ICOR for Life's Scripts README).
+
+- Added (step 18, Vex P7): every release zip is attested (build provenance).
+  `mypka-update.py --help` prints, and `README-myPKA.md` shows, the
+  `gh attestation verify` command a member runs before applying a download.
+- Changed (step 18, Marshall H3): `.mypka/manifest.json` carries
+  `legacy_source` pinned to ICOR for Life Scaffold 1.34.1, and
+  `legacy_previous` built from its 1.x tags.
+- Added: the release tooling of plan step 12. `mypka-update.py` applies a
+  release to a member folder (dry run by default, never deletes, keeps an
+  edited file and writes `<file>.update`). Repo-only:
+  `build-mypka-manifest.py`, `build-mypka-release.sh`, `check-disjoint.py`,
+  `check-version-bump.py`, `.github/workflows/release-mypka.yml`.
+- Added: this changelog.
+- Moved from the ICOR manifest: the shipped agents list (`agents`).
+- Changed (step 13, Vex, Marshall, Flint): the updater compares every path
+  folded (NFC, case), writes only inside myPKA's territory, never writes the
+  other product's files, generated or seed paths, refuses an unreadable
+  other manifest in mode A, requires the release manifest to list itself,
+  walks the target with no-follow directory handles, fails closed on an
+  unreadable installed manifest or version, refuses a same-version release
+  with other bytes and a v5 folder, reads the 1.x combined manifest, writes
+  no `.update` when upstream did not change an edited file, writes
+  `<seed>.update` when a seed template changed, keeps every seed the
+  installed record ever listed (once a seed, always a seed, for every later
+  release, and only `.mcp.json` and `.obsidian/workspace.json` can be
+  seeds), and reports files moved to the other product once.
+- Changed: the updater reports every shipped file it held back (kept
+  edited, `.update` written) so the release notes can name them.
+- Changed: the manifest is `schema` 2 and carries `history` and
+  `legacy_previous` (the team files' 1.x hashes from a pinned second source,
+  `legacy_source`); tags may carry a leading `v`.
+- Added: the last section of `AGENTS.md` reads `AGENTS.local.md`; every
+  agent shim reads its `AGENT.local.md`; `harness.json` carries
+  `mypka_version`.
+- Added, repo-only: `06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/`
+  (Vex's step 13 proofs) and `06 AI Team/AI Team Knowledge/Scripts/tests/t7b-legacy-upgrade.py`.
+- Changed (step 16, Ada A1, Vex ruling b): the updater's ICOR territory
+  names the ICOR rooms only through `ICOR_ROOM_NAMES`, a generated block
+  that `build-mypka-manifest.py` writes from the repo's tracked schema and
+  holds to it under `--check`. At runtime the updater reads no schema for it.
+- Added, repo-only: `06 AI Team/AI Team Knowledge/Scripts/check-room-literals.py`,
+  T2 as a release gate (GL-1013 section 14, both patterns).
+- Changed: the red-test suite refuses in one sentence (exit 2) when run from
+  a myPKA checkout alone, and its case count no longer depends on the
+  gitignored fixture folders under `Scripts/tests/`.

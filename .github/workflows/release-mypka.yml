@@ -1,0 +1,375 @@
+# The myPKA release, on a pushed version tag. Never on a push to main.
+#
+# Repo-only (plan step 12). Written in the lab, where it cannot run: the lab
+# has no remote (g5w). Marshall creates the repo and the first tag at step
+# 18; until then this file is a specification that parses.
+#
+# Same shape as ICOR for Life's release.yml, for the same reasons: every gate
+# runs before anything is published, the zip is built from the TAG, the
+# release is a draft until its assets are uploaded and their digests read
+# back, an asset is never replaced, and the run is green only after the
+# public URL served the bytes that were built.
+#
+# The pinned content source. The red-test suite is the combined suite until
+# it is split per repo, so it needs an ICOR for Life tree to run on, and the
+# disjoint check needs ICOR's manifest. Both come from ONE pinned tag,
+# verified against a pinned commit (a tag can be moved; a sha cannot).
+# Bump ICOR_PIN and ICOR_PIN_SHA together, in their own commit.
+#
+# Step 13 (Marshall M3, M4, M5; Vex F6):
+#   - myPKA tags carry a leading v (v6.0.0), for continuity with v5.x on
+#     myICOR/myPKA. .mypka/VERSION stays bare (6.0.0); the tag is v + VERSION.
+#   - The first myPKA release pins ICOR by commit sha only (ICOR_PIN empty),
+#     because ICOR's own workflow needs a myPKA release to exist first. That
+#     bootstrap is refused as soon as ICOR has any 2.x tag: from then on the
+#     pin is a tag plus its sha.
+#   - GH_TOKEN is set only on the steps that call gh, never for the whole job:
+#     the red-test suite and the builders run third-party-reachable code paths
+#     and have no business holding the token.
+#   - Gate 1 recomputes legacy_previous from the ICOR repository's 1.x tags
+#     (the team files' history before the split, M2) and requires the pin.
+#
+# Step 18 (Vex P7, Marshall H2): build-provenance attestations. The zip and
+# the manifest are attested right after they are built and before anything
+# is published, the attestation is verified at once (with a one-byte-changed
+# copy as its negative control, which must FAIL), and after publishing the
+# zip is downloaded from the public URL and verified again with the member's
+# own command. Only a TAG build counts (--source-ref refs/tags/...): a
+# workflow_dispatch re-run is attested with a branch ref and cannot satisfy
+# the verify on its own; it completes a release only when the tag run of the
+# same bytes got as far as its attestation. Otherwise: bump, never move a tag.
+# The member command (also in mypka-update.py's usage text and the README):
+#   gh attestation verify mypka-<version>.zip --repo myICOR/myPKA \
+#     --signer-workflow myICOR/myPKA/.github/workflows/release-mypka.yml \
+#     --source-ref refs/tags/v<version> --deny-self-hosted-runners
+name: release-mypka
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  # Build-provenance attestations (P7): the OIDC token that Sigstore signs
+  # with, and the write to this repository's attestation store.
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: release-mypka-main
+  cancel-in-progress: false
+
+env:
+  ASSET_STEM: mypka
+  SCRIPTS: 06 AI Team/AI Team Knowledge/Scripts
+  ICOR_REPO: TomSolid/icor-for-life-scaffold
+  # First release only (M4): ICOR_PIN '' and ICOR_PIN_SHA = the ICOR cut
+  # commit. Every later release: ICOR_PIN '2.0.0' (a tag) and its sha.
+  ICOR_PIN: ''
+  ICOR_PIN_SHA: 'b6249a96c411919ffdc77cd3895254a9490e3da6'  # C1, the ICOR cut: step18/make-cut.py icor --pin
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release:
+    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the pushed commit with its history and tags
+        # actions/checkout v7.0.1, pinned to the commit (same pin as ICOR's).
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+
+      - name: Read the version
+        id: version
+        run: |
+          v="$(tr -d '[:space:]' < .mypka/VERSION)"
+          if ! [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::.mypka/VERSION is not MAJOR.MINOR.PATCH: '$v' (a pre-release tag such as -lab never ships)"
+            exit 1
+          fi
+          newest="$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' '[0-9]*.[0-9]*.[0-9]*' | sed 's/^v//' | sort -V | tail -1)"
+          if [ -n "$newest" ] && [ "$(printf '%s\n%s\n' "$newest" "$v" | sort -V | tail -1)" != "$v" ]; then
+            echo "::error::VERSION $v is below the newest existing tag $newest"
+            exit 1
+          fi
+          if [[ "$GITHUB_REF" == refs/tags/* ]] && [ "$GITHUB_REF_NAME" != "v$v" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not equal v + .mypka/VERSION (v$v)"
+            exit 1
+          fi
+          git fetch --no-tags --force origin "+refs/heads/main:refs/remotes/origin/main"
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::$GITHUB_SHA is not on main"
+            exit 1
+          fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "tag=v$v" >> "$GITHUB_OUTPUT"
+
+      - name: Check out ICOR for Life at the pinned tag (or, once, the pinned sha), and prove the pin
+        run: |
+          # Full history: Gate 1 reads the 1.x tags of this repository for
+          # legacy_previous. The content tree is a separate worktree at the pin.
+          git clone --quiet "https://github.com/$ICOR_REPO.git" "$RUNNER_TEMP/icor-history"
+          if [ -z "$ICOR_PIN" ]; then
+            if git -C "$RUNNER_TEMP/icor-history" tag --list '2.*' | grep -q .; then
+              echo "::error::ICOR_PIN is empty, but $ICOR_REPO already has a 2.x tag. The sha-only pin is the one-time bootstrap of the first myPKA release (M4); pin the ICOR tag and its sha."
+              exit 1
+            fi
+            ref="$ICOR_PIN_SHA"
+          else
+            ref="refs/tags/$ICOR_PIN"
+          fi
+          got="$(git -C "$RUNNER_TEMP/icor-history" rev-parse -q --verify "$ref^{commit}" || true)"
+          if [ "$got" != "$ICOR_PIN_SHA" ]; then
+            echo "::error::ICOR ${ICOR_PIN:-(sha pin)} is ${got:-missing}, the pin says $ICOR_PIN_SHA. A moved tag is not the tree this release was tested against."
+            exit 1
+          fi
+          git -C "$RUNNER_TEMP/icor-history" worktree add --quiet --detach "$RUNNER_TEMP/icor" "$got"
+          echo "ICOR for Life ${ICOR_PIN:-(bootstrap, sha only)} at $got"
+
+      # REQUIRED GATES. Each one exits non-zero on its red; none is optional,
+      # none continues on error.
+      - name: Gate 1, the manifest describes this tree, with the 1.x history of the team files, and the updater's icor-room-names block matches the schema
+        # --check also renders mypka-update.py's generated icor-room-names
+        # block from the tracked schema and fails on any byte of drift (Vex
+        # ruling b, step 16).
+        run: python3 "$SCRIPTS/build-mypka-manifest.py" --check --require-legacy --legacy-repo "$RUNNER_TEMP/icor-history"
+
+      - name: Gate 1b, T2, no ICOR room literal and no ICOR tool path in the team (GL-1013 section 14)
+        run: python3 "$SCRIPTS/check-room-literals.py"
+
+      - name: Gate 1c, no release blocker (a Themis draft line, a pending placeholder, the stale licence placeholder, a license text not byte-exact, the placeholder README)
+        run: python3 "$SCRIPTS/check-release-blockers.py"
+
+      - name: Gate 2, no shipped file changed without a VERSION bump and a changelog section
+        run: python3 "$SCRIPTS/check-version-bump.py" --product mypka --base auto
+
+      - name: Gate 3, myPKA and ICOR for Life ship disjoint paths
+        run: python3 "$SCRIPTS/check-disjoint.py" .mypka/manifest.json "$RUNNER_TEMP/icor/.icor-for-life/manifest.json"
+
+      - name: Gate 4, the team structure is valid
+        run: python3 "$SCRIPTS/validate-team.py" .
+
+      - name: Gate 5, every guard goes red, in mode A and in mode B
+        run: |
+          # Mode A: ICOR for Life, myPKA unpacked over it.
+          a="$RUNNER_TEMP/modeA"
+          mkdir -p "$a"
+          ( cd "$RUNNER_TEMP/icor" && tar -c --exclude=.git . ) | tar -x -C "$a"
+          ( tar -c --exclude=.git . ) | tar -x -C "$a"
+          # This is the Linux run of the suite. step12/UP20 (the no-follow
+          # writer, Vex R2) is marked to run here as well as on macOS.
+          ( cd "$a" && python3 "$SCRIPTS/run-red-tests.py" )
+          # Mode B: myPKA beside the content source, bound by sources.yaml.
+          b="$RUNNER_TEMP/modeB"
+          mkdir -p "$b/mypka" "$b/icor-for-life"
+          ( cd "$RUNNER_TEMP/icor" && tar -c --exclude=.git . ) | tar -x -C "$b/icor-for-life"
+          ( tar -c --exclude=.git . ) | tar -x -C "$b/mypka"
+          cp "$b/mypka/.mypka/sources.mode-b.yaml.example" "$b/mypka/.mypka/sources.yaml"
+          ( cd "$b/mypka" && python3 "$SCRIPTS/run-red-tests.py" )
+
+      - name: Release notes are this version's section of the changelog
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python3 - "$VERSION" ".mypka/CHANGELOG.md" "$RUNNER_TEMP/notes.md" <<'PY'
+          import re, sys
+          version, changelog, out = sys.argv[1:4]
+          body, inside = [], False
+          for line in open(changelog, encoding="utf-8").read().splitlines():
+              m = re.match(r"^##\s+\[?(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)\]?", line)
+              if m:
+                  if inside:
+                      break
+                  inside = m.group(1) == version
+                  continue
+              if inside:
+                  body.append(line)
+          text = "\n".join(body).strip("\n")
+          if not text:
+              sys.exit(f"FAIL .mypka/CHANGELOG.md has no '## {version}' section with content")
+          open(out, "w", encoding="utf-8").write(text + "\n")
+          PY
+
+      - name: Check the tag (a tag never moves)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.tag }}
+        run: |
+          if existing="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$VERSION" \
+               --jq '.object.sha + " " + .object.type' 2>/dev/null)"; then
+            sha="${existing% *}"; type="${existing#* }"
+            if [ "$type" = "tag" ]; then
+              sha="$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$sha" --jq .object.sha)"
+            fi
+            if [ "$sha" != "$GITHUB_SHA" ]; then
+              echo "::error::tag $VERSION already exists at $sha and this run is $GITHUB_SHA. A tag never moves: bump VERSION."
+              exit 1
+            fi
+          else
+            echo "::error::tag $VERSION does not exist on GitHub. A release starts with a pushed tag; this workflow never creates one."
+            exit 1
+          fi
+
+      - name: Build the zip twice from the tag and compare
+        id: build
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          MYPKA_REF: ${{ steps.version.outputs.tag }}
+          MYPKA_GATE_CONTENT: ${{ runner.temp }}/icor
+        run: |
+          bash "$SCRIPTS/build-mypka-release.sh" "$RUNNER_TEMP/dry"
+          bash "$SCRIPTS/build-mypka-release.sh" "$RUNNER_TEMP/release"
+          zip="$RUNNER_TEMP/release/myPKA-$VERSION.zip"
+          dry="$RUNNER_TEMP/dry/myPKA-$VERSION.zip"
+          sha="$(sha256sum "$zip" | cut -d' ' -f1)"
+          if [ "$sha" != "$(sha256sum "$dry" | cut -d' ' -f1)" ]; then
+            echo "::error::two builds of tag $VERSION gave two different zips"
+            exit 1
+          fi
+          # No repo-only file in the zip (the builder strips them; this looks at the zip itself).
+          python3 - "$zip" .mypka/manifest.json <<'PY'
+          import json, sys, zipfile
+          names = set(zipfile.ZipFile(sys.argv[1]).namelist())
+          ro = set(json.load(open(sys.argv[2], encoding="utf-8")).get("repo_only") or {})
+          leaked = sorted(names & ro)
+          if leaked:
+              sys.exit("FAIL the zip carries repo-only files: %s" % ", ".join(leaked))
+          PY
+          inside="$(unzip -p "$zip" .mypka/VERSION | tr -d '[:space:]')"
+          [ "$inside" = "$VERSION" ] || { echo "::error::the zip says '$inside', the tag is $VERSION"; exit 1; }
+          echo "zip=$zip" >> "$GITHUB_OUTPUT"
+          echo "sha256=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Attest the build provenance of the zip and the manifest (P7)
+        # actions/attest-build-provenance v4.2.2, pinned to the commit. It is a
+        # wrapper on actions/attest, which v4.2.2 itself pins by commit.
+        # Both public zip names (mypka.zip, mypka-<version>.zip) are these
+        # bytes, so one subject covers both; manifest.json is an asset too.
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8
+        with:
+          subject-path: |
+            ${{ steps.build.outputs.zip }}
+            .mypka/manifest.json
+
+      - name: Verify the attestation before anything is published, and watch a changed byte fail it
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          ZIP: ${{ steps.build.outputs.zip }}
+        run: |
+          verify() {
+            gh attestation verify "$1" --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-mypka.yml" \
+              --source-ref "refs/tags/$TAG" --deny-self-hosted-runners
+          }
+          verify "$ZIP"
+          verify .mypka/manifest.json
+          # Negative control (GL-070), on every run: one byte changed after
+          # the attestation must fail the same command.
+          cp "$ZIP" "$RUNNER_TEMP/one-byte-changed.zip"
+          python3 -c 'import sys; p = sys.argv[1]; b = bytearray(open(p, "rb").read()); b[len(b) // 2] ^= 0xFF; open(p, "wb").write(b)' "$RUNNER_TEMP/one-byte-changed.zip"
+          if verify "$RUNNER_TEMP/one-byte-changed.zip" >/dev/null 2>&1; then
+            echo "::error::a zip with one byte changed passed gh attestation verify; the check proves nothing"
+            exit 1
+          fi
+          echo "attestation verified; a one-byte-changed copy is refused"
+
+      - name: Create the release as a draft if it does not exist
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if ! id="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json databaseId --jq .databaseId 2>/dev/null)"; then
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --draft --verify-tag \
+              --title "myPKA $VERSION" --notes-file "$RUNNER_TEMP/notes.md"
+            id="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json databaseId --jq .databaseId)"
+          fi
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+
+      - name: Upload the assets and read their digests back (never replace an asset with different bytes)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+          RELEASE_ID: ${{ steps.release.outputs.id }}
+          ZIP: ${{ steps.build.outputs.zip }}
+          SHA: ${{ steps.build.outputs.sha256 }}
+        run: |
+          digest_of() {
+            gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" \
+              --jq ".assets[] | select(.name == \"$1\") | (.digest // \"nodigest\")"
+          }
+          upload() {  # $1 local file  $2 asset name  $3 expected sha256
+            local published
+            published="$(digest_of "$2")"
+            if [ -n "$published" ]; then
+              [ "${published#sha256:}" = "$3" ] && { echo "$2 already on $VERSION with these bytes"; return 0; }
+              echo "::error::$2 is already on $VERSION with different bytes. A version name never changes bytes: bump VERSION."
+              exit 1
+            fi
+            cp "$1" "$RUNNER_TEMP/$2"
+            gh release upload "$TAG" "$RUNNER_TEMP/$2" --repo "$GITHUB_REPOSITORY"
+            for attempt in 1 2 3 4 5 6; do
+              published="$(digest_of "$2")"
+              [ "${published#sha256:}" = "$3" ] && return 0
+              sleep 5
+            done
+            echo "::error::$2 uploaded but its digest read back as '${published:-missing}', expected sha256:$3"
+            exit 1
+          }
+          upload "$ZIP" "$ASSET_STEM.zip" "$SHA"
+          upload "$ZIP" "$ASSET_STEM-$VERSION.zip" "$SHA"
+          upload ".mypka/manifest.json" "manifest.json" "$(sha256sum .mypka/manifest.json | cut -d' ' -f1)"
+
+      - name: Publish the release as latest, now that its assets are verified
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
+
+      - name: Verify the public URL serves the bytes just built
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          SHA: ${{ steps.build.outputs.sha256 }}
+        run: |
+          url="https://github.com/$GITHUB_REPOSITORY/releases/latest/download/$ASSET_STEM.zip"
+          for attempt in 1 2 3 4 5 6; do
+            code="$(curl -sSL --retry 3 --retry-delay 5 -o "$RUNNER_TEMP/roundtrip.zip" -w '%{http_code}' "$url" || true)"
+            got="$(sha256sum "$RUNNER_TEMP/roundtrip.zip" 2>/dev/null | cut -d' ' -f1)"
+            if [ "$code" = "200" ] && [ "$got" = "$SHA" ]; then
+              echo "latest-release URL serves $VERSION ($SHA)"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::$url does not serve the zip built for $VERSION"
+          exit 1
+
+      - name: Verify the attestation of what the public URLs serve, with the member's command (P7)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          verify() {
+            gh attestation verify "$1" --repo "$GITHUB_REPOSITORY" \
+              --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release-mypka.yml" \
+              --source-ref "refs/tags/$TAG" --deny-self-hosted-runners
+          }
+          base="https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG"
+          curl -sSfL --retry 3 --retry-delay 5 -o "$RUNNER_TEMP/$ASSET_STEM-$VERSION.zip" "$base/$ASSET_STEM-$VERSION.zip"
+          curl -sSfL --retry 3 --retry-delay 5 -o "$RUNNER_TEMP/public-manifest.json" "$base/manifest.json"
+          verify "$RUNNER_TEMP/roundtrip.zip"
+          verify "$RUNNER_TEMP/$ASSET_STEM-$VERSION.zip"
+          verify "$RUNNER_TEMP/public-manifest.json"
+          echo "the public downloads of $TAG verify: built by this workflow, from this tag, on a GitHub-hosted runner"

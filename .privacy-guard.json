@@ -1,8 +1,0 @@
-{
-  "_about": "Config for scripts/check-no-personal-data.py. NOT shipped inside the scaffold ZIP (export-ignore in .gitattributes), because a maintainer's name belongs in this repository's release tooling, never in every member's folder. 'allowed' holds EXACT strings that are legitimate; add an exact string rather than widening a pattern. Accepted risk (2026-08, ruling R-1b): this file IS delivered to anyone who clones the repository; that stands, because the list holds first names with zero personal context, the ZIP already export-ignores it, and moving it to a CI secret would make the guard unrunnable and unreviewable for contributors. Roster policy: non-shipped internal roster names are forbidden so process residue cannot ship; publicly offered base and pack names (Larry, Nolan, Pax, Penn, Mack, Silas, Felix, Vex, Vera, Iris, Charta, Pixel) stay OUT of the forbidden list. Further roster names are added only where the capitalized form cannot collide with legitimate scaffold prose or common English words; the security reviewer arbitrates any collision doubt, and every deliberate exclusion is documented here.",
-  "forbidden_names": ["Tom", "Rödl", "Roedl", "Knox", "Mei", "Marshall", "Axon"],
-  "allowed": [
-    "Dr. Thomas Rödl",
-    "\"the author builds the system\" → \"Dr. Thomas Rödl builds the system\""
-  ]
-}

@@ -1,0 +1,41 @@
+# .mypka/sources.yaml example, MODE B (sibling)
+# myPKA lives in its own folder, next to your content:
+#   <parent>/mypka/            this folder: AGENTS.md is here, START YOUR AI SESSION HERE
+#   <parent>/icor-for-life/    your ICOR for Life folder
+#
+# In mode B this file is REQUIRED. Copy it to .mypka/sources.yaml.
+# The copy is protected by the write-guard (it decides where the team
+# writes), so an AI session makes it with the one-call unlock, from this
+# folder:
+#   ICOR_UNLOCK_WRITES=1 cp .mypka/sources.mode-b.yaml.example .mypka/sources.yaml
+# root is relative to THIS folder (the one holding AGENTS.md), or
+# absolute, or starts with ~. It must not sit inside this folder, and
+# this folder must not sit inside it (nesting is refused).
+#
+# The file is per device: a root is a path on this machine.
+# Rules: GL-1013. Check the result from this folder:
+#   python3 "06 AI Team/AI Team Knowledge/Scripts/resolve.py" --check
+
+schema: 1
+
+sources:
+  life:
+    kind: folder
+    root: "../icor-for-life"
+    serves: all
+    write: ask
+#   except: [journal]              # a later 6.x release: hand the journal to the source below
+
+# notion:                          # a later 6.x release, read-only audit first, never delete
+#   kind: mcp
+#   server: notion                 # the server name in .mcp.json
+#   auth_env: NOTION_TOKEN         # an env-var NAME, never the token itself
+#   serves: [journal]
+#   homes:
+#     journal: "<notion database id>"
+#   capabilities: [read, list, search, frontmatter]
+#   write: deny
+
+fallbacks:
+  wip: task_attachment             # a source without a WiP room: deliverables attach to their task
+  missing_capability: degrade      # report "degraded", never guess

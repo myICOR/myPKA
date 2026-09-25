@@ -1,15 +1,17 @@
-<!--
-This repo doesn't accept pull requests. See CONTRIBUTING.md.
+## What this changes
 
-If you opened this by accident, you can close it. No hard feelings.
+<!-- One or two sentences. Link the issue if there is one. -->
 
-If you wanted to improve your own version of the scaffold, fork it freely. The CC BY-SA 4.0 license explicitly allows that.
+## Contributor agreement (required)
 
-If you have a methodology question or want to discuss adapting the scaffold for your use case, the right home is the myICOR community at https://myicor.com.
+A pull request is never merged unless the box below is ticked by you, the author.
+The `contribution-check` workflow fails the pull request until it is.
 
-Thanks for being interested in myPKA.
--->
+- [ ] I have read CONTRIBUTING.md and agree to its licensing terms (§3), including the additional license to Paperless Movement, S.L. in §3.2. Every commit carries my DCO sign-off.
 
-This repo does not accept pull requests. See [CONTRIBUTING.md](../CONTRIBUTING.md).
+## Sign-off (DCO)
 
-For methodology questions, adaptations, or "how do I X" - join the myICOR community at **[https://myicor.com](https://myicor.com)**.
+Every commit must carry a `Signed-off-by:` line with your real name and email, as described in
+[CONTRIBUTING.md section 2](../blob/main/CONTRIBUTING.md#2-sign-your-work-developer-certificate-of-origin).
+Use `git commit -s` for new commits. To add the line to commits you already made, run `git rebase --signoff main` and update your branch.
+The `contribution-check` workflow fails the pull request if any commit lacks it.
