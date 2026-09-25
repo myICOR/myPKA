@@ -36,6 +36,8 @@ THE 22 CHECKS
  14  skills      every skill with this slug's prefix passes skill-doctor.py
  15  skill-oblig the hire workup's `skills:` list matches what is on disk
  16  sop-scripts every [SCRIPT] step in this agent's SOPs names a script that exists
+                 (or one .mypka/manifest.json lists as repo_only under Scripts/:
+                 it runs in the myPKA repository and never reaches a member's folder)
  17  red-tests   every guard this agent's SOPs or gates name has a red case
  18  gates       every owns_gates entry has a rule, a script and a Vex review
  19  wikilinks   links in the contract, the bio and the skills resolve
@@ -423,6 +425,21 @@ class Vault(object):
                     pass
                 self._cross = [(Path(src.root), Path(d)) for d in dirs if Path(d).is_dir()]
         return self._cross
+
+    def repo_only_scripts(self):
+        """The script names under Scripts/ that the installed myPKA manifest
+        lists as repo_only: they run in the myPKA repository and are stripped
+        from the release zip, so a member's folder never has them. Check 16
+        accepts them as named, not missing (6.0.1: SOP-1016 step 3 names
+        release-gate-red-tests.sh, and 6.0.0's build refused its own zip).
+        No manifest, or none readable: nothing is accepted."""
+        try:
+            man = json.loads((self.root / ".mypka" / "manifest.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return set()
+        ro = man.get("repo_only") if isinstance(man, dict) else None
+        prefix = SCRIPTS_REL + "/"
+        return set(r.split("/")[-1] for r in (ro or {}) if isinstance(r, str) and r.startswith(prefix))
 
     def cross_scripts(self):
         """The content source's script folders (mode B), for check 16."""
@@ -982,12 +999,15 @@ def check_agent(vault, name):
                    and not list(vault.scripts_dir.rglob(s))
                    and not (root / ".claude" / "hooks" / s).is_file()
                    and not any((d / s).is_file() for d in vault.cross_scripts())]
+        repo_only = sorted(s for s in missing if s in vault.repo_only_scripts())
+        missing = [s for s in missing if s not in repo_only]
         if missing:
             res.fail(16, "sop-scripts", "SOP [SCRIPT] step(s) name script(s) that are not on "
                      "disk: %s" % ", ".join(missing))
         else:
-            res.ok(16, "sop-scripts", "%d script(s) named by [SCRIPT] steps, all present"
-                   % len(named_scripts))
+            res.ok(16, "sop-scripts", "%d script(s) named by [SCRIPT] steps, all present%s"
+                   % (len(named_scripts), "" if not repo_only else
+                      " or repo-only (they run in the myPKA repository): %s" % ", ".join(repo_only)))
 
     guard_ids = keys.get("owns_gates") or []
     if isinstance(guard_ids, str):

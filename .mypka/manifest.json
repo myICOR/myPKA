@@ -1,9 +1,9 @@
 {
   "schema": 2,
   "name": "myPKA",
-  "version": "6.0.0",
-  "built": "2026-09-25T01:30:44Z",
-  "commit": "f9eed13",
+  "version": "6.0.1",
+  "built": "2026-09-25T10:46:43Z",
+  "commit": "608f9c2",
   "lab": false,
   "requires": "icor-concepts >=1 <2",
   "files": {
@@ -47,8 +47,8 @@
     ".gemini/agents/silas.md": "a77663618756d024fc89e50470e055add4f95bbd6e69c7df11bba245497ce28a",
     ".gemini/settings.json": "7b8b6ffcbc620569ad9c0df7dc278d3e41c5dafb9065a8578827241defd4e886",
     ".mcp.json": "8cd11fec1f55e34f5d3121943c23913ce57336cf80487c5dc82d0efba887b3c7",
-    ".mypka/CHANGELOG.md": "c9d8ccef6905d00a9bea07bd14e36afca85f807522cc34db986a8d09d06786cf",
-    ".mypka/VERSION": "54ef76332b31df830699e9d4138396885ab72bae260a034a81ff02bf32d8e90a",
+    ".mypka/CHANGELOG.md": "a482c6471d92e50f57e84ab6c1a3082ecf80d9fc58cd0b9650dbb5a189049e30",
+    ".mypka/VERSION": "cf3701cb2416e87a99c0e77dbd0518fc4fc27e390f025c024e6ed1c389c928e0",
     ".mypka/icor-concepts-1.json": "278e54515b31ef7738d5a8028475eddc51b696e6ab9a13be4dc6523398889275",
     ".mypka/manifest.json": "self",
     ".mypka/sources.mode-b.yaml.example": "8e113653e12326213a67ae6d66c7d675b482e183268f510468ae0c8d26658764",
@@ -88,12 +88,12 @@
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1013-connect-an-external-tool-via-mcp.md": "ef163a10fdc2a2f151a169fc83d964d0f9e650ce583b797d66664e6de816c13c",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1014-check-and-repair-what-was-filed-by-hand.md": "2fba79cdba5bc21361c7c6226ff786dc464502dc1635cea45c20a047d56b5e35",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1015-digest-a-meeting-transcript.md": "bac550b0345e4344be99dc596adea29de3b559ef40b43f40b2e033de9489e914",
-    "06 AI Team/AI Team Knowledge/SOPs/SOP-1016-run-the-red-tests-and-gate-a-release.md": "d1959cd9e063b1afffbbfaa01d981dc90cafbd48e8e1aa8e8bf457f1d3d88f19",
+    "06 AI Team/AI Team Knowledge/SOPs/SOP-1016-run-the-red-tests-and-gate-a-release.md": "aa96cd9f4abb3bcb5f5e78b37e92bcd7bcbaf8dfb4e07a94e6f3860a79dd4ee5",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1017-answer-the-six-life-questions-from-the-snapshot.md": "b0eaf01fc5cc1b7f14eb32a1bac9d06941c1d25d350bcdc93a2776fbe0a8a504",
     "06 AI Team/AI Team Knowledge/Scripts/LICENSE-myPKA": "170333a76ed584f3892d02c7b83cb68d8602cb29d09fdbbbe380cee7f6eecf5b",
     "06 AI Team/AI Team Knowledge/Scripts/README-myPKA.md": "a0b5bab6b125da155b65572fecd481bd38dda93221fe57a04c42edc150c7e0f9",
     "06 AI Team/AI Team Knowledge/Scripts/add-mcp-server.py": "409c8e5520f16930162fbab96f2b62ac8221fa19dd7db49e344c94a83d1277b2",
-    "06 AI Team/AI Team Knowledge/Scripts/check-hire.py": "84e47bd971446ece5c8f5fd79143f1f22d35052c71f56f4d9cff3c7a9b2e65f7",
+    "06 AI Team/AI Team Knowledge/Scripts/check-hire.py": "d1670c2e98220de1a984eda99a74874d7420b1dbd99cd9035b2e1638f129ff5d",
     "06 AI Team/AI Team Knowledge/Scripts/check-icor-concepts.py": "e95ef2381c0f7f6d4f6b7a38fc101a7880d023f42e131f2c9026280e28bebc3c",
     "06 AI Team/AI Team Knowledge/Scripts/check-onboarding.py": "92d8fb48bdf3ea09fc36dbe7c11a5f96961e0eaf745c2f1b3dc76992359df432",
     "06 AI Team/AI Team Knowledge/Scripts/checkpoint.py": "c0922e350e3dafff82794e547fdc876c4265328dbb13271381f60726f0120d3c",
@@ -109,7 +109,7 @@
     "06 AI Team/AI Team Knowledge/Scripts/new-task.py": "df25b25f4f7e6d597343b8332d016e4550bcb733a667a51cac3d05d14a77f5bd",
     "06 AI Team/AI Team Knowledge/Scripts/noteio.py": "8adf62965c7a646d9e567eaed2d809164796c75f81c6cb6626a8fbf0e3bd7f22",
     "06 AI Team/AI Team Knowledge/Scripts/resolve.py": "867ed2598fde4701569046871afe93c6ab311747c4b242063c645e9582e718a9",
-    "06 AI Team/AI Team Knowledge/Scripts/run-red-tests.py": "62b2d53b07ebe6ff36e4fe085e0dbf95cae74444cc3292076f7e57314518bfb1",
+    "06 AI Team/AI Team Knowledge/Scripts/run-red-tests.py": "c19b8dd39e22c66403bd82d8bfcd3a0f7e4273c1da09ecbad6e63e4a78cb7874",
     "06 AI Team/AI Team Knowledge/Scripts/scaffold-init.py": "c9aef875c3ffb43b24540cd44751d9e896bd08dfc6f83350e549fbc0a52afb98",
     "06 AI Team/AI Team Knowledge/Scripts/session-start.py": "e6271e40085e9aad88ed213dc84f79511ec259038d482b998d18998170bf9e9f",
     "06 AI Team/AI Team Knowledge/Scripts/skill-doctor.py": "8615d71739eb5606f29f03656f011cc77f05b1f58d6e2ac349f1db48add8db59",
@@ -195,7 +195,7 @@
     ".github/PULL_REQUEST_TEMPLATE.md": "944765d3b34c78f6e8976271a07d3d1358a667c96d79e38634b5ac093417e441",
     ".github/SECURITY.md": "19da61ecea4f8f720b002466ff95d38632ff1d0573e7c8e46d4b355445587eda",
     ".github/workflows/contribution-check.yml": "f4840d8db4b5ab7c586639281e003cc36708f48238a8dfaafba1f0a2b1b5564e",
-    ".github/workflows/release-mypka.yml": "e11dceb4faaf07a33431ca3697e14e14086380a12e9fbc358793083069fc8980",
+    ".github/workflows/release-mypka.yml": "2f15c29d1a5b3faab55769a99b626cd1960a081b932c8ca8f6508dce3a121666",
     ".gitignore": "7c99ddb7850a7538fa1e195cae6e5089b8cccf422d26891c49f63ee5e25da888",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-manifest.py": "db7d58083a2ddef28590d1381eeabfaa56f809385d36b2f723ea4b5af55736eb",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-release.sh": "42678d3ebcc38ba6fa4f40dcf1647cebd49fec04773364ecb6ea07dd36200667",
@@ -215,9 +215,9 @@
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/p7b.py": "61a9818f50c4edd73a01b25fd4c97eed30ef114e5c54bd6a46f2f01978747fd4",
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/verify-fixed.py": "c64ed872c0ca96d3bdc1abd17392310184b3a458dbcb73c513ecf4c14a133724",
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/verify.py": "f2a0dcd865a2f7ce252f0bab0a0d82544293609fc6053adeab16863895bda44d",
-    "MIGRATING-FROM-5.md": "c32e6caa8a03c4e311052421e4a6d60baeb0784f2cfbb0761002cae74f83b689",
+    "MIGRATING-FROM-5.md": "1f1562191dc5a02000bc688b2cd99db7c324e08f1954d19b4bf0e0722e1ff043",
     "README.md": "d3522a6072627d9b90e35294113e124a1d97e0ea7428571335234239a52809b4",
-    "VERSION": "54ef76332b31df830699e9d4138396885ab72bae260a034a81ff02bf32d8e90a"
+    "VERSION": "cf3701cb2416e87a99c0e77dbd0518fc4fc27e390f025c024e6ed1c389c928e0"
   },
   "generated": {
     ".agents/skills/answer-the-six-life-questions/SKILL.md": {
@@ -312,7 +312,15 @@
       "shim": ".claude/agents/silas.md"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "version": "6.0.1",
+      "date": "2026-09-25",
+      "removed": [],
+      "renamed": [],
+      "added": []
+    }
+  ],
   "previous": {
     ".claude/agents/ada.md": [
       "45e8a772e9bcba359fead539d89d8505d62709edba377b386d64d604e6db4f42"
@@ -442,6 +450,12 @@
     ".gemini/agents/silas.md": [
       "b014e41e9f27cd62c82cf725a6288a4b668c7137a3f961c721ab23a8bd9832db"
     ],
+    ".mypka/CHANGELOG.md": [
+      "c9d8ccef6905d00a9bea07bd14e36afca85f807522cc34db986a8d09d06786cf"
+    ],
+    ".mypka/VERSION": [
+      "54ef76332b31df830699e9d4138396885ab72bae260a034a81ff02bf32d8e90a"
+    ],
     "06 AI Team/AI Team Knowledge/Avatars/larry.png": [
       "50ea925f37f8259e62fbfc12aa77a74e836a2701ea518e17a9fe724535ec2ea6"
     ],
@@ -542,6 +556,9 @@
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1015-digest-a-meeting-transcript.md": [
       "f3c7b786efba69bf7269ef17d606559650b2d68e98725e708760382746a858df"
     ],
+    "06 AI Team/AI Team Knowledge/SOPs/SOP-1016-run-the-red-tests-and-gate-a-release.md": [
+      "d1959cd9e063b1afffbbfaa01d981dc90cafbd48e8e1aa8e8bf457f1d3d88f19"
+    ],
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1017-answer-the-six-life-questions-from-the-snapshot.md": [
       "589d65233943518632363acd2de15d3ad2755f8d8cc2fea7ab2efb71ecfef21e",
       "fb3872465b1589f36b445be41f100caa4674b5547baa8bdfce6fe3a206608543"
@@ -556,6 +573,7 @@
       "61fcc9fd24cd337875dbb6ff03a5f10e946898643292ddb45963925311592196",
       "6da637f8cf2a66d7c72ac01c68ac0ca0d323dd3dcbf9956a7e704f06b7f8cfef",
       "7c386ff128d3a3c19d1bce9fe081d81a262290f7f0ddd3fa4e85fd2cb4169dd3",
+      "84e47bd971446ece5c8f5fd79143f1f22d35052c71f56f4d9cff3c7a9b2e65f7",
       "ac5f769f1a4d876ec8405c543b3ddf7ef8410173e55a548d71b0e6569fafbaaa"
     ],
     "06 AI Team/AI Team Knowledge/Scripts/check-onboarding.py": [
@@ -635,6 +653,7 @@
       "3dea2309950c354b63d2eede724ae9a5c4ea60c3e5145a79963ebb13a46a2a07",
       "4dc4347fee7b3cbe7ef34638c88122ebe8e562b612589c5150644a3f65e94e85",
       "5dd1fbc4b7899b7dc8edced49565c7ec3fefa93af73d98acff2269583ed89cfb",
+      "62b2d53b07ebe6ff36e4fe085e0dbf95cae74444cc3292076f7e57314518bfb1",
       "6d470be23e71cef32067813c811243644dc618eaae4e051eba3174e21fe21477",
       "852777ef19d1ee6c7a0541315ba45583614a73355f35c63a90622de4ffbd2136",
       "8a75f731ab240624a3e4155bc5fc9cb6207799ffb68c500235e01082bef36037",
@@ -1080,6 +1099,9 @@
     ],
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1015-digest-a-meeting-transcript.md": [
       "f3c7b786efba69bf7269ef17d606559650b2d68e98725e708760382746a858df"
+    ],
+    "06 AI Team/AI Team Knowledge/SOPs/SOP-1016-run-the-red-tests-and-gate-a-release.md": [
+      "d1959cd9e063b1afffbbfaa01d981dc90cafbd48e8e1aa8e8bf457f1d3d88f19"
     ],
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1017-answer-the-six-life-questions-from-the-snapshot.md": [
       "589d65233943518632363acd2de15d3ad2755f8d8cc2fea7ab2efb71ecfef21e",

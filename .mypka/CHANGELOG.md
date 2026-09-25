@@ -6,6 +6,29 @@ and what was removed or moved, every removed or moved file named in
 backticks. `check-version-bump.py` refuses a release whose shipped files
 changed without a new VERSION and a section here.
 
+## 6.0.1
+
+The first release of myPKA 6. The tag `v6.0.0` exists, but 6.0.0 was
+never released: its release build refused its own zip (the fix below), and
+a tag never moves. Everything the 6.0.0 section lists ships for the first
+time in 6.0.1.
+
+- Fixed: `06 AI Team/AI Team Knowledge/Scripts/check-hire.py` check 16
+  (`sop-scripts`) no longer fails in a member's folder on a `[SCRIPT]` step
+  that names a script `.mypka/manifest.json` lists as `repo_only`. Such a
+  script runs in the myPKA repository, and the release zip leaves it out.
+  A script the manifest does not list is still a FAIL. The 6.0.0 release
+  build runs the red tests on the staged tree and stopped on exactly this:
+  SOP-1016 step 3 names `release-gate-red-tests.sh`.
+- Changed: `06 AI Team/AI Team Knowledge/SOPs/SOP-1016-run-the-red-tests-and-gate-a-release.md`
+  step 3 says it runs in the myPKA repository and names both release
+  builders.
+- Added: the red case `step12/N2` in `run-red-tests.py`, a member's folder
+  with no repo-only file, watched red with the `repo_only` acceptance
+  switched off.
+- Changed, repo-only: `MIGRATING-FROM-5.md` names the 6.0.1 download and
+  its verify command, and says that a v5 folder's update check sees 6.
+
 ## 6.0.0
 
 The split. myPKA 6.0.0 continues github.com/myICOR/myPKA (v5.x history and

@@ -38,18 +38,18 @@ More that changed:
 - **The team grew from 6 agents to 11.** All six v5 agents are still there, and five new ones joined. The team table in [README-myPKA.md](README-myPKA.md) lists every agent and their job.
 - **Numbers.** Every numbered file we ship (SOP, WS, GL) uses 1000 to 1999. Numbers below 1000, and from 2000 up, are yours, so your own v5 files never collide with ours.
 - **Not in 6.0.0:** the myPKA Cockpit and the SQLite conversion (v5's SOP-002). If you use them, they stay in your v5 folder, unchanged.
-- **Your v5 folder won't tell you about 6.0.0.** Its update check reads a version file at the top of this repository, and 6.0.0 keeps its version in `.mypka/VERSION`. And v5's `update-scaffold.py` can't apply 6.0.0: it stops, because the 6.0.0 manifest has a different shape.
+- **Your v5 folder can tell you that 6 is out, but it can't install it.** Its update check reads the version file at the top of this repository, which now names the 6.x version. v5's `update-scaffold.py` can't apply it: it stops, because the 6.x manifest has a different shape. The first 6.x release is 6.0.1: the tag `v6.0.0` exists, but 6.0.0 was never released.
 
 ## Step by step
 
 1. **Make a copy of your v5 folder.** Nothing below changes it, but a copy costs you nothing.
 2. **Download both products:**
-   - myPKA 6.0.0: `mypka-6.0.0.zip` from https://github.com/myICOR/myPKA/releases
+   - myPKA 6.0.1: `mypka-6.0.1.zip` from https://github.com/myICOR/myPKA/releases
    - ICOR for Life 2.0.0: `icor-for-life-obsidian-edition-2.0.0.zip` from https://github.com/TomSolid/icor-for-life-scaffold/releases
 3. **Check that both are genuine** with the GitHub CLI (`gh`). Each command is one line. Continue only if both print that verification succeeded:
 
    ```
-   gh attestation verify mypka-6.0.0.zip --repo myICOR/myPKA --signer-workflow myICOR/myPKA/.github/workflows/release-mypka.yml --source-ref refs/tags/v6.0.0 --deny-self-hosted-runners
+   gh attestation verify mypka-6.0.1.zip --repo myICOR/myPKA --signer-workflow myICOR/myPKA/.github/workflows/release-mypka.yml --source-ref refs/tags/v6.0.1 --deny-self-hosted-runners
    gh attestation verify icor-for-life-obsidian-edition-2.0.0.zip --repo TomSolid/icor-for-life-scaffold --signer-workflow TomSolid/icor-for-life-scaffold/.github/workflows/release.yml --source-ref refs/tags/2.0.0 --deny-self-hosted-runners
    ```
 
@@ -58,7 +58,7 @@ More that changed:
 5. **Unpack myPKA into that same folder** (mode A):
 
    ```
-   unzip mypka-6.0.0.zip -d "/path/to/your new folder"
+   unzip mypka-6.0.1.zip -d "/path/to/your new folder"
    ```
 
    The zip holds hidden files whose names start with a dot. Moving files by hand in the Mac Finder leaves them behind, and `unzip` keeps them. For mode B instead, follow [README-myPKA.md](README-myPKA.md).

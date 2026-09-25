@@ -9249,6 +9249,40 @@ def s12_n1_check_hire_mode_b(muts):
     return out
 
 
+def s12_n2_check_hire_member_folder(muts):
+    """N2 (6.0.1): a member's folder holds no repo-only file (the release zip
+    strips them), and check-hire --all is clean there. A [SCRIPT] step that
+    names a script the installed manifest lists as repo_only is not a missing
+    script: 6.0.0's release build refused its own zip on SOP-1016 step 3
+    (release-gate-red-tests.sh). A name the manifest does NOT list stays a
+    FAIL, so the acceptance is the manifest's, never a blanket one."""
+    out = []
+    base = _s12_dir("n2")
+    icor, team = base / "icor-for-life", base / "mypka"
+    _s12_copy(_S12_IMAN, _S12_LIFE, icor)
+    _s12_copy(_S12_TMAN, _S12_TEAM, team)
+    (team / ".mypka/manifest.json").write_text(json.dumps(_S12_TMAN, indent=2), encoding="utf-8")
+    shutil.copy2(team / ".mypka/sources.mode-b.yaml.example", team / ".mypka/sources.yaml")
+    ch = team / _S12_SC / "check-hire.py"
+    tf = (muts or {}).get("check-hire.py")
+    if tf:
+        ch.write_text(tf(ch.read_text(encoding="utf-8")), encoding="utf-8")
+    # --json: --all prints FAIL lines only, and the OK row is the evidence
+    # that a repo-only script was named at all (else nothing was measured).
+    r = _s12_py(ch, "--all", "--json", cwd=team)
+    _s12_expect(out, "member folder check-hire --all", r, 0,
+                "repo-only (they run in the myPKA repository)", "stdout")
+    man = json.loads(json.dumps(_S12_TMAN))
+    man["repo_only"] = {k: v for k, v in (man.get("repo_only") or {}).items()
+                        if not k.startswith(_S12_SC + "/")}
+    (team / ".mypka/manifest.json").write_text(json.dumps(man, indent=2), encoding="utf-8")
+    r = _s12_py(ch, "--all", cwd=team)
+    # The FAIL line with the script's name goes to stderr.
+    _s12_expect(out, "the same folder, the scripts not listed as repo_only", r, 1,
+                "release-gate-red-tests.sh")
+    return out
+
+
 # ---- the myPKA release builder ---------------------------------------------
 def _s12_rb(tag, muts, runner_ok=True, content=True, env_extra=None):
     d, _b = _s12_repo("mypka", tag)
@@ -9803,6 +9837,9 @@ _S12_CASES = [
     ("N1-check-hire-mode-B-cross-side", s12_n1_check_hire_mode_b,
      {"check-hire.py": _r_mut("                self._cross = [(Path(src.root), Path(d)) for d in dirs if Path(d).is_dir()]",
                               "                self._cross = []")}, "the content source's folders not indexed", ("icor",)),
+    ("N2-check-hire-repo-only-script-in-a-member-folder", s12_n2_check_hire_member_folder,
+     {"check-hire.py": _r_mut("        missing = [s for s in missing if s not in repo_only]\n", "")},
+     "the repo_only acceptance switched off", ("icor",)),
     ("RB1-zip-is-the-manifest", s12_rb_clean,
      {_S12_RB: _r_mut('for rp in "${RESIDUE_PATHS[@]}"; do rm -f "$STAGE/$rp"; done', "true")},
      "repo-only files left in the stage", (_S12_MB, _S12_RB, "git", "zip")),

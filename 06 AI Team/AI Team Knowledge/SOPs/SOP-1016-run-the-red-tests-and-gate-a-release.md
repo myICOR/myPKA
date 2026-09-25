@@ -36,10 +36,14 @@ it did not see print.
    is seen going red before the guard is registered in any host hook
    config ([[SOP-1007-hire-a-new-agent|SOP-1007]] step 6c for a guard a
    hire introduces).
-3. [SCRIPT] Before a release: `Scripts/release-gate-red-tests.sh <staged
-   tree>` runs the same suite against the bytes that will ship and exits 1
-   with the runner's own `FAIL` lines while any guard has not gone red.
-   `Scripts/build-release-zip.sh` calls it; no build while it is red.
+3. [SCRIPT] Before a release, in the myPKA repository:
+   `Scripts/release-gate-red-tests.sh <staged tree>` runs the same suite
+   against the bytes that will ship and exits 1 with the runner's own
+   `FAIL` lines while any guard has not gone red. myPKA's
+   `Scripts/build-mypka-release.sh` and ICOR for Life's
+   `Scripts/build-release-zip.sh` call it; no build while it is red. The
+   script is repo-only: the release zip leaves it out, so a member's
+   folder does not have it, and this step runs only in the repository.
 
 What this does not prove: that a guard is registered in any host's hook
 config, or that it runs on the runtime a member uses. It proves the script

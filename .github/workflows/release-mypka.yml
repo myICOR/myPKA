@@ -68,7 +68,7 @@ env:
   # First release only (M4): ICOR_PIN '' and ICOR_PIN_SHA = the ICOR cut
   # commit. Every later release: ICOR_PIN '2.0.0' (a tag) and its sha.
   ICOR_PIN: ''
-  ICOR_PIN_SHA: 'b6249a96c411919ffdc77cd3895254a9490e3da6'  # C1, the ICOR cut: step18/make-cut.py icor --pin
+  ICOR_PIN_SHA: 'bf937ddfc64e9605258ad35a6b8a06d8c2c705ef'  # C1, the ICOR cut: step18/make-cut.py icor --pin
 
 defaults:
   run:
