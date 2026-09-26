@@ -1,9 +1,9 @@
 {
   "schema": 2,
   "name": "myPKA",
-  "version": "6.0.2",
-  "built": "2026-09-26T02:01:54Z",
-  "commit": "8dfcaaf",
+  "version": "6.0.3",
+  "built": "2026-09-26T16:38:10Z",
+  "commit": "e87216d",
   "lab": false,
   "requires": "icor-concepts >=1 <2",
   "files": {
@@ -33,7 +33,7 @@
     ".codex/agents/pax.toml": "a629f02d9993100a9dea4a2b41e874a3577310327d77e676c32eccaeb864e270",
     ".codex/agents/penn.toml": "532165cb530795ec4acc9de3edd92da6103cb304c6a35e6c8c7186ee13b57559",
     ".codex/agents/silas.toml": "ad12edd1d8c0652e24cca2509781c111b017266899fa4a08ac227251f4617512",
-    ".codex/config.toml": "97a301e43f9d8d0c7dda01875d2cbf51d19ce0c901f12769ecb2d28b0c22baeb",
+    ".codex/config.toml": "7d6723c6ff957b3440c607035ece9d5e00475c4ba5906aba080afc030cec0604",
     ".codex/hooks.json": "f5c0654737024a899f828cfce4643c94c0760bb89fe84acda85d2014dc732763",
     ".gemini/agents/ada.md": "6d090d7abb14c8eba64cbbcf0cce112a45dcec69baa2fabc725f4fe3745ad6df",
     ".gemini/agents/charta.md": "af854eeabb28ff809ef3f345a85a6f48b3f07311ebdef3e128ece5d854e3b8d5",
@@ -47,8 +47,8 @@
     ".gemini/agents/silas.md": "a77663618756d024fc89e50470e055add4f95bbd6e69c7df11bba245497ce28a",
     ".gemini/settings.json": "7b8b6ffcbc620569ad9c0df7dc278d3e41c5dafb9065a8578827241defd4e886",
     ".mcp.json": "8cd11fec1f55e34f5d3121943c23913ce57336cf80487c5dc82d0efba887b3c7",
-    ".mypka/CHANGELOG.md": "177be0594a51136c8704a825260d3b8cddbccdc35c212431c9c0997544017565",
-    ".mypka/VERSION": "8adcc17e039842d2f4d92ca25f72a8963ede072c885ef5f762c0682b87c6d872",
+    ".mypka/CHANGELOG.md": "bc75c70bd3b2366bdf2091b4cd97636c830e1b7ea5ab6a3c4b5436285645b98e",
+    ".mypka/VERSION": "1f74ac9075fd39230aa56323c819e2db112b69906238b4ab3e5e97f8cd267b46",
     ".mypka/icor-concepts-1.json": "278e54515b31ef7738d5a8028475eddc51b696e6ab9a13be4dc6523398889275",
     ".mypka/manifest.json": "self",
     ".mypka/sources.mode-b.yaml.example": "8e113653e12326213a67ae6d66c7d675b482e183268f510468ae0c8d26658764",
@@ -65,7 +65,7 @@
     "06 AI Team/AI Team Knowledge/Avatars/pax.png": "fdad2f5e26e011828517d58b8edfffbb80f9e85eb961d09221e6a350106d7f99",
     "06 AI Team/AI Team Knowledge/Avatars/penn.png": "9a43773fe9e15948ca01a16b3a37a9bd0482d898d252c5cf7368c5936b8ec958",
     "06 AI Team/AI Team Knowledge/Avatars/silas.png": "d2bcb9ac1054a33548a9acb25b46a55146df4d09245e466bb197dad5f264b78c",
-    "06 AI Team/AI Team Knowledge/Guidelines/GL-1004-naming-rules.md": "11fda67ddeeb687ff709ed0f745fac5f86cfa7e84b0bbe79af9719f03b61c4b3",
+    "06 AI Team/AI Team Knowledge/Guidelines/GL-1004-naming-rules.md": "5263ba86ce5500744b370ec32ac56ec78d413c3254a6159cecc02986b4f4ae02",
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1005-code-vs-instructions.md": "a111fa656e353a88cd647160149f6104d7a5817dcdb0511f71684653c166ab4f",
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1008-the-machine-layer.md": "b98e23952b5b2d994f2fef7ec333ebe96aaab143b8813738731a6ad0b8e86ab4",
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1012-ai-team-expansions.md": "09ab903609cb225b40da5a81905ab242ea7f5a03d819587359f2118f0053bbfe",
@@ -183,23 +183,21 @@
     "06 AI Team/README.md": "ebd2d2f71f1b4a3dd85b9e02d2b367451ea85d2416aea9720dd4bcf7aebb27a5",
     "ADAPTER-PROMPT.md": "b07a25cf2a09c97f2bbb6b674e6531f11d7a4c89535ee7b0745550011ecb5dc1",
     "AGENT.md": "cc21917e0fc20fcca4dd243f6d0e52d6c5d567b5add528059f878295586894d4",
-    "AGENTS.md": "7dddf752e4ec4190b29c27434ae1ce55b380f2e87463e59916116e7494693e95",
-    "CONTRIBUTING.md": "e443b9e361d59b8358ebcb3ae5a161951711dc6b00c4bd387fcfc74bc96c5831",
+    "AGENTS.md": "212d9d6517b9465d49c6d8b254e4c5afb9a19062249d49167aa2aa737d9c45e9",
+    "CONTRIBUTING.md": "b29fdb95a10130156244397eda24ba45695c9bbcfd894967fd4ad71017df5cc3",
     "LICENSE": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
-    "LICENSE-MAP.md": "59c62a45bf61878e6e0d87ae71dbcf22a87176f1110286ce94c6f82ff42a5e92",
+    "LICENSE-MAP.md": "dcbd963d8d773c1d1a1804b443627b78ac3fa364bc050740938c83a2fd55685f",
     "README-myPKA.md": "9c22dfeac83efc8548ed6fc6688bbad9db0c64c0f890c60faab0a0cba2788ded",
-    "SECURITY-myPKA.md": "e9a21fc94b6f0e2b089759a6dedaed17616f584e2c94ec0a3efa9f84554ee43c",
+    "SECURITY-myPKA.md": "8388a412e822d481fcf7eac4e11f0d0cd3cc9fe2aad6a3cd1968dc36ed0e27f7",
     "THIRD-PARTY-NOTICES-myPKA.md": "4599d54d04437e68ec846ec9566c75d0b81de8baf930fb715b5dce40f228882f",
     "TRADEMARK.md": "199a40f766a33793ef42eaf89663297d3f2d2a99da187281489cc2de16e46cf0"
   },
   "repo_only": {
-    ".github/PULL_REQUEST_TEMPLATE.md": "944765d3b34c78f6e8976271a07d3d1358a667c96d79e38634b5ac093417e441",
     ".github/SECURITY.md": "19da61ecea4f8f720b002466ff95d38632ff1d0573e7c8e46d4b355445587eda",
-    ".github/workflows/contribution-check.yml": "f4840d8db4b5ab7c586639281e003cc36708f48238a8dfaafba1f0a2b1b5564e",
     ".github/workflows/release-mypka.yml": "77eade7b2f9af4ef63a502a12dfc2d09799125e1e0c33f4425ba0987ba4c463e",
     ".gitignore": "7c99ddb7850a7538fa1e195cae6e5089b8cccf422d26891c49f63ee5e25da888",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-manifest.py": "db7d58083a2ddef28590d1381eeabfaa56f809385d36b2f723ea4b5af55736eb",
-    "06 AI Team/AI Team Knowledge/Scripts/build-mypka-release.sh": "42678d3ebcc38ba6fa4f40dcf1647cebd49fec04773364ecb6ea07dd36200667",
+    "06 AI Team/AI Team Knowledge/Scripts/build-mypka-release.sh": "cbda5197582a235df11d9cbf2ae454efa06f8f787006f92bbc17794974a338e4",
     "06 AI Team/AI Team Knowledge/Scripts/check-disjoint.py": "304d08f4b8167ae66badebe0ecb688e736f3187e7bd49ced66fb77618a7eb124",
     "06 AI Team/AI Team Knowledge/Scripts/check-release-blockers.py": "e5e8bbf15a2d2e236b31d3f04e2529fdb78e199335ccd6c99bcc40ba3804253a",
     "06 AI Team/AI Team Knowledge/Scripts/check-room-literals.py": "c19cb1f8b438129ba1c3aa94df4c4be2bde465416f00a89a84bb8be67a871786",
@@ -217,8 +215,8 @@
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/verify-fixed.py": "c64ed872c0ca96d3bdc1abd17392310184b3a458dbcb73c513ecf4c14a133724",
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/verify.py": "f2a0dcd865a2f7ce252f0bab0a0d82544293609fc6053adeab16863895bda44d",
     "MIGRATING-FROM-5.md": "acc1b268bc58e55e300eab14baaba22fc82d84e088402f9e1280f58913532c25",
-    "README.md": "d3522a6072627d9b90e35294113e124a1d97e0ea7428571335234239a52809b4",
-    "VERSION": "8adcc17e039842d2f4d92ca25f72a8963ede072c885ef5f762c0682b87c6d872"
+    "README.md": "a71d133a6cf093211c5e8e1539df221aa4dd21722f2ce72a37f395e956e9608b",
+    "VERSION": "1f74ac9075fd39230aa56323c819e2db112b69906238b4ab3e5e97f8cd267b46"
   },
   "generated": {
     ".agents/skills/answer-the-six-life-questions/SKILL.md": {
@@ -314,6 +312,24 @@
     }
   ],
   "history": [
+    {
+      "version": "6.0.3",
+      "date": "2026-09-26",
+      "removed": [
+        {
+          "path": ".github/PULL_REQUEST_TEMPLATE.md",
+          "sha256": "944765d3b34c78f6e8976271a07d3d1358a667c96d79e38634b5ac093417e441",
+          "note": "Removed: `.github/PULL_REQUEST_TEMPLATE.md`, the pull request form. Repository only; it never reached your folder."
+        },
+        {
+          "path": ".github/workflows/contribution-check.yml",
+          "sha256": "f4840d8db4b5ab7c586639281e003cc36708f48238a8dfaafba1f0a2b1b5564e",
+          "note": "Removed: `.github/workflows/contribution-check.yml`, the pull request check. Repository only; it never reached your folder."
+        }
+      ],
+      "renamed": [],
+      "added": []
+    },
     {
       "version": "6.0.2",
       "date": "2026-09-26",
@@ -424,6 +440,7 @@
       "9a38d8336c49a9bc2e1325993e57dece34cd122eea9bb2bbb5323ae1c074770c"
     ],
     ".codex/config.toml": [
+      "97a301e43f9d8d0c7dda01875d2cbf51d19ce0c901f12769ecb2d28b0c22baeb",
       "abf31a0203ed016f02b9a3d5cdd532e72a95575af19fda4676001aa9d075ea33",
       "d6181642c152194f2e035655e347704bf096383f723e24a10f168c31eb6056f2",
       "dc38a4bd6c9f1a0261e5f83ada24d12fae795609be05e68b02940d08de9a8ddd"
@@ -463,11 +480,13 @@
       "b014e41e9f27cd62c82cf725a6288a4b668c7137a3f961c721ab23a8bd9832db"
     ],
     ".mypka/CHANGELOG.md": [
+      "177be0594a51136c8704a825260d3b8cddbccdc35c212431c9c0997544017565",
       "a482c6471d92e50f57e84ab6c1a3082ecf80d9fc58cd0b9650dbb5a189049e30",
       "c9d8ccef6905d00a9bea07bd14e36afca85f807522cc34db986a8d09d06786cf"
     ],
     ".mypka/VERSION": [
       "54ef76332b31df830699e9d4138396885ab72bae260a034a81ff02bf32d8e90a",
+      "8adcc17e039842d2f4d92ca25f72a8963ede072c885ef5f762c0682b87c6d872",
       "cf3701cb2416e87a99c0e77dbd0518fc4fc27e390f025c024e6ed1c389c928e0"
     ],
     "06 AI Team/AI Team Knowledge/Avatars/larry.png": [
@@ -483,6 +502,7 @@
       "8f073b8aeda70492639defc44600a4350a4205ab1d4f875b1aa569b6c23616b2"
     ],
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1004-naming-rules.md": [
+      "11fda67ddeeb687ff709ed0f745fac5f86cfa7e84b0bbe79af9719f03b61c4b3",
       "68d980b37ca6b5b24795ac971194841cbdc27558d79ef1f0c18fa68730d5d758",
       "88e6055be480490f42c8a343dd88e6232456df150984edf2de785481591e9cdc",
       "994b2107968af88f263edd92148305895d063b29edf5bece53f5d32954b07b4d",
@@ -900,23 +920,29 @@
       "46b8b057d5022a29f834e208847f80e1f26bffd88e3cd3ec7c04e01772454900",
       "4ac8ef50a9f4275e4475f4e99f9e4117e1987c293af66fe20bf7554571200b1d",
       "69b84e680e980d8d7e9c8a7c0e337c281b807d78aa918993290ef3cbe6513b95",
+      "7dddf752e4ec4190b29c27434ae1ce55b380f2e87463e59916116e7494693e95",
       "82f367e8f11def0e3d2bf1fb4ea850301177a65eca18726bb86ce7cdca3c80d0",
       "9a5ce98809f5a70922eaabcec49685251e2818215838eef3c155d1d3a8415793",
       "a3ef798795eae4b4be4751b29f2dcc9064a9bb888e799370d25df9205989e80e",
       "b67b5c18e8a324bc1b52fcbd7ef3d148072b2193ea11203ee830858376f1cc1c"
     ],
     "CONTRIBUTING.md": [
-      "d20fcfdbbed94c7b2097da8583a06a25fa69968af64cd3ebcc3eb354c0ca7b01"
+      "d20fcfdbbed94c7b2097da8583a06a25fa69968af64cd3ebcc3eb354c0ca7b01",
+      "e443b9e361d59b8358ebcb3ae5a161951711dc6b00c4bd387fcfc74bc96c5831"
     ],
     "LICENSE": [
       "8feda565511a3979d7cae25c12d47c73bd6ebcdbe74787090fd53e257f08eac2"
     ],
     "LICENSE-MAP.md": [
       "0dd95c8a223b808883d0ce529f442cbad300eca098d1de978345975e3c3bf3ec",
-      "33171c1247d1297d4ae514eb530ee7d2512c1df7829556c42812b9ac7c70271e"
+      "33171c1247d1297d4ae514eb530ee7d2512c1df7829556c42812b9ac7c70271e",
+      "59c62a45bf61878e6e0d87ae71dbcf22a87176f1110286ce94c6f82ff42a5e92"
     ],
     "README-myPKA.md": [
       "1827a854dfa46c8b86579ae5f2aad6699a2564bbc50c63977225d8bae58fe4f5"
+    ],
+    "SECURITY-myPKA.md": [
+      "e9a21fc94b6f0e2b089759a6dedaed17616f584e2c94ec0a3efa9f84554ee43c"
     ],
     "TRADEMARK.md": [
       "fa3d5e3ae5b6088fbf6ca0bbd88cfe1fbecf4c481f73ecb5a178ef3afb263042"

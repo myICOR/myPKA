@@ -90,7 +90,7 @@ Three legal shapes, all inside `YYYY/MM/`:
 | What | Name | Written by |
 | --- | --- | --- |
 | Daily note | `YYYY-MM-DD.md` | Obsidian's Daily notes core plugin |
-| Quick capture | `YYYYMMDDHHmm.md`, optionally ` - Title` added later by you, ` 2` on a same-minute collision | ICOR for Life - Scratchpad |
+| Quick capture | `YYYYMMDDHHmm.md`, optionally ` - Title` added later by you, ` 1` or ` 2` on a same-minute collision | ICOR for Life - Scratchpad (` 2`), or Obsidian's Unique note setting behind Cmd+Alt+N (Ctrl+Alt+N on Windows) and the myICOR Connect new-note button (` 1`); the check accepts both |
 | Canvas | `YYYY-MM-DD_canvas.canvas`, plus whatever you title or number it | the toolbar |
 
 **The name is the minute, not the subject.** A quick capture is stamped
@@ -108,11 +108,12 @@ the Notes (`concept:notes`), or an entity that belongs in My Life
 `[[wikilink]]` that has no note behind it, because the new-file location points
 at this room. Process them out; do not file them here.
 
-**Two settings must agree with this page**, and they are the reason the rule
+**Three settings must agree with this page**, and they are the reason the rule
 reads the way it does rather than the other way round:
 
 - `.obsidian/daily-notes.json`: `folder:` the home of `concept:scratchpad` (mode A default in [[GL-1013-sources-and-the-resolver|GL-1013]] §2.1), `format: YYYY/MM/YYYY-MM-DD`
 - `.obsidian/plugins/icor-for-life-scratchpad/data.json`: `subfolderFormat: YYYY/MM`, `newNoteFormat: YYYYMMDDHHmm`
+- `.obsidian/zk-prefixer.json` (the Unique note setting): `folder:` the home of `concept:scratchpad`, `format: YYYY/MM/YYYYMMDDHHmm`
 
 The `validate-scaffold` tool enforces the shapes AND the nesting, walking the
 whole room rather than its root. It walked only the root until 2026-09-10,

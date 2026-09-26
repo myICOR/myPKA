@@ -36,4 +36,4 @@ Licensor for both: Paperless Movement, S.L., Madrid, Spain.
 
 ## 5. Contributions
 
-How contributions are licensed: `CONTRIBUTING.md`.
+This repository does not take pull requests: `CONTRIBUTING.md`.

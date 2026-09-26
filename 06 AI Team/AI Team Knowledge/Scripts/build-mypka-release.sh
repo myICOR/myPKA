@@ -48,8 +48,6 @@ declare -a RESIDUE_PATHS=(
   "MIGRATING-FROM-5.md"
   "VERSION"
   ".github/workflows/release-mypka.yml"
-  ".github/workflows/contribution-check.yml"
-  ".github/PULL_REQUEST_TEMPLATE.md"
   ".github/SECURITY.md"
   "06 AI Team/AI Team Knowledge/Scripts/build-mypka-release.sh"
   "06 AI Team/AI Team Knowledge/Scripts/build-mypka-manifest.py"

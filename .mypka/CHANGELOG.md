@@ -6,6 +6,28 @@ and what was removed or moved, every removed or moved file named in
 backticks. `check-version-bump.py` refuses a release whose shipped files
 changed without a new VERSION and a section here.
 
+## 6.0.3
+
+A quick capture has one name, whichever key makes it, and this repository
+no longer takes pull requests.
+
+- Changed: `AGENTS.md` rule 3 and
+  `06 AI Team/AI Team Knowledge/Guidelines/GL-1004` name a quick capture
+  `YYYYMMDDHHmm.md` in `concept:scratchpad/YYYY/MM/`, made by Cmd+Alt+N
+  (Ctrl+Alt+N on Windows), the myICOR Connect new-note button or the
+  Scratchpad plugin. 6.0.2 still said `YYYY-MM-DD-HHmmss.md`. GL-1004 names
+  `.obsidian/zk-prefixer.json` (Obsidian's Unique note setting) as the third
+  setting that must agree, and accepts ` 1` or ` 2` after the minute on a
+  same-minute capture. ICOR for Life 2.1.0 ships that setting.
+- Changed: `.codex/config.toml` is regenerated from the new `AGENTS.md`.
+- Changed: `CONTRIBUTING.md` says in one line that this repository does not
+  take pull requests: bugs and ideas go to the ICOR for Life community. The
+  license, security and names sections stay; the sign-off, contribution
+  license and contributor privacy sections go with the pull requests.
+  `LICENSE-MAP.md` section 5 and the scope in `SECURITY-myPKA.md` follow.
+- Removed: `.github/workflows/contribution-check.yml`, the pull request check. Repository only; it never reached your folder.
+- Removed: `.github/PULL_REQUEST_TEMPLATE.md`, the pull request form. Repository only; it never reached your folder.
+
 ## 6.0.2
 
 Single-agent expansion packs install cleanly in both modes, and the ICOR

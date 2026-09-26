@@ -57,7 +57,7 @@ A useful report has:
 
 **The other scripts** under `06 AI Team/AI Team Knowledge/Scripts/`, including `add-mcp-server.py`, `scaffold-init.py` and `expansion-pack.py`. Any script that writes outside the path it was given, or follows a symbolic link out of your folder. Any script that runs a string built from note content or a file name, or loads code from a folder your notes can reach. Any script that puts a secret into a tracked file, a note, a log line, an error message or your terminal.
 
-**The release workflows** (`.github/workflows/release-mypka.yml`, `.github/workflows/contribution-check.yml`). Any way to get a release out without every gate passing, to build it from anything but its tag, to replace a published file, to inject a command through a pull request, or to reach the workflow's token.
+**The release workflow** (`.github/workflows/release-mypka.yml`). Any way to get a release out without every gate passing, to build it from anything but its tag, to replace a published file, to inject a command through a pull request, or to reach the workflow's token.
 
 **The attestations and the zip.** A zip that passes the check below without being built by `release-mypka.yml` from its tag on a GitHub-hosted runner. A zip that carries anything not in that tag, a repository-only file or any secret.
 

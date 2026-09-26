@@ -184,8 +184,9 @@ offer costs one sentence, the diagram often IS the answer.
 3. **Daily Scratchpads are never deleted or moved.** Processing stamps
    their frontmatter and extracts; the note stays where it is. This
    covers both shapes in the room: daily notes (`YYYY-MM-DD.md`) and
-   quick captures (`YYYY-MM-DD-HHmmss.md`, created by the Unique-note button
-   and auto-named by the myICOR Connect plugin).
+   quick captures (`YYYYMMDDHHmm.md` in `concept:scratchpad/YYYY/MM/`,
+   created by the Unique-note key Cmd+Alt+N (Ctrl+Alt+N on Windows),
+   the myICOR Connect new-note button or the Scratchpad plugin).
 4. **No invented frontmatter fields.** Fields live in
    [[GL-1002-frontmatter-conventions]]. Need a new field? Update the
    guideline first, then use it. The same holds for the live tables

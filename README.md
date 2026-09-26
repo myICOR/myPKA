@@ -71,8 +71,8 @@ That's a dry run: it prints the plan and writes nothing. Read it, then run the s
 
 Prose is licensed under CC BY-SA 4.0 ([LICENSE](LICENSE)). Code and configuration are MIT ([Scripts/LICENSE-myPKA](06%20AI%20Team/AI%20Team%20Knowledge/Scripts/LICENSE-myPKA)). [LICENSE-MAP.md](LICENSE-MAP.md) says in plain words which covers what. The names are not licensed: see [TRADEMARK.md](TRADEMARK.md). Licensor: Paperless Movement, S.L., Madrid, Spain.
 
-## Contributing and security
+## Feedback and security
 
-Want to help? Read [CONTRIBUTING.md](CONTRIBUTING.md) first: every commit needs a sign-off. Found a security problem? Report it privately as [SECURITY-myPKA.md](SECURITY-myPKA.md) describes, never in a public issue.
+This repository does not take pull requests. Bugs and ideas go to the ICOR for Life community at https://myicor.com ([CONTRIBUTING.md](CONTRIBUTING.md)). Found a security problem? Report it privately as [SECURITY-myPKA.md](SECURITY-myPKA.md) describes, never in a public issue.
 
 Versions and what changed: [.mypka/CHANGELOG.md](.mypka/CHANGELOG.md). Older history: the `v5.x` tags.
