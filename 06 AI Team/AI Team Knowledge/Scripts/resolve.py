@@ -671,6 +671,35 @@ def team_path(concept, slot=None, *, bindings=None, root=None):
     return _join(home, slots[slot])
 
 
+# Where a mode A folder (one folder, no sources.yaml or a source rooted at the
+# team root) has kept its expansion receipts since myPKA 6.0.0. Mode B has no
+# `.icor-for-life/` in the team root at all, so there the receipt is the team
+# concept `expansion_receipts` (GL-1012, GL-1013 section 3).
+LEGACY_RECEIPTS = ".icor-for-life/expansions"
+
+
+def expansion_receipts_dir(root):
+    """THE ONE ANSWER to "where does this folder keep its expansion receipts".
+
+    expansion-pack.py writes and reads there; check-hire.py check 22 reads
+    there. Two scripts with a literal each disagreed once already (check 22
+    read the in-pack path for a release), so neither keeps one.
+
+    - No `.mypka/sources.yaml`: implied mode A, `.icor-for-life/expansions`.
+    - A binding in mode A: the same.
+    - A binding in mode B: `.mypka/expansions` under the team root.
+    - A sources.yaml that does not load: E_* raised, never a guess. A wrong
+      guess here writes the ownership record where `remove` will not look.
+    """
+    team = (root.path if isinstance(root, Root) else Path(root)).resolve()
+    if not (team / SOURCES_FILE).is_file():
+        return _join(team, LEGACY_RECEIPTS)
+    b = load(Root(team, "explicit", ()))
+    if b.mode == "B":
+        return team_path("expansion_receipts", bindings=b)
+    return _join(team, LEGACY_RECEIPTS)
+
+
 def task_stem(task_id, concept=None):
     """The stem of a task id: a slug, optionally with `.md`. Anything else (a
     path, a glob, a capital, a dot) is E_NO_TASK before any lookup runs."""

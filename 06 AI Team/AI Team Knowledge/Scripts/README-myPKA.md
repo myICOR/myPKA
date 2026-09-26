@@ -22,6 +22,7 @@ it actually says no.
 | --- | --- | --- |
 | `add-mcp-server.py` | Wires an external tool's official MCP server into the scaffold, with the key in `.env` and never in a tracked file | `add-mcp-server.py <name> --command npx --args ...` |
 | `check-hire.py` | Refuses an incomplete hire: 22 checks over one agent, from the contract frontmatter and the id to the shim, the skills, the guards and the research brief. `--self-test` plants every defect and proves each check can go red | `check-hire.py <Name>`, `check-hire.py --all` |
+| `check-agent-shim-mcp.py` | Refuses a web research tool (WebSearch, WebFetch, a search MCP) on the shim of an agent that reads your private notes (Penn); check-hire check 11 runs it | `check-agent-shim-mcp.py`, `--self-test` |
 | `check-onboarding.py` | Says whether this vault is FRESH or already lived in, so the first session knows which greeting to give | `check-onboarding.py` |
 | `checkpoint.py` | The deterministic half of a session checkpoint: what shipped, what is still open, and whether THIS session wrote its completion receipt | `checkpoint.py --write-receipt --output "<log>"`, then `checkpoint.py --assert-logged` |
 | `import-file.py` | Copies one external file into the scaffold with the placement rules enforced | `import-file.py <path>` |

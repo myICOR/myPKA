@@ -119,8 +119,11 @@ MAX_BODY_LINES = 25
 MAX_SKILL_TOKENS = 4000
 EM_DASH = chr(0x2014)
 EN_DASH = chr(0x2013)
-# A pointer is a vault-relative path to a real SOP or Workstream file.
-POINTER_RE = re.compile(r"[\w /()-]*?(?:SOPs|Workstreams)/(?:SOP|WS)-\d+[\w.-]*\.md")
+# A pointer is a vault-relative path to a real SOP or Workstream file. A file
+# an Expansion pack installed carries the namespace expansion-pack.py demands
+# (`EP-` or `<pack-id>-`) in front of `SOP-`/`WS-`; until 6.0.2 this refused
+# every pack SOP as a pointer, so no pack skill could ever pass (C1 G2).
+POINTER_RE = re.compile(r"[\w /()-]*?(?:SOPs|Workstreams)/(?:EP-|[a-z][a-z0-9-]*-)?(?:SOP|WS)-\d+[\w.-]*\.md")
 TRIGGER_RE = re.compile(r"\buse\s+(?:when|before|after|for|if|whenever)\b|"
                         r"triggers?\s*:|\bthe user (?:says|asks|types)\b", re.I)
 QUOTED_RE = re.compile(r"[\"“][^\"“”]{3,}[\"”]|'[^']{3,}'")

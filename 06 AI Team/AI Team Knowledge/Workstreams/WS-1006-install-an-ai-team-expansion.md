@@ -52,8 +52,10 @@ permissions or external actions require their own applicable authorization.
 After approval, run `expansion-pack.py install <id> --approved` through
 Python. The flag records the caller's confirmation; it cannot grant
 permission on its own. The tool verifies hashes and destinations again,
-creates only absent files and saves the ownership receipt to
-`.icor-for-life/expansions/<id>.json`, outside the pack. It refuses a
+creates only absent files and saves the ownership receipt outside the
+pack, in `.icor-for-life/expansions/<id>.json` (mode A, one folder) or
+`.mypka/expansions/<id>.json` (mode B, myPKA in its own folder). The
+tool prints the path it used. It refuses a
 pack folder that ships an `installation.json` or a `removed-*.json` of
 its own, and it never overwrites an existing receipt.
 
@@ -87,13 +89,10 @@ implication.
 
 Run `Scripts/validate-team.py`, then `Scripts/check-hire.py <Name>`
 for every agent the pack installed, then one small, authorized job that
-actually uses the addition. Standing gap, stated so nobody reads a green
-that is not there: check-hire.py check 22 still looks for an
-`installation.json` INSIDE the pack folder, and the receipt has moved, so
-that check now reports "not installed by an Expansion pack" for every
-pack-installed agent instead of failing one that has no shim. Until it
-reads `.icor-for-life/expansions/`, confirm the shim yourself for every
-agent the pack installed. Check the resulting artifact. If
+actually uses the addition. check-hire.py check 22 reads the same
+receipt folder the install tool wrote, in either mode, and fails an
+agent the pack installed that has no dispatch shim yet ("activation
+incomplete"). Check the resulting artifact. If
 `check-hire.py` fails, or registration or the example fails, report
 "files installed; activation incomplete" and track the unfinished work.
 Only call the pack ready when every installed agent passes `check-hire.py`,
@@ -105,7 +104,7 @@ changed and how to remove it.
 Follow the lifecycle in [[GL-1012-ai-team-expansions]]. The same script's
 `remove <id> --approved` command removes unchanged owned files only, after
 the LLM has reviewed and removed registry references. It reads the receipt
-in `.icor-for-life/expansions/` and nothing else: a receipt inside the pack
+in the receipt folder of the install mode (above) and nothing else: a receipt inside the pack
 folder is ignored, so deleting, editing or forging one there changes
 nothing about what `remove` will delete. With no receipt there, `remove`
 refuses and deletes nothing. Updates use a reviewed

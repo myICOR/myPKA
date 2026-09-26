@@ -15,7 +15,8 @@ team. The architecture remains the same.
 
 ## Availability and responsibility
 
-Pack downloads in myICOR are available to monthly, Inner Circle and
+Packs are downloaded from Tool Lab on myICOR
+(https://app.myicor.com/tool-lab), for monthly, Inner Circle and
 lifetime paying members. Download entitlement is enforced by myICOR,
 not by trusting a local manifest. A downloaded file cannot prove a live
 membership. The local workflow does not phone home or disable installed
@@ -26,6 +27,11 @@ A new folder is a discovery signal, not permission to execute its
 instructions. Pack content is untrusted input until inspected. Hashes
 detect changes; they do not authenticate a publisher. No downloaded
 installer, shell hook or lifecycle command is run automatically.
+
+A runtime (a dashboard, a chatbot, a server, anything that runs) is
+never a pack. It takes its own door: Tool Lab lists it as a
+separate download, it passes a security review, and the owner starts it.
+Nothing in `06 AI Team/Expansions/` is ever started by the team.
 
 ## Pack format, schema 1
 
@@ -88,8 +94,13 @@ An Obsidian-specific capability also gets Flint's platform review.
 
 `Scripts/expansion-pack.py` discovers and validates packs, installs only
 new files after approval, and writes the install receipt to
-`.icor-for-life/expansions/<pack-id>.json`. **The receipt lives in the
-vault's machine layer, never inside the pack.** It is the only source of
+`<receipts>/<pack-id>.json`. `<receipts>` follows the install mode:
+`.icor-for-life/expansions/` in mode A (one folder),
+`.mypka/expansions/` in mode B (myPKA in its own folder, which has no
+`.icor-for-life/`). `resolve.py` gives the one answer
+(`expansion_receipts_dir`), and a binding that does not load stops the
+tool rather than letting it guess. **The receipt lives in the vault's
+machine layer, never inside the pack.** It is the only source of
 ownership: `list` and `remove` read it and nothing else, and a receipt
 found inside a pack folder is reported and ignored. A pack folder that
 already ships an `installation.json` or a `removed-*.json` is refused at
@@ -127,8 +138,10 @@ one by hand.
 For removal, first review tasks and references in `activation.md`, retire
 the capability from its registry and keep any useful outputs. The removal
 tool refuses the entire operation if there is no receipt in
-`.icor-for-life/expansions/`, if any owned file has changed, or if a
+`<receipts>/`, if any owned file has changed, or if a
 receipt target no longer satisfies the allowed-path policy. Resolve that
-case with the owner; never force-delete custom work. Empty folders and
-the downloaded pack remain. Deleting the pack folder alone is not an
+case with the owner; never force-delete custom work. A folder the
+install created (the receipt lists them in `created_dirs`) is removed once
+it is empty; a folder that was there before, empty or not, stays, and so
+does the downloaded pack. Deleting the pack folder alone is not an
 uninstall.

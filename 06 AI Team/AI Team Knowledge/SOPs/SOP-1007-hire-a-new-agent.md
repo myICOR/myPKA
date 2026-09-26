@@ -37,7 +37,7 @@ missing.
 | 2 | Hire WiP folder with `proposal.md` (frontmatter `type: hire-proposal` and `skills:`, per [[GL-1002-frontmatter-conventions|GL-1002]]) | `concept:wip/YYYY-MM-DD-<name>-hire/` | Nolan | required |
 | 3 | `AGENT.md`, the system prompt, GL-1002 shape, `myicor_id` minted | `06 AI Team/Agents/<Name>/` | Nolan | required |
 | 4 | `<Name>.md`, the user-facing bio | same folder | Nolan | required |
-| 5 | Avatar | `06 AI Team/AI Team Knowledge/Avatars/<name>.png` | a Pixel-class (image-generating) specialist if one exists in this vault; otherwise a placeholder | required; a placeholder is allowed when no Pixel-class specialist exists, and check 5 reports it as WARN until the real one lands |
+| 5 | Avatar | `06 AI Team/AI Team Knowledge/Avatars/<name>.png` (an Expansion pack ships it as `06 AI Team/Agents/<Name>/<name>.png`, which check 5 also accepts) | a Pixel-class (image-generating) specialist if one exists in this vault; otherwise a placeholder | required; a placeholder is allowed when no Pixel-class specialist exists, and check 5 reports it as WARN until the real one lands |
 | 6 | `Journal/` with its first entry, the hire itself, so git keeps the folder | same folder | `new-agent.py` | required |
 | 7 | Dispatch shim | `.claude/agents/<slug>.md` | the generator | required where the host has one |
 | 8 | Skill(s), one per nameable procedure | `06 AI Team/AI Team Knowledge/Skills/<slug>-<verb-noun>/SKILL.md`, linked into `.claude/skills/` | the generator | conditional (step 6b) |

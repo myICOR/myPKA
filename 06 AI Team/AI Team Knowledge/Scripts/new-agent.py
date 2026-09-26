@@ -493,11 +493,13 @@ def main():
     print("  1. Fill %s/%s/AGENT.md: identity, cues, method, boundaries, and the words of "
           "`bio` and `routing_description`." % (AGENTS_REL, name))
     print("  2. Fill %s/%s/%s.md, the user-facing card." % (AGENTS_REL, name, name))
-    print("  3. Brief Pixel for the avatar (SOP-008 and GL-019), and save it where the hire "
-          "output contract says.")
+    # Public text only (C1 G4): until 6.0.2 these two lines named documents
+    # and a cheatsheet that exist in one private vault and in no member's.
+    print("  3. Make the avatar (SOP-1007 row 5): an image-generating specialist if the "
+          "team has one, else a placeholder, saved where that row says.")
     print("  4. Announce the generator run so the shim and any skill are rendered from the "
           "frontmatter. Never type a shim by hand.")
-    print("  5. Finish the agent-index row, and add Larry's routing cheatsheet row.")
+    print("  5. Finish the agent-index row (SOP-1007 row 12).")
     print("  6. Run `check-hire.py %s`. It must exit 0 before the hire is announced, "
           "and a green run deletes the hiring marker." % name)
     return 0

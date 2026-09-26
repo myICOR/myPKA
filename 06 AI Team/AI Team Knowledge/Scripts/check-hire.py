@@ -772,6 +772,14 @@ def check_agent(vault, name):
     # 5. avatar
     if vault.public:
         avatar = root / "06 AI Team/AI Team Knowledge/Avatars" / (name.lower() + ".png")
+        # An Expansion pack cannot target Avatars/ (schema 1 installs agents
+        # and the four knowledge kinds only), so a pack ships the avatar in the
+        # agent's own folder, where its receipt owns it and `remove` takes it
+        # away. Until 6.0.2 that avatar never counted (C1 G1). Avatars/ wins
+        # when both exist; the FAIL line names Avatars/, the hire's home.
+        in_folder = d / (name.lower() + ".png")
+        if not avatar.is_file() and in_folder.is_file():
+            avatar = in_folder
     else:
         avatar = d / "avatar.png"
     rel_av = avatar.relative_to(root).as_posix()
@@ -899,11 +907,15 @@ def check_agent(vault, name):
         elif mcode is None:
             res.warn(11, "shim-tools", "tools are legal; %s" % mout)
         elif mcode != 0 and ("%s.md" % slug) in mout:
-            first = (mout.strip().splitlines() or ["violation"])[0]
-            res.fail(11, "shim-tools", "check-agent-shim-mcp.py: %s" % first)
+            # The FAIL line, not the first line: the script prints its NOTEs
+            # on stdout, and stdout comes first in mout.
+            mine = [l for l in mout.splitlines() if l.startswith("FAIL ") and ("%s.md" % slug) in l]
+            res.fail(11, "shim-tools", "check-agent-shim-mcp.py: %s" % (mine or ["violation"])[0])
         else:
-            res.ok(11, "shim-tools", ("%d tool entr(ies), all legal" % len(tools)) if tools
-                   else "no tools line, so the host default applies")
+            note = [l[5:] for l in mout.splitlines() if l.startswith("NOTE ") and l[5:].startswith("%s.md" % slug)]
+            res.ok(11, "shim-tools", (("%d tool entr(ies), all legal" % len(tools)) if tools
+                                      else "no tools line, so the host default applies")
+                   + ("; NOTE " + note[0] if note else ""))
 
     # 12. agent-index row
     rows = []
@@ -1149,8 +1161,12 @@ def check_agent(vault, name):
     if not vault.public:
         res.skip(22, "pack", "pack mode is a Scaffold check; this folder is the private vault")
     else:
-        # A receipt lives at `.icor-for-life/expansions/<pack-id>.json`, and
-        # NOWHERE else. Outside the pack, because a receipt inside the pack
+        # A receipt lives in the folder resolve.py's expansion_receipts_dir
+        # names (`.icor-for-life/expansions/` in mode A, `.mypka/expansions/`
+        # in mode B), `<pack-id>.json`, and NOWHERE else. Until 6.0.2 this
+        # read the mode A literal, so in mode B it answered "not installed by
+        # an Expansion pack" for every pack-installed agent, the same quiet
+        # pass as before. Outside the pack, because a receipt inside the pack
         # folder is a file the pack itself ships and can therefore forge, which
         # let `remove` delete files the pack never installed (Vex F5, batch b2,
         # 2026-09-15). This check read the in-pack path only, so it answered
@@ -1161,9 +1177,12 @@ def check_agent(vault, name):
         # pack has ever been published, so no legacy install exists anywhere,
         # and a second reader of a pack-shipped file is the very thing F5
         # forbids.
-        receipts = []
-        canonical = root / ".icor-for-life" / "expansions"
-        if canonical.is_dir():
+        receipts, where_err = [], None
+        try:
+            canonical = resolver.expansion_receipts_dir(root)
+        except resolver.ResolveError as e:
+            canonical, where_err = None, str(e)
+        if canonical is not None and canonical.is_dir():
             receipts += sorted(canonical.glob("*.json"))
         installed_by_pack = False
         for receipt in receipts:
@@ -1174,7 +1193,10 @@ def check_agent(vault, name):
             for f in r.get("files", []):
                 if str(f.get("target", "")).startswith("%s/%s/" % (AGENTS_REL, name)):
                     installed_by_pack = True
-        if not installed_by_pack:
+        if where_err is not None:
+            res.fail(22, "pack", "cannot tell where this folder keeps its expansion receipts, "
+                     "because its binding does not load (%s); run resolve.py --check" % where_err)
+        elif not installed_by_pack:
             res.ok(22, "pack", "not installed by an Expansion pack")
         elif shim_text:
             res.ok(22, "pack", "pack installed, and the shim is in place")
@@ -1664,10 +1686,12 @@ def _plant_21b(v):
 
 
 def _plant_22(v):
-    """A pack receipt in the one place a receipt lives,
-    `.icor-for-life/expansions/<pack-id>.json`, with the shim missing. Until
-    2026-09-15 check 22 read the in-pack path instead and passed this."""
-    d = v / ".icor-for-life" / "expansions"
+    """A pack receipt in the one place a receipt lives (this fixture has no
+    sources.yaml, so mode A: `.icor-for-life/expansions/<pack-id>.json`), with
+    the shim missing. Until 2026-09-15 check 22 read the in-pack path instead
+    and passed this. Mode B (`.mypka/expansions/`) is run-red-tests.py
+    step12/X2, which needs a real sibling content folder."""
+    d = resolver.expansion_receipts_dir(v)
     d.mkdir(parents=True, exist_ok=True)
     (d / "fixture-pack.json").write_text(json.dumps(
         {"schema": 1, "id": "fixture-pack",

@@ -80,6 +80,7 @@ if sys.path:
 import datetime
 import importlib.util
 import json
+import re
 import subprocess
 import threading
 import select
@@ -501,6 +502,59 @@ def compatibility_lines():
     return out
 
 
+PACKS_SHOWN = 40
+# What may reach the model from a pack folder, Vex C2 X1. The folder arrives
+# in an untrusted zip and this output is injected at every session start,
+# before any review: a folder named like an instruction was printed as one.
+# A legal pack id is the installer's own rule; a zip or a receipt file name
+# is plain characters; everything else is replaced, never quoted.
+_ID_OK = re.compile(r"[a-z][a-z0-9-]{0,79}")
+_NAME_OK = re.compile(r"[A-Za-z0-9._-]{1,80}")
+_HIDDEN = "(a folder with an illegal pack name, not shown: run expansion-pack.py list)"
+
+
+def _shown(v, ok=_ID_OK):
+    v = str(v)
+    return v if ok.fullmatch(v) else _HIDDEN
+
+
+def pack_lines(r):
+    """One line per pack under 06 AI Team/Expansions/, read from the JSON
+    `expansion-pack.py list` prints.
+
+    Until 6.0.2 this printed the first eight lines of that JSON as text. One
+    pack takes four lines, so a folder holding the four single-agent packs
+    showed the first pack whole, half of the second and nothing of the other
+    two: a pack a member dropped in was never announced (C2, 2026-09-26).
+    """
+    text = (r.stdout or "").strip()
+    try:
+        rows = json.loads(text) if r.returncode == 0 else None
+    except ValueError:
+        rows = None
+    if not isinstance(rows, list):
+        why = (r.stderr.strip() or text or "no output").splitlines()
+        return ["  expansion packs: NOT LISTED, expansion-pack.py list exit %d: %s"
+                % (r.returncode, why[0][:200] if why else "no output")]
+    if not rows:
+        return ["  expansion packs: none in 06 AI Team/Expansions/"]
+    new = sum(1 for x in rows if isinstance(x, dict) and x.get("status") != "installed-files")
+    out = ["  expansion packs: %d found, %d not installed%s"
+           % (len(rows), new, " (a new pack starts WS-1006: inspect and explain, never run it)"
+              if new else "")]
+    for x in rows[:PACKS_SHOWN]:
+        x = x if isinstance(x, dict) else {"id": "", "status": "unreadable-row"}
+        extra = ""
+        if x.get("ignored_in_pack_receipts"):
+            extra = ", ignored in-pack receipt(s): %s" % ", ".join(
+                _shown(n, _NAME_OK) for n in x["ignored_in_pack_receipts"])
+        ok = _NAME_OK if x.get("status") == "needs-safe-extraction" else _ID_OK
+        out.append("    %s: %s%s" % (_shown(x.get("id"), ok), _shown(x.get("status"), _NAME_OK), extra))
+    if len(rows) > PACKS_SHOWN:
+        out.append("    and %d more: run expansion-pack.py list" % (len(rows) - PACKS_SHOWN))
+    return out
+
+
 def main():
     lines = ["Session start ritual (run by the SessionStart hook, not by the model):"]
 
@@ -575,10 +629,7 @@ def main():
     if err:
         lines.append("  expansion packs: NOT LISTED, %s" % err)
     else:
-        out = (r.stdout.strip() or r.stderr.strip() or "no output").splitlines()
-        lines.append("  expansion packs: " + (out[0] if out else "no output"))
-        for extra in out[1:8]:
-            lines.append("    " + extra)
+        lines.extend(pack_lines(r))
 
     lines.extend(life_snapshot_lines())
 

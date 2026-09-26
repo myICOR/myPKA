@@ -67,8 +67,8 @@ env:
   ICOR_REPO: myICOR/icor-for-life-scaffold
   # First release only (M4): ICOR_PIN '' and ICOR_PIN_SHA = the ICOR cut
   # commit. Every later release: ICOR_PIN '2.0.0' (a tag) and its sha.
-  ICOR_PIN: ''
-  ICOR_PIN_SHA: 'bf937ddfc64e9605258ad35a6b8a06d8c2c705ef'  # C1, the ICOR cut: step18/make-cut.py icor --pin
+  ICOR_PIN: '2.0.1'
+  ICOR_PIN_SHA: '6ffb0b3672589da3ed0cfe9c6ae02083440238fc'  # ICOR for Life 2.0.1, tag 2.0.1 (lightweight), C2 of the 2.0.1 cut
 
 defaults:
   run:
@@ -156,6 +156,27 @@ jobs:
 
       - name: Gate 4, the team structure is valid
         run: python3 "$SCRIPTS/validate-team.py" .
+
+      - name: Gate 4b, the generated harness matches its sources (scaffold-init.py apply changes no tracked file)
+        run: |
+          # A throwaway copy of the tagged tree, never this checkout. If apply
+          # changes a tracked file, a shim, skill or hook config in the release
+          # was hand-edited or not regenerated after its source changed.
+          t="$RUNNER_TEMP/gate4b"
+          rm -rf "$t"; mkdir -p "$t"
+          git archive HEAD | tar -x -C "$t"
+          cd "$t"
+          git init -q
+          git add -A
+          git -c user.name=gate4b -c user.email=gate4b@localhost -c commit.gpgsign=false commit -qm tree
+          python3 "$SCRIPTS/scaffold-init.py" apply --no-tests
+          changed="$(git status --porcelain --untracked-files=no)"
+          if [ -n "$changed" ]; then
+            echo "::error::scaffold-init.py apply changed tracked files in the release tree. Run it, commit the result, tag again:"
+            echo "$changed"
+            git diff | head -80
+            exit 1
+          fi
 
       - name: Gate 5, every guard goes red, in mode A and in mode B
         run: |

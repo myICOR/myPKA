@@ -90,7 +90,7 @@ manifest's `tools` map.
 | `tasks` | `06 AI Team/AI Team Knowledge/Tasks` | `open`, `in_progress`, `done`, `cancelled` |
 | `task_deliverables` | `Tasks/<state>/<task-stem>/deliverables` | (2.3). Takes a task: `resolve('task_deliverables', task_id=...)`, `resolve.py task_deliverables --task ID`; no task is `E_NO_TASK` |
 | `team_state` | `.mypka/state` | `session.json`, `receipts/`, `harness.json` (all three moved from `.icor-for-life/scripts/`) |
-| `expansion_receipts` | `.mypka/expansions` | lands with pack schema 2 |
+| `expansion_receipts` | `.mypka/expansions` | used in mode B since 6.0.2; mode A keeps `.icor-for-life/expansions` until pack schema 2. The one answer is `expansion_receipts_dir(root)` in `resolve.py` |
 | `team_config` | `.mypka` | `VERSION`, `manifest.json`, `sources.yaml` |
 
 In mode A the team's `Guidelines/` and `Scripts/` folders are the same folders that hold `life_guidelines` and the ICOR

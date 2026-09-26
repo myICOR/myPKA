@@ -95,10 +95,13 @@ place of <version>, then apply only if it prints that verification succeeded:
   myPKA (one line):
     gh attestation verify mypka-<version>.zip --repo myICOR/myPKA --signer-workflow myICOR/myPKA/.github/workflows/release-mypka.yml --source-ref refs/tags/v<version> --deny-self-hosted-runners
   ICOR for Life (one line):
-    gh attestation verify icor-for-life-obsidian-edition-<version>.zip --repo TomSolid/icor-for-life-scaffold --signer-workflow TomSolid/icor-for-life-scaffold/.github/workflows/release.yml --source-ref refs/tags/<version> --deny-self-hosted-runners
+    gh attestation verify icor-for-life-obsidian-edition-<version>.zip --repo myICOR/icor-for-life-scaffold --signer-workflow myICOR/icor-for-life-scaffold/.github/workflows/release.yml --source-ref refs/tags/<version> --deny-self-hosted-runners
 The unversioned download (mypka.zip, icor-for-life-obsidian-edition.zip) is
 the same bytes and verifies with the same command. Note the tags: myPKA's
-start with v, ICOR for Life's do not.
+start with v, ICOR for Life's do not. ICOR for Life 2.0.0 and earlier were
+built before the repository moved from TomSolid to myICOR: check those with
+--owner TomSolid in place of --repo, and TomSolid in place of myICOR in
+--signer-workflow.
 """
 
 import argparse, hashlib, importlib.util, json, os, re, shutil, stat, sys, tempfile, unicodedata, zipfile

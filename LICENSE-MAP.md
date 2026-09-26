@@ -15,7 +15,7 @@ Licensor for both: Paperless Movement, S.L., Madrid, Spain.
 
 ## 2. What is not covered
 
-- **Expansion packs.** Packs from the myICOR AI Enhancement Hub are separate products. Each pack carries its own license file, and this repository's licenses do not apply to them. Where a pack contains myPKA text, that text stays CC BY-SA 4.0; the pack's own files follow the pack license.
+- **Expansion packs.** Packs from Tool Lab on myICOR are separate products. Each pack carries its own license file, and this repository's licenses do not apply to them. Where a pack contains myPKA text, that text stays CC BY-SA 4.0; the pack's own files follow the pack license.
 - **ICOR for Life.** If you keep myPKA and ICOR for Life in one folder, each file keeps its own license. ICOR for Life's files are listed in `.icor-for-life/manifest.json` and governed by its `LICENSE.md`. Sharing myPKA files does not make ICOR for Life files shareable.
 - **Names and logos.** No license here covers our trade marks (CC BY-SA 4.0 Section 2(b)(2)). See `TRADEMARK.md`.
 - **Third-party material.** Listed in `THIRD-PARTY-NOTICES-myPKA.md`, under its own terms.

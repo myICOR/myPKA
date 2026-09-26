@@ -1,9 +1,9 @@
 {
   "schema": 2,
   "name": "myPKA",
-  "version": "6.0.1",
-  "built": "2026-09-25T10:46:43Z",
-  "commit": "608f9c2",
+  "version": "6.0.2",
+  "built": "2026-09-26T02:01:54Z",
+  "commit": "8dfcaaf",
   "lab": false,
   "requires": "icor-concepts >=1 <2",
   "files": {
@@ -15,14 +15,14 @@
     ".claude/agents/mason.md": "c5abfe08159c4d77ccf09c9e6931d8865efde20908f98d7bd9e4d738218c2818",
     ".claude/agents/nolan.md": "f6ab12a7beeab8d1ed7334108ad981f489bfd3be2b3d8060a2da9e403bb6ae08",
     ".claude/agents/pax.md": "d54436ac7f341a6ed9c476eff27d4e416241754b20f9c643a50218711a4dad20",
-    ".claude/agents/penn.md": "a4a30144175fbf6e3c999248845c6b7763a736c0edfdb7e75b30975557036f12",
+    ".claude/agents/penn.md": "201eb71a2a294ce9c8bf2742d854ac1feecc2f470b5f5a685a369ec5a8e8aafe",
     ".claude/agents/silas.md": "1eb1f70fd8d012e3dc2e636b18fd21db5eca567961114fabe27e547c47cea61c",
     ".claude/settings.README.md": "cacd7f2deb2c3e9e93cdbee199195ea2adc423e9e70a5f6a5ed1a97787adb088",
     ".claude/settings.json": "d2e30f08c42af9ff022df3122b16fe6ef55667de771d1ace7a127981722b9942",
     ".claude/skills/answer-the-six-life-questions/SKILL.md": "8130f52da06657b90d2caee64ddf254265bdfab1117dd8680875fb3c0c612499",
     ".claude/skills/checkpoint/SKILL.md": "eb5724879a7ac48a536b9f87b87be3027e5a41faedd9362d44e834cd256a1cbd",
     ".claude/skills/import-skill/SKILL.md": "b1d423861b082c40f11c4269b2805c1cae56109b03958a1a8ad753ffd8ec27a3",
-    ".claude/skills/red-tests/SKILL.md": "b50cf23afd647f8641d31e67e088a294be5e588fdbfbe1149200043e51e5f300",
+    ".claude/skills/red-tests/SKILL.md": "45eecfd53e11086363db711ae4f076de7562dac5567949de019028b78a4ae698",
     ".codex/agents/ada.toml": "cfad3eeeaae3bdfb243997c6eb64e476cb08386334eeea8790ccd8d0e8e1f7ff",
     ".codex/agents/charta.toml": "ccffcdd9251dae0f7d524545c6bcae8de217590bc8d208fb482b4fafb0bb88ed",
     ".codex/agents/flint.toml": "4428148fac9d2537f9bfddee6754107a105076829dab6f7a2b41ef9ba8bd14ef",
@@ -47,8 +47,8 @@
     ".gemini/agents/silas.md": "a77663618756d024fc89e50470e055add4f95bbd6e69c7df11bba245497ce28a",
     ".gemini/settings.json": "7b8b6ffcbc620569ad9c0df7dc278d3e41c5dafb9065a8578827241defd4e886",
     ".mcp.json": "8cd11fec1f55e34f5d3121943c23913ce57336cf80487c5dc82d0efba887b3c7",
-    ".mypka/CHANGELOG.md": "a482c6471d92e50f57e84ab6c1a3082ecf80d9fc58cd0b9650dbb5a189049e30",
-    ".mypka/VERSION": "cf3701cb2416e87a99c0e77dbd0518fc4fc27e390f025c024e6ed1c389c928e0",
+    ".mypka/CHANGELOG.md": "177be0594a51136c8704a825260d3b8cddbccdc35c212431c9c0997544017565",
+    ".mypka/VERSION": "8adcc17e039842d2f4d92ca25f72a8963ede072c885ef5f762c0682b87c6d872",
     ".mypka/icor-concepts-1.json": "278e54515b31ef7738d5a8028475eddc51b696e6ab9a13be4dc6523398889275",
     ".mypka/manifest.json": "self",
     ".mypka/sources.mode-b.yaml.example": "8e113653e12326213a67ae6d66c7d675b482e183268f510468ae0c8d26658764",
@@ -65,11 +65,11 @@
     "06 AI Team/AI Team Knowledge/Avatars/pax.png": "fdad2f5e26e011828517d58b8edfffbb80f9e85eb961d09221e6a350106d7f99",
     "06 AI Team/AI Team Knowledge/Avatars/penn.png": "9a43773fe9e15948ca01a16b3a37a9bd0482d898d252c5cf7368c5936b8ec958",
     "06 AI Team/AI Team Knowledge/Avatars/silas.png": "d2bcb9ac1054a33548a9acb25b46a55146df4d09245e466bb197dad5f264b78c",
-    "06 AI Team/AI Team Knowledge/Guidelines/GL-1004-naming-rules.md": "68d980b37ca6b5b24795ac971194841cbdc27558d79ef1f0c18fa68730d5d758",
-    "06 AI Team/AI Team Knowledge/Guidelines/GL-1005-code-vs-instructions.md": "5e79df44f58ff8bc6502290673bc7e7a3e06218dd8370b2e8202ef67b1c0d8c1",
+    "06 AI Team/AI Team Knowledge/Guidelines/GL-1004-naming-rules.md": "11fda67ddeeb687ff709ed0f745fac5f86cfa7e84b0bbe79af9719f03b61c4b3",
+    "06 AI Team/AI Team Knowledge/Guidelines/GL-1005-code-vs-instructions.md": "a111fa656e353a88cd647160149f6104d7a5817dcdb0511f71684653c166ab4f",
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1008-the-machine-layer.md": "b98e23952b5b2d994f2fef7ec333ebe96aaab143b8813738731a6ad0b8e86ab4",
-    "06 AI Team/AI Team Knowledge/Guidelines/GL-1012-ai-team-expansions.md": "b3ea65812f11e42391c576d4201877280f1f11573e91cc756f12a56133824279",
-    "06 AI Team/AI Team Knowledge/Guidelines/GL-1013-sources-and-the-resolver.md": "016e115c20b7463e0d3ac2318b26b28b13748589391a4d1e7466882a5f98a040",
+    "06 AI Team/AI Team Knowledge/Guidelines/GL-1012-ai-team-expansions.md": "09ab903609cb225b40da5a81905ab242ea7f5a03d819587359f2118f0053bbfe",
+    "06 AI Team/AI Team Knowledge/Guidelines/GL-1013-sources-and-the-resolver.md": "e61a3fcdf4ea27e96ba37e65612ddf6b5e85d03b61d119065b1451bee5aa228b",
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1014-icor-concepts-schema.md": "22a83d391a7689a05211ab00d878760f4b98d078ceea04c8fccaed794e8f3429",
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1015-team-frontmatter-conventions.md": "57d31b6af94b22ac31eeb4370621e795ecc3a288135009217740f04cf378cb17",
     "06 AI Team/AI Team Knowledge/SOPs/INDEX.md": "db77298870d52f0871725c04105e5ee19eeec067152174b893a2eb0f211dafb3",
@@ -79,7 +79,7 @@
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1004-create-or-update-a-my-life-entity.md": "298e4885e98d39ca99162e2f92ccbb04209c6148e9a24472e58009b77a6772ea",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1005-create-or-update-a-contact.md": "ee8ca88ad4d2e041c7535f78fd099228f34fab84032f0eee0122d282cd7fdab2",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1006-start-work-and-archive-a-wip-folder.md": "7ecad3423d52868ad71e003532d4bba66cd3da613b897ad40a762cebd24f2367",
-    "06 AI Team/AI Team Knowledge/SOPs/SOP-1007-hire-a-new-agent.md": "8bec9a9a60e3fc539ec7f794d0e178e0a87dbbf42438c5c5ec449eb8276d0e5b",
+    "06 AI Team/AI Team Knowledge/SOPs/SOP-1007-hire-a-new-agent.md": "369339f0f07b1bf0b8e37118739423044f6330a3fd5c657afa05f5207f415e63",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1008-track-work-across-sessions.md": "fbcc1801b08413b59bfbef3e5e1d3961c4bb2f47f08a068f32501c1002fc0a2e",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1009-write-a-session-log-and-agent-journal.md": "9b2c492cdceb93c4f51c3705b639bc94886f04eeeea5876bea94637e59bc1ef6",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1010-convert-an-external-note.md": "0041ebc8650bf258f57d516294e5e6b553cd46e5bb1117878c8a45bcc3c69a03",
@@ -91,28 +91,29 @@
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1016-run-the-red-tests-and-gate-a-release.md": "aa96cd9f4abb3bcb5f5e78b37e92bcd7bcbaf8dfb4e07a94e6f3860a79dd4ee5",
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1017-answer-the-six-life-questions-from-the-snapshot.md": "b0eaf01fc5cc1b7f14eb32a1bac9d06941c1d25d350bcdc93a2776fbe0a8a504",
     "06 AI Team/AI Team Knowledge/Scripts/LICENSE-myPKA": "170333a76ed584f3892d02c7b83cb68d8602cb29d09fdbbbe380cee7f6eecf5b",
-    "06 AI Team/AI Team Knowledge/Scripts/README-myPKA.md": "a0b5bab6b125da155b65572fecd481bd38dda93221fe57a04c42edc150c7e0f9",
+    "06 AI Team/AI Team Knowledge/Scripts/README-myPKA.md": "4b283b17e8ce470e171cc3ff845a758c3393a8cf4399f0422b66e7678aec2c3f",
     "06 AI Team/AI Team Knowledge/Scripts/add-mcp-server.py": "409c8e5520f16930162fbab96f2b62ac8221fa19dd7db49e344c94a83d1277b2",
-    "06 AI Team/AI Team Knowledge/Scripts/check-hire.py": "d1670c2e98220de1a984eda99a74874d7420b1dbd99cd9035b2e1638f129ff5d",
+    "06 AI Team/AI Team Knowledge/Scripts/check-agent-shim-mcp.py": "edcbf20fc4bce16924a209515e5ff74da44908b2346bf15c2925f24f8dbc5fa9",
+    "06 AI Team/AI Team Knowledge/Scripts/check-hire.py": "3d481ebaf1998171a641a0cff8af87283c4dd2ec148b351ad55af70610cf7546",
     "06 AI Team/AI Team Knowledge/Scripts/check-icor-concepts.py": "e95ef2381c0f7f6d4f6b7a38fc101a7880d023f42e131f2c9026280e28bebc3c",
     "06 AI Team/AI Team Knowledge/Scripts/check-onboarding.py": "92d8fb48bdf3ea09fc36dbe7c11a5f96961e0eaf745c2f1b3dc76992359df432",
     "06 AI Team/AI Team Knowledge/Scripts/checkpoint.py": "c0922e350e3dafff82794e547fdc876c4265328dbb13271381f60726f0120d3c",
-    "06 AI Team/AI Team Knowledge/Scripts/expansion-pack.py": "c43ac25d6fb81512d96b437d3c48fcc4b9a44e5d4ae6f269c3640748403ae395",
+    "06 AI Team/AI Team Knowledge/Scripts/expansion-pack.py": "3110554db03826067f49db77066fe52806d6c8b4fec3cc15069f872a470c0302",
     "06 AI Team/AI Team Knowledge/Scripts/hooks-rules.json": "60cb9e2795acee9d6609348eff3e3dcf86abe69595a6c49c00f0b5cfd64dea1b",
     "06 AI Team/AI Team Knowledge/Scripts/import-file.py": "85c3230510a6fe04a39fbe39895cc1e76a7d06af16628ecadb57937148f55365",
     "06 AI Team/AI Team Knowledge/Scripts/import-inventory.py": "feaca78d7d9fc6e85f0dd2abc87815883752ab61c8130f6ae9b1419a1eff73b8",
     "06 AI Team/AI Team Knowledge/Scripts/mint-agent-ids.py": "f3e9c74e2df51d19cff71b00bde0b80c1308a4ad5ce287f523c818b2be7ac561",
-    "06 AI Team/AI Team Knowledge/Scripts/mypka-update.py": "56a70d5d73207bcbf7378a23dc0dfd797ebb91acedba72d39789a8c90e14379d",
-    "06 AI Team/AI Team Knowledge/Scripts/new-agent.py": "26d9327ec4099df5d1dd47b48e5c6067b3229d45f49eecc3cae8740c7532e49a",
+    "06 AI Team/AI Team Knowledge/Scripts/mypka-update.py": "909d39cc28c05801ead5d61c36cf4d8c403998926e9cba4c2107a6197e2d8ffe",
+    "06 AI Team/AI Team Knowledge/Scripts/new-agent.py": "9ee163e517807afd3a5526e17c6dfcc1722d7006be198c798df68f03d14613d0",
     "06 AI Team/AI Team Knowledge/Scripts/new-progress-report.py": "9ad0685aa1b0a1f40d66813dfd19a1574015e36ac123e0ccec4733e17f763ee7",
     "06 AI Team/AI Team Knowledge/Scripts/new-session-log.py": "3604dba7b3156f9b4441816a79f446daf3d49b8ca74ae565c8db4291093e0b6f",
     "06 AI Team/AI Team Knowledge/Scripts/new-task.py": "df25b25f4f7e6d597343b8332d016e4550bcb733a667a51cac3d05d14a77f5bd",
     "06 AI Team/AI Team Knowledge/Scripts/noteio.py": "8adf62965c7a646d9e567eaed2d809164796c75f81c6cb6626a8fbf0e3bd7f22",
-    "06 AI Team/AI Team Knowledge/Scripts/resolve.py": "867ed2598fde4701569046871afe93c6ab311747c4b242063c645e9582e718a9",
-    "06 AI Team/AI Team Knowledge/Scripts/run-red-tests.py": "c19b8dd39e22c66403bd82d8bfcd3a0f7e4273c1da09ecbad6e63e4a78cb7874",
+    "06 AI Team/AI Team Knowledge/Scripts/resolve.py": "353f622b2e22ee49dd3f0ec4454db6e87ae72a56094611646644d4ebc70454ef",
+    "06 AI Team/AI Team Knowledge/Scripts/run-red-tests.py": "5353460b6a3916864f6732490146b1c2fb144c96550a8125a0db3e2066d6e85d",
     "06 AI Team/AI Team Knowledge/Scripts/scaffold-init.py": "c9aef875c3ffb43b24540cd44751d9e896bd08dfc6f83350e549fbc0a52afb98",
-    "06 AI Team/AI Team Knowledge/Scripts/session-start.py": "e6271e40085e9aad88ed213dc84f79511ec259038d482b998d18998170bf9e9f",
-    "06 AI Team/AI Team Knowledge/Scripts/skill-doctor.py": "8615d71739eb5606f29f03656f011cc77f05b1f58d6e2ac349f1db48add8db59",
+    "06 AI Team/AI Team Knowledge/Scripts/session-start.py": "345d3ed46d8c60251703be2937a27e63bb49a2d90e438de784ba6d0a90f9c981",
+    "06 AI Team/AI Team Knowledge/Scripts/skill-doctor.py": "fc1dca2fbf6709340c5da18154052ec63c847e4e54be9560e60916dd5d376c15",
     "06 AI Team/AI Team Knowledge/Scripts/test-expansion-pack.py": "7ba4960fafa19910e669c1a5c1f75bc0ef60058095e9074ad90df3a18fe254c1",
     "06 AI Team/AI Team Knowledge/Scripts/validate-team.py": "fdb93f36c64de42fa0b0f44cfc5457b1963cc4e134ba8fa15d232f17a242bfbd",
     "06 AI Team/AI Team Knowledge/Scripts/write-guard.py": "55a02fde23cedf63eb83bb5d520118d1e12fc258b0b10893e6da1044e25f2a2f",
@@ -123,7 +124,7 @@
     "06 AI Team/AI Team Knowledge/Skills/answer-the-six-life-questions/SKILL.md": "d7527e15375ea580231e9c7e3f6300e508c3e25345d6f9fb032319fa3c3247db",
     "06 AI Team/AI Team Knowledge/Skills/checkpoint/SKILL.md": "d60a8a008ff01b50045d9df593ba5d1da7f213430d73d183b922688519a2fef8",
     "06 AI Team/AI Team Knowledge/Skills/import-skill/SKILL.md": "8e96ff70d4a2dcb0c3a4bc4dce07d2520b1dcfad1790a9f6e2b2bb4d66d73af9",
-    "06 AI Team/AI Team Knowledge/Skills/red-tests/SKILL.md": "6f65837a7a4295b5e236a27df4f0e9096e2b79692270f85d46d55534abdcc850",
+    "06 AI Team/AI Team Knowledge/Skills/red-tests/SKILL.md": "11d58d08e7d13af9e40ff56a7e64f068a66f2a06861a8196f18496571dc0167d",
     "06 AI Team/AI Team Knowledge/Tasks/cancelled/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "06 AI Team/AI Team Knowledge/Tasks/done/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "06 AI Team/AI Team Knowledge/Tasks/in-progress/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -131,7 +132,7 @@
     "06 AI Team/AI Team Knowledge/Workstreams/WS-1003-onboarding-first-launch.md": "a05dd623e429ab853e5e663e5d8509bd86918924b270eb4c8d402a6d072c1da3",
     "06 AI Team/AI Team Knowledge/Workstreams/WS-1004-import-and-convert-external-knowledge.md": "74d9c375a59c67f92ac3f77ffae3ff2630903a592824008d0358e601d7a08a2b",
     "06 AI Team/AI Team Knowledge/Workstreams/WS-1005-checkpoint.md": "2117fc910f5ab1e6fdcddfc3260e7b5451ceadc3646a5a9932fef8ab6148eb05",
-    "06 AI Team/AI Team Knowledge/Workstreams/WS-1006-install-an-ai-team-expansion.md": "4c3398325df3231cad848ec4a71bddcba0a2da443ff78437ea330885d0900232",
+    "06 AI Team/AI Team Knowledge/Workstreams/WS-1006-install-an-ai-team-expansion.md": "83e89a7f3aa679f854c0500941c7a4ab89941ab5bff02723978221011b913a84",
     "06 AI Team/Agents/Ada/AGENT.md": "0bf3009ea10c4b1d78cf9f0ac556ebece08668ae4be8cdc016e1807211f12ad2",
     "06 AI Team/Agents/Ada/Ada.md": "7e2af33ed6bd83fa82f2e033321e46643e5127503a61c07bac048397ed3208c2",
     "06 AI Team/Agents/Ada/Journal/2026-09-17-ada-hired.md": "494381f8e83f098bb16fb177bc303bb7ecc57958af86d44fd0988c5ff30f76ed",
@@ -169,7 +170,7 @@
     "06 AI Team/Agents/Pax/Journal/2026-09-14-first-entry.md": "5b6060542e382a837f0a6114a7ff815cc5ff30ac31de13ac8a536766c8aa22b2",
     "06 AI Team/Agents/Pax/Journal/_template.md": "77dab2199098c5937ed7a7dd838f6af7c7548d3e9661b5d0e3bb6bebcdba36ac",
     "06 AI Team/Agents/Pax/Pax.md": "04341addea2b15987f06ab164200a0de686ea65dadacfd25e07f5cb2c9ca8550",
-    "06 AI Team/Agents/Penn/AGENT.md": "7bc8a687ad7ecbe7ac4feb718405ffbe0298a4f7bbff1ec56846dd5fc92fe108",
+    "06 AI Team/Agents/Penn/AGENT.md": "3687bb32c0f7dbf1c5f55b9247d469162bbd24994653a8ce28689123b8c08180",
     "06 AI Team/Agents/Penn/Journal/2026-09-14-first-entry.md": "095074b6e88803408ef8483c778b88e7a1131b6b3f408f9a51edaea6413a8fb1",
     "06 AI Team/Agents/Penn/Journal/_template.md": "f1dc35f462afc9d0cee6e879a940115a204bc043785ae2456f2cdd574010759d",
     "06 AI Team/Agents/Penn/Penn.md": "86d67cf202d898520ed89d87283cd71cdccb1e7e9736ec8cf3f4db7322d9a0bd",
@@ -178,15 +179,15 @@
     "06 AI Team/Agents/Silas/Journal/_template.md": "f8526eb1e76d0afa3383ad460959aac840948139263e34e188afadf2fc05884e",
     "06 AI Team/Agents/Silas/Silas.md": "52cb8fc3867b6907a09721fd378d53f2120bb5f131fb3355313f755fc2a77250",
     "06 AI Team/Agents/agent-index.md": "b3857aa81646738c2147ed005c84f775558f894ec4d54f21ffa807f98cb059c9",
-    "06 AI Team/Expansions/README.md": "78fd4658a94f43344ba01ef1f336448adc9d633919e6f81bddc06fec79089b51",
+    "06 AI Team/Expansions/README.md": "0d6c150ac69d544c800f135cf59056c72697d2def62ae5535e0be69dec1de041",
     "06 AI Team/README.md": "ebd2d2f71f1b4a3dd85b9e02d2b367451ea85d2416aea9720dd4bcf7aebb27a5",
     "ADAPTER-PROMPT.md": "b07a25cf2a09c97f2bbb6b674e6531f11d7a4c89535ee7b0745550011ecb5dc1",
     "AGENT.md": "cc21917e0fc20fcca4dd243f6d0e52d6c5d567b5add528059f878295586894d4",
     "AGENTS.md": "7dddf752e4ec4190b29c27434ae1ce55b380f2e87463e59916116e7494693e95",
     "CONTRIBUTING.md": "e443b9e361d59b8358ebcb3ae5a161951711dc6b00c4bd387fcfc74bc96c5831",
     "LICENSE": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
-    "LICENSE-MAP.md": "0dd95c8a223b808883d0ce529f442cbad300eca098d1de978345975e3c3bf3ec",
-    "README-myPKA.md": "1827a854dfa46c8b86579ae5f2aad6699a2564bbc50c63977225d8bae58fe4f5",
+    "LICENSE-MAP.md": "59c62a45bf61878e6e0d87ae71dbcf22a87176f1110286ce94c6f82ff42a5e92",
+    "README-myPKA.md": "9c22dfeac83efc8548ed6fc6688bbad9db0c64c0f890c60faab0a0cba2788ded",
     "SECURITY-myPKA.md": "e9a21fc94b6f0e2b089759a6dedaed17616f584e2c94ec0a3efa9f84554ee43c",
     "THIRD-PARTY-NOTICES-myPKA.md": "4599d54d04437e68ec846ec9566c75d0b81de8baf930fb715b5dce40f228882f",
     "TRADEMARK.md": "199a40f766a33793ef42eaf89663297d3f2d2a99da187281489cc2de16e46cf0"
@@ -195,7 +196,7 @@
     ".github/PULL_REQUEST_TEMPLATE.md": "944765d3b34c78f6e8976271a07d3d1358a667c96d79e38634b5ac093417e441",
     ".github/SECURITY.md": "19da61ecea4f8f720b002466ff95d38632ff1d0573e7c8e46d4b355445587eda",
     ".github/workflows/contribution-check.yml": "f4840d8db4b5ab7c586639281e003cc36708f48238a8dfaafba1f0a2b1b5564e",
-    ".github/workflows/release-mypka.yml": "2f15c29d1a5b3faab55769a99b626cd1960a081b932c8ca8f6508dce3a121666",
+    ".github/workflows/release-mypka.yml": "77eade7b2f9af4ef63a502a12dfc2d09799125e1e0c33f4425ba0987ba4c463e",
     ".gitignore": "7c99ddb7850a7538fa1e195cae6e5089b8cccf422d26891c49f63ee5e25da888",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-manifest.py": "db7d58083a2ddef28590d1381eeabfaa56f809385d36b2f723ea4b5af55736eb",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-release.sh": "42678d3ebcc38ba6fa4f40dcf1647cebd49fec04773364ecb6ea07dd36200667",
@@ -215,9 +216,9 @@
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/p7b.py": "61a9818f50c4edd73a01b25fd4c97eed30ef114e5c54bd6a46f2f01978747fd4",
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/verify-fixed.py": "c64ed872c0ca96d3bdc1abd17392310184b3a458dbcb73c513ecf4c14a133724",
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/verify.py": "f2a0dcd865a2f7ce252f0bab0a0d82544293609fc6053adeab16863895bda44d",
-    "MIGRATING-FROM-5.md": "1f1562191dc5a02000bc688b2cd99db7c324e08f1954d19b4bf0e0722e1ff043",
+    "MIGRATING-FROM-5.md": "acc1b268bc58e55e300eab14baaba22fc82d84e088402f9e1280f58913532c25",
     "README.md": "d3522a6072627d9b90e35294113e124a1d97e0ea7428571335234239a52809b4",
-    "VERSION": "cf3701cb2416e87a99c0e77dbd0518fc4fc27e390f025c024e6ed1c389c928e0"
+    "VERSION": "8adcc17e039842d2f4d92ca25f72a8963ede072c885ef5f762c0682b87c6d872"
   },
   "generated": {
     ".agents/skills/answer-the-six-life-questions/SKILL.md": {
@@ -314,6 +315,15 @@
   ],
   "history": [
     {
+      "version": "6.0.2",
+      "date": "2026-09-26",
+      "removed": [],
+      "renamed": [],
+      "added": [
+        "06 AI Team/AI Team Knowledge/Scripts/check-agent-shim-mcp.py"
+      ]
+    },
+    {
       "version": "6.0.1",
       "date": "2026-09-25",
       "removed": [],
@@ -353,6 +363,7 @@
     ".claude/agents/penn.md": [
       "49ff62b2d13e1e3f1707820eabbf48964b99effb2393ff33b039a1ea610f8e11",
       "8a03a6182488bd248fc5d30a49ffa4a10a685fe91a46869abf4e3011ec38fb93",
+      "a4a30144175fbf6e3c999248845c6b7763a736c0edfdb7e75b30975557036f12",
       "eb661e7b3c76acb74da77136b93d492d7a3dc60aa180afe3256de05d6670977a"
     ],
     ".claude/agents/silas.md": [
@@ -379,7 +390,8 @@
       "e264894303d5b68608c40880525a095b47de946fbc6c29ebc14a4f82ca732296"
     ],
     ".claude/skills/red-tests/SKILL.md": [
-      "12c09733f7048ab52a28c17353cc4f7abfa6f54d4a50c8db72389d8034a8e4f8"
+      "12c09733f7048ab52a28c17353cc4f7abfa6f54d4a50c8db72389d8034a8e4f8",
+      "b50cf23afd647f8641d31e67e088a294be5e588fdbfbe1149200043e51e5f300"
     ],
     ".codex/agents/ada.toml": [
       "3376a124fde239941b1c667b3a6d213d6f651821d9e6698cde6c08ef0c589269"
@@ -451,10 +463,12 @@
       "b014e41e9f27cd62c82cf725a6288a4b668c7137a3f961c721ab23a8bd9832db"
     ],
     ".mypka/CHANGELOG.md": [
+      "a482c6471d92e50f57e84ab6c1a3082ecf80d9fc58cd0b9650dbb5a189049e30",
       "c9d8ccef6905d00a9bea07bd14e36afca85f807522cc34db986a8d09d06786cf"
     ],
     ".mypka/VERSION": [
-      "54ef76332b31df830699e9d4138396885ab72bae260a034a81ff02bf32d8e90a"
+      "54ef76332b31df830699e9d4138396885ab72bae260a034a81ff02bf32d8e90a",
+      "cf3701cb2416e87a99c0e77dbd0518fc4fc27e390f025c024e6ed1c389c928e0"
     ],
     "06 AI Team/AI Team Knowledge/Avatars/larry.png": [
       "50ea925f37f8259e62fbfc12aa77a74e836a2701ea518e17a9fe724535ec2ea6"
@@ -469,6 +483,7 @@
       "8f073b8aeda70492639defc44600a4350a4205ab1d4f875b1aa569b6c23616b2"
     ],
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1004-naming-rules.md": [
+      "68d980b37ca6b5b24795ac971194841cbdc27558d79ef1f0c18fa68730d5d758",
       "88e6055be480490f42c8a343dd88e6232456df150984edf2de785481591e9cdc",
       "994b2107968af88f263edd92148305895d063b29edf5bece53f5d32954b07b4d",
       "a046444485ca33bff9abc8cd18fcc7db6179b6640ba64fb7f9dbdf4ba2b045b9",
@@ -476,13 +491,20 @@
       "c56ce8475a5148d829d6f78beb8b90893d59b31039f202c28932ebb78d37a497",
       "f99ccd107909aad50b51ba0ac72f90c91781d478f888e3f734b577eb1dbf99a2"
     ],
+    "06 AI Team/AI Team Knowledge/Guidelines/GL-1005-code-vs-instructions.md": [
+      "5e79df44f58ff8bc6502290673bc7e7a3e06218dd8370b2e8202ef67b1c0d8c1"
+    ],
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1008-the-machine-layer.md": [
       "82e34ea5cc2fc7396cf7fd2a495ed3dea3ae9739c873c46fde5402119591ba84",
       "d71b5cfdf11abbb2a880f309eaa04dd368a20915d2cb2862cbc70a59fb00355b"
     ],
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1012-ai-team-expansions.md": [
       "19016d08cffa8449036db04276b975f006dbed6d525dd3cf024f1cea640de766",
-      "6b723579dc600148c8dd015f58a07cccf64867064e301b4e0759b54cb854e008"
+      "6b723579dc600148c8dd015f58a07cccf64867064e301b4e0759b54cb854e008",
+      "b3ea65812f11e42391c576d4201877280f1f11573e91cc756f12a56133824279"
+    ],
+    "06 AI Team/AI Team Knowledge/Guidelines/GL-1013-sources-and-the-resolver.md": [
+      "016e115c20b7463e0d3ac2318b26b28b13748589391a4d1e7466882a5f98a040"
     ],
     "06 AI Team/AI Team Knowledge/SOPs/INDEX.md": [
       "400d5c2178c87d68854674e92098dd0af65680584b1c1393cdd8030194cc9c9c",
@@ -522,6 +544,7 @@
     ],
     "06 AI Team/AI Team Knowledge/SOPs/SOP-1007-hire-a-new-agent.md": [
       "309f3cf057c29404b19b32d9188de384e1ff2c0bf9579776d4715b3c20f71f33",
+      "8bec9a9a60e3fc539ec7f794d0e178e0a87dbbf42438c5c5ec449eb8276d0e5b",
       "8ccb1a5ec5eecbda92ee9ba0ac04157bcb549cd40d403efc4803e9c4eebd01b0",
       "ad76fd5d7841ded491b89e95c7de51da824d3f09969508171fb7f0288a45d0d3",
       "ede78cc063b814fc92fff618afef6205fa6e59874fa43ec2d6f80f9540ef7f83"
@@ -563,6 +586,9 @@
       "589d65233943518632363acd2de15d3ad2755f8d8cc2fea7ab2efb71ecfef21e",
       "fb3872465b1589f36b445be41f100caa4674b5547baa8bdfce6fe3a206608543"
     ],
+    "06 AI Team/AI Team Knowledge/Scripts/README-myPKA.md": [
+      "a0b5bab6b125da155b65572fecd481bd38dda93221fe57a04c42edc150c7e0f9"
+    ],
     "06 AI Team/AI Team Knowledge/Scripts/add-mcp-server.py": [
       "859e8488fae7e218db524135ba13d7f0002966f17c2e53cf7a25fe4d9e23e8e3",
       "a1de1dfb2e6b3b8ce929100ea0ad826b8b429d5fe92ccbc1e40bed003d9d66c2",
@@ -574,7 +600,8 @@
       "6da637f8cf2a66d7c72ac01c68ac0ca0d323dd3dcbf9956a7e704f06b7f8cfef",
       "7c386ff128d3a3c19d1bce9fe081d81a262290f7f0ddd3fa4e85fd2cb4169dd3",
       "84e47bd971446ece5c8f5fd79143f1f22d35052c71f56f4d9cff3c7a9b2e65f7",
-      "ac5f769f1a4d876ec8405c543b3ddf7ef8410173e55a548d71b0e6569fafbaaa"
+      "ac5f769f1a4d876ec8405c543b3ddf7ef8410173e55a548d71b0e6569fafbaaa",
+      "d1670c2e98220de1a984eda99a74874d7420b1dbd99cd9035b2e1638f129ff5d"
     ],
     "06 AI Team/AI Team Knowledge/Scripts/check-onboarding.py": [
       "1eef206862bac8f36f4565f9c0e738f88538b31df68db69f5d374623eaa40fab",
@@ -594,7 +621,8 @@
       "2780f1cd142f3f06714115020a5b62257fe70031702b657ca02b945e28fd34c3",
       "852024fca85d8954017bdec2d9d047efa6dd9b02e21426d5e4d7ae740d5f2374",
       "91b0bfddb842fcf9c125dfdee284cc48558d5def6047edab1209eca590b1960c",
-      "b933053a09e91e7930031fa7e05bba36ee3358ba1605757d52b8ba1d09f7087a"
+      "b933053a09e91e7930031fa7e05bba36ee3358ba1605757d52b8ba1d09f7087a",
+      "c43ac25d6fb81512d96b437d3c48fcc4b9a44e5d4ae6f269c3640748403ae395"
     ],
     "06 AI Team/AI Team Knowledge/Scripts/hooks-rules.json": [
       "166569fa9a461374d3d6c08938e2f9a4375ccdd109757945a150c3806253d9ce",
@@ -616,8 +644,12 @@
       "95203ff438c0d044fa4ff577dc336a847cc3508a3a6cc4e85c872e43bbd2e813",
       "b2d1062504b303bb21538c46b56f2996711899f8e90bb8c58616ecfd87cc679b"
     ],
+    "06 AI Team/AI Team Knowledge/Scripts/mypka-update.py": [
+      "56a70d5d73207bcbf7378a23dc0dfd797ebb91acedba72d39789a8c90e14379d"
+    ],
     "06 AI Team/AI Team Knowledge/Scripts/new-agent.py": [
       "1faa20915b1ed4408518f3163920e5ba411da4d0399ac291d72a03a392db7a5c",
+      "26d9327ec4099df5d1dd47b48e5c6067b3229d45f49eecc3cae8740c7532e49a",
       "5b5f026c33907739e283819bf901b2201f4228db1d93d68ebf01ce39324c7a60",
       "790cf6f22b123e01184b02b6e1e3e3f416839c81a3e47a1dfae196696398c55b",
       "93864349ab5be42b807201d621bdef732febed0de5c5eef149f8e4bd536ecd76",
@@ -644,6 +676,9 @@
       "a2a44c792ad26e565fb70dfec8b0d5d7aa11ff1200b31b7729a3b5ef17f00bca",
       "a46c47f8c5933da2ee579ba4e3084d19d964af229fb4804348bf3fcd3c05396e"
     ],
+    "06 AI Team/AI Team Knowledge/Scripts/resolve.py": [
+      "867ed2598fde4701569046871afe93c6ab311747c4b242063c645e9582e718a9"
+    ],
     "06 AI Team/AI Team Knowledge/Scripts/run-red-tests.py": [
       "05b3d5c6efa20f99488cd01b3e063eb94c86e05f973702106b86466191c594a0",
       "077d1e42c1081c2a98a1d66fddc26e4302fd1870f72e3a7c4218cd0332b708ad",
@@ -664,6 +699,7 @@
       "998f2cec4ac5bf8a5b1e318b1134066b7ad5095cd90d0273511ce1b17d71d102",
       "9c0f1fecf28f542270617e5e9e8e70094cdc1ef6e29dafa085ee1461871805a9",
       "b9cc0c466cb05dd697e11b895090056e9bd001186c26080ceaf74e76a38da651",
+      "c19b8dd39e22c66403bd82d8bfcd3a0f7e4273c1da09ecbad6e63e4a78cb7874",
       "c2dcf70f8557660ace2ee1e20ff77f141b9f12859c7596e534902b7531010de2",
       "db8008d07e680d1790d450f06407d4cfc294c805957897613005c2faaa5a0bae",
       "e285cb75446220c743da49eaf4b16aacb62d8c24025a7a00d266faa6db5cce29",
@@ -679,10 +715,12 @@
     "06 AI Team/AI Team Knowledge/Scripts/session-start.py": [
       "5c1cda4333a5c89de4f499d4a27882f9f73bc1fb3b8db64c0a28359172500fe3",
       "852e8bacc5f425cebe487fcee03baf03d51c56483ced3834d6ad1ca5220df5bc",
-      "d8ff39dd0e920814d193d78ef17f74a314a758492e8f33bfc56cd1bdf9032d28"
+      "d8ff39dd0e920814d193d78ef17f74a314a758492e8f33bfc56cd1bdf9032d28",
+      "e6271e40085e9aad88ed213dc84f79511ec259038d482b998d18998170bf9e9f"
     ],
     "06 AI Team/AI Team Knowledge/Scripts/skill-doctor.py": [
-      "77eadede4b450a97fa85ab466609b0da8b5f4ce555ebd9789ca4b5c6ad1af34a"
+      "77eadede4b450a97fa85ab466609b0da8b5f4ce555ebd9789ca4b5c6ad1af34a",
+      "8615d71739eb5606f29f03656f011cc77f05b1f58d6e2ac349f1db48add8db59"
     ],
     "06 AI Team/AI Team Knowledge/Scripts/test-expansion-pack.py": [
       "1d216b7986d97a63cab147d1714de9985bf6f5b74a088aadd3a8d43b508af1d5",
@@ -709,6 +747,7 @@
       "143d9919ca092bec4159e98490bf7956db53e22ffc34400fc9826e8fe7d0b70b"
     ],
     "06 AI Team/AI Team Knowledge/Skills/red-tests/SKILL.md": [
+      "6f65837a7a4295b5e236a27df4f0e9096e2b79692270f85d46d55534abdcc850",
       "74589b62fa5347264b390836a7b38677ba5bc7463a446f0075c058db6aba476e"
     ],
     "06 AI Team/AI Team Knowledge/Workstreams/WS-1003-onboarding-first-launch.md": [
@@ -730,6 +769,7 @@
       "9ffe9fe01ce0b032bd6df017a44e0542f91828258d6729055d47f6428090aa04"
     ],
     "06 AI Team/AI Team Knowledge/Workstreams/WS-1006-install-an-ai-team-expansion.md": [
+      "4c3398325df3231cad848ec4a71bddcba0a2da443ff78437ea330885d0900232",
       "616cf4ffe284fc4fcb412451b972d3e4204e7d99d963433275d33652563b062e",
       "7fc3b7e43add12570837a02dc7015e59974ffdd1c6345d8c3a3e0cbe3ddc4d1b",
       "e931b83f3c3588735ab979e1a65685581f5c1ec29437b005d68dbe273f81b21d",
@@ -806,6 +846,7 @@
     "06 AI Team/Agents/Penn/AGENT.md": [
       "56656b74ddb935541009226d420c1aece6b80164c11ce21e1fa36410a99b6238",
       "5db80b31e95972b49909af48239a0ec0a9068fd6f907873998812d7cdd2bceb9",
+      "7bc8a687ad7ecbe7ac4feb718405ffbe0298a4f7bbff1ec56846dd5fc92fe108",
       "85a64ac40d1d219f5f44c4161936ae0b66b51cd6519c9cee9ff187b49cd40208",
       "bbc45b32c3b7e536005b2844836f5e8997daef7d8f09e69cd8bd43d7f9d4d294",
       "ed5b12326786d3d189201809158ef15df995f8d546762dac6d0009dac17b3647",
@@ -837,7 +878,8 @@
       "fe681df8fbf449ce619743c236fc9c658f2fc700e2ae6e1142b0f7dd5a90400b"
     ],
     "06 AI Team/Expansions/README.md": [
-      "2b6a3547913c868ec5de7ca4e5c899ed2d6e4342f7f64e0ee3c11210c3099469"
+      "2b6a3547913c868ec5de7ca4e5c899ed2d6e4342f7f64e0ee3c11210c3099469",
+      "78fd4658a94f43344ba01ef1f336448adc9d633919e6f81bddc06fec79089b51"
     ],
     "06 AI Team/README.md": [
       "23fe573ac0b544d8c73c272f9553dd5cbc0378c23d63d9cba0601b6d514d656c",
@@ -870,7 +912,11 @@
       "8feda565511a3979d7cae25c12d47c73bd6ebcdbe74787090fd53e257f08eac2"
     ],
     "LICENSE-MAP.md": [
+      "0dd95c8a223b808883d0ce529f442cbad300eca098d1de978345975e3c3bf3ec",
       "33171c1247d1297d4ae514eb530ee7d2512c1df7829556c42812b9ac7c70271e"
+    ],
+    "README-myPKA.md": [
+      "1827a854dfa46c8b86579ae5f2aad6699a2564bbc50c63977225d8bae58fe4f5"
     ],
     "TRADEMARK.md": [
       "fa3d5e3ae5b6088fbf6ca0bbd88cfe1fbecf4c481f73ecb5a178ef3afb263042"
@@ -1020,13 +1066,17 @@
       "c56ce8475a5148d829d6f78beb8b90893d59b31039f202c28932ebb78d37a497",
       "f99ccd107909aad50b51ba0ac72f90c91781d478f888e3f734b577eb1dbf99a2"
     ],
+    "06 AI Team/AI Team Knowledge/Guidelines/GL-1005-code-vs-instructions.md": [
+      "5e79df44f58ff8bc6502290673bc7e7a3e06218dd8370b2e8202ef67b1c0d8c1"
+    ],
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1008-the-machine-layer.md": [
       "82e34ea5cc2fc7396cf7fd2a495ed3dea3ae9739c873c46fde5402119591ba84",
       "d71b5cfdf11abbb2a880f309eaa04dd368a20915d2cb2862cbc70a59fb00355b"
     ],
     "06 AI Team/AI Team Knowledge/Guidelines/GL-1012-ai-team-expansions.md": [
       "19016d08cffa8449036db04276b975f006dbed6d525dd3cf024f1cea640de766",
-      "6b723579dc600148c8dd015f58a07cccf64867064e301b4e0759b54cb854e008"
+      "6b723579dc600148c8dd015f58a07cccf64867064e301b4e0759b54cb854e008",
+      "b3ea65812f11e42391c576d4201877280f1f11573e91cc756f12a56133824279"
     ],
     "06 AI Team/AI Team Knowledge/SOPs/INDEX.md": [
       "400d5c2178c87d68854674e92098dd0af65680584b1c1393cdd8030194cc9c9c",
@@ -1379,7 +1429,8 @@
       "fe681df8fbf449ce619743c236fc9c658f2fc700e2ae6e1142b0f7dd5a90400b"
     ],
     "06 AI Team/Expansions/README.md": [
-      "2b6a3547913c868ec5de7ca4e5c899ed2d6e4342f7f64e0ee3c11210c3099469"
+      "2b6a3547913c868ec5de7ca4e5c899ed2d6e4342f7f64e0ee3c11210c3099469",
+      "78fd4658a94f43344ba01ef1f336448adc9d633919e6f81bddc06fec79089b51"
     ],
     "06 AI Team/README.md": [
       "23fe573ac0b544d8c73c272f9553dd5cbc0378c23d63d9cba0601b6d514d656c",
@@ -1405,7 +1456,7 @@
   },
   "source_commit": "f7dd5f0",
   "legacy_source": {
-    "repo": "TomSolid/icor-for-life-scaffold",
+    "repo": "myICOR/icor-for-life-scaffold",
     "tag": "1.34.1",
     "commit": "f7dd5f09a2fbe5af20649381fca28de7ce30ab92"
   }

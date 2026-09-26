@@ -48,9 +48,10 @@ folders).
 | Session log | `YYYY-MM-DD-HH-MM_<agent>_<slug>.md` | `2026-08-27-21-30_larry_scaffold-build.md` |
 | SOP / WS / GL, yours | `SOP-NNN-<slug>.md` etc., `001` to `999` | `SOP-001-weekly-invoice-run.md` |
 | SOP / WS / GL, shipped by the scaffold | `SOP-1NNN-<slug>.md` etc., `1001` to `1999` | `SOP-1001-process-the-daily-scratchpad.md` |
+| SOP / WS / GL, shipped by an Expansion pack | `EP-SOP-2NNN-<slug>.md` etc., `2001` to `2999`, frontmatter `id: SOP-2NNN` | `EP-SOP-2011-build-a-ui-component.md` |
 | Script | `<verb>-<slug>.py` | `stamp-processed.py` |
 | Agent bio | `<Name>.md` inside `Agents/<Name>/` | `Penn.md` |
-| Agent avatar | `AI Team Knowledge/Avatars/<name>.png` | `penn.png` |
+| Agent avatar | `AI Team Knowledge/Avatars/<name>.png`; a pack ships it as `Agents/<Name>/<name>.png` | `penn.png` |
 
 **Two number ranges, one rule.** The knowledge docs the scaffold ships
 carry numbers from `1001` up; the ones you write carry `001` to `999`. The
@@ -59,7 +60,9 @@ the `GL-001` you wrote last year. Nobody writes a thousand of their own,
 which is why the boundary sits there. When you hire a specialist or write a
 procedure, take the next free number below `1000`; never number your own
 work in the `1NNN` range, because the next scaffold version may ship a doc
-with that number.
+with that number. Expansion packs take a third range, `2001` to `2999`,
+behind the `EP-` prefix the installer requires ([[GL-1012-ai-team-expansions|GL-1012]]),
+so a pack never lands on a scaffold number or on yours.
 | Base (live table) | `<Collection>.base` inside the folder it views | `People.base` |
 | Entity note | natural title | `Alex Rivera.md`, `Run a marathon.md` |
 

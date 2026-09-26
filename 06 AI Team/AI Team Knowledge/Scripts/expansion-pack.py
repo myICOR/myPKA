@@ -10,7 +10,8 @@ goes on reading it afterwards, so a file placed somewhere the interpreter or
 the dynamic loader looks is executable by definition. That is why schema 1
 refuses `Scripts/` targets outright, refuses `__pycache__` and every
 importable or loadable file type vault-wide, and keeps its install receipt
-outside the pack (Vex ruling, batch b2, 2026-09-15).
+outside the pack (Vex ruling, batch b2, 2026-09-15), in the folder the
+install mode gives it (resolve.py `expansion_receipts_dir`).
 """
 import argparse
 import importlib.util
@@ -62,7 +63,12 @@ LOADABLE_SUFFIXES = ('.pyc', '.pyo', '.pyd', '.so', '.dylib', '.pth',
 # F5 (HIGH). The receipt is the VAULT's record, not the pack's. One inside the
 # pack is written by whoever shipped the pack, and a forged one made `remove`
 # delete files the pack never installed.
-RECEIPT_DIR = '.icor-for-life/expansions'
+#
+# WHERE the vault keeps it follows the install mode, and the resolver answers
+# that, not this file: `.icor-for-life/expansions` in mode A (one folder),
+# `.mypka/expansions` in mode B (myPKA beside its content, where the team root
+# has no `.icor-for-life/` at all). Until 6.0.2 this was a literal here, and a
+# mode B install created an `.icor-for-life/` inside the myPKA folder.
 PACK_ID = re.compile(r'[a-z][a-z0-9-]{0,79}')
 NAMESPACE_NOTE = ('a pack namespace keeps an installed file distinguishable '
                   'from the scaffold\'s own numbered knowledge')
@@ -159,14 +165,30 @@ def pack_path(root, identifier):
     return safe(root, '06 AI Team/Expansions/' + check_id(identifier))
 
 
+def receipt_dir(root):
+    """The folder this vault keeps its receipts in: resolve.py's one answer
+    (`expansion_receipts_dir`). A sources.yaml that does not load stops the
+    operation; a guessed folder is an ownership record `remove` never finds."""
+    try:
+        return resolver.expansion_receipts_dir(root)
+    except resolver.ResolveError as e:
+        raise ValueError('cannot tell where this folder keeps its expansion receipts, '
+                         'because its binding does not load (%s); run resolve.py --check' % e)
+
+
+def receipt_rel(root):
+    """The receipt folder as the member reads it, relative to the team root."""
+    return receipt_dir(root).relative_to(Path(root).resolve()).as_posix()
+
+
 def receipt_path(root, identifier):
-    """Where the install receipt lives: `.icor-for-life/expansions/<id>.json`.
+    """Where the install receipt lives: `<receipt_dir>/<id>.json`.
 
     Not built with safe(), which refuses dotted segments by design. The id is
     already constrained to lowercase letters, digits and hyphens, so there is
     no traversal to make.
     """
-    return root.joinpath(*RECEIPT_DIR.split('/')) / (check_id(identifier) + '.json')
+    return receipt_dir(root) / (check_id(identifier) + '.json')
 
 
 def stray_receipts(pack):
@@ -183,6 +205,58 @@ def stray_receipts(pack):
     except OSError:
         pass
     return found
+
+
+def _stops(root):
+    stops = {(root / '06 AI Team' / 'Agents').resolve()}
+    stops |= {(root / '06 AI Team' / 'AI Team Knowledge' / k).resolve() for k in KINDS}
+    return stops
+
+
+def missing_dirs(root, targets):
+    """The folders install is about to create: the absent parents of every
+    target, up to (never including) a fixed home. Recorded in the receipt so
+    `remove` takes away only what install made (Vex C2 X2)."""
+    stops, base, out = _stops(root), root.resolve(), set()
+    for p in targets:
+        q = p.parent
+        while not q.exists() and q.resolve() not in stops and q.resolve() != base:
+            out.add(q.relative_to(root).as_posix())
+            q = q.parent
+    return sorted(out)
+
+
+def prune_empty(root, created_dirs):
+    """Remove the folders install created, deepest first, once they are empty.
+
+    Only a folder the receipt lists as created by install is a candidate
+    (Vex C2 X2): an empty folder the member already had stays. A receipt
+    written before 6.0.2 lists none, so nothing is pruned for it. The fixed
+    homes (`06 AI Team/Agents`, the knowledge kind folders) are never
+    removed. An empty `Agents/<Name>/Journal/` left behind made
+    `validate-team.py` fail on the next run (C1 G3). A folder that still
+    holds anything, a member's own note included, stays: rmdir refuses it,
+    and that refusal is the rule.
+    """
+    stops, base = _stops(root), root.resolve()
+    candidates = set()
+    for rel in created_dirs or []:
+        try:
+            q = safe(root, rel)
+        except ValueError:
+            continue    # a receipt entry that is not a plain vault path is ignored
+        if q.resolve() in stops or q.resolve() == base:
+            continue
+        candidates.add(q)
+    gone = []
+    for q in sorted(candidates, key=lambda x: len(x.parts), reverse=True):
+        try:
+            if q.is_dir() and not q.is_symlink() and not any(q.iterdir()):
+                q.rmdir()
+                gone.append(q.relative_to(root).as_posix())
+        except OSError:
+            pass
+    return sorted(gone)
 
 
 def inspect(root, identifier):
@@ -224,12 +298,15 @@ def run(args):
         folder = safe(root, '06 AI Team/Expansions')
         result = []
         if folder.is_dir():
+            # Asked once, before the loop: a binding that does not load stops
+            # the listing, rather than reading as "no pack installed" per pack.
+            receipts = receipt_dir(root)
             for p in sorted(folder.iterdir()):
                 if p.is_symlink():
                     result.append({'id': p.name, 'status': 'rejected-symlink'})
                 elif p.is_dir():
                     try:
-                        installed = receipt_path(root, p.name).is_file()
+                        installed = (receipts / (check_id(p.name) + '.json')).is_file()
                     except ValueError:
                         installed = False   # not a legal pack id, so not installed
                     row = {'id': p.name,
@@ -250,7 +327,7 @@ def run(args):
             raise ValueError('No install receipt at %s/%s.json, so this tool did not '
                              'install this pack and will not delete anything. A receipt '
                              'inside the pack folder is never read.'
-                             % (RECEIPT_DIR, args.id))
+                             % (receipt_rel(root), args.id))
         r = json.loads(receipt.read_text())
         if r.get('schema') != 1 or r.get('id') != args.id:
             raise ValueError('Invalid ownership receipt')
@@ -262,15 +339,16 @@ def run(args):
             paths.append(p)
         for p in paths:
             p.unlink()
+        pruned = prune_empty(root, r.get('created_dirs'))
         receipt.rename(receipt.with_name(
             'removed-' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f') + '.json'))
-        return {'id': args.id, 'removed_files': len(paths),
+        return {'id': args.id, 'removed_files': len(paths), 'removed_empty_folders': pruned,
                 'registration': 'must be reviewed separately'}
     pack, m = inspect(root, args.id)
     conflicts = [f['target'] for f in m['files'] if target(root, f['target'], args.id).exists()]
     if args.command == 'inspect':
         return {'manifest': m, 'conflicts': conflicts,
-                'receipt': '%s/%s.json' % (RECEIPT_DIR, args.id),
+                'receipt': '%s/%s.json' % (receipt_rel(root), args.id),
                 'receipt_exists': receipt.exists(),
                 'in_pack_receipts_ignored': stray_receipts(pack),
                 'executes_payload': False,
@@ -284,7 +362,7 @@ def run(args):
         raise ValueError('Pack folder carries %s. The receipt belongs in %s/, and a '
                          'receipt shipped inside a pack is either stale or forged; '
                          'review it, move it aside, then install.'
-                         % (', '.join(stray), RECEIPT_DIR))
+                         % (', '.join(stray), receipt_rel(root)))
     if receipt.exists() or conflicts:
         raise ValueError('Existing installation or targets; use a reviewed migration, never overwrite')
     # Read and hash all bytes before writing; exclusive creation also catches races.
@@ -295,6 +373,7 @@ def run(args):
             raise ValueError('Payload changed after inspection')
         payload.append((target(root, f['target'], args.id), b))
     created = []
+    made_dirs = missing_dirs(root, [p for p, _b in payload])
     try:
         for p, b in payload:
             p.parent.mkdir(parents=True, exist_ok=True)
@@ -303,7 +382,8 @@ def run(args):
                 out.write(b)
         r = {'schema': 1, 'id': m['id'], 'version': m['version'],
              'installed_at': datetime.now(timezone.utc).isoformat(),
-             'files': [{'target': f['target'], 'sha256': f['sha256']} for f in m['files']]}
+             'files': [{'target': f['target'], 'sha256': f['sha256']} for f in m['files']],
+             'created_dirs': made_dirs}
         receipt.parent.mkdir(parents=True, exist_ok=True)
         # 'x', never 'w': an existing receipt is somebody else's ownership record
         # and must never be overwritten without a person seeing it.
@@ -315,7 +395,7 @@ def run(args):
                 p.unlink()
         raise
     return {'id': m['id'], 'installed_files': len(created),
-            'receipt': '%s/%s.json' % (RECEIPT_DIR, m['id']),
+            'receipt': '%s/%s.json' % (receipt_rel(root), m['id']),
             'activation': 'pending registration and bounded example'}
 
 

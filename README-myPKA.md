@@ -75,6 +75,8 @@ python3 "06 AI Team/AI Team Knowledge/Scripts/resolve.py" --check
 
 If your ICOR for Life folder has another name or sits somewhere else, change `root:` in `.mypka/sources.yaml` first. The check should report `binding: compatible, mode B`. In mode B, always start your AI session in the `mypka` folder, never in the ICOR for Life folder.
 
+**Moving from mode A to mode B later, with expansion packs installed.** In mode A the install receipts are in your ICOR for Life folder, at `.icor-for-life/expansions/`. In mode B the tools look for them in the `mypka` folder, at `.mypka/expansions/`. When you move the team out, move every file from that folder into `mypka/.mypka/expansions/` too. They stay behind otherwise, and without them `expansion-pack.py` lists your packs as not installed and refuses to remove them.
+
 `.mypka/sources.yaml` belongs to one device, because it holds a path on that machine. A second computer needs its own copy.
 
 ## What works today, and what's coming
