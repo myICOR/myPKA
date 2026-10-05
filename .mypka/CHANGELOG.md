@@ -52,6 +52,11 @@ zip (`mypka-update.py`, then `mypka-update.py --product icor`).
   step12/X3 builds its four fixture packs under names no agent carries
   (Quill, Rook, Sage, Tess). Under Felix, Pixel, Vera and Vex they now
   collide with the team, and the install rightly refuses existing targets.
+- Changed: `06 AI Team/AI Team Knowledge/Scripts/run-red-tests.py` cases
+  step18/AT1 to AT5 accept one more `gh attestation verify` call in
+  `release-mypka.yml`: the one that verifies the pinned ICOR for Life
+  release zip. It must carry the same four flags, pinned to
+  `$ICOR_REPO`, its `release.yml` and `refs/tags/$ICOR_PIN`.
 - Changed, repository only: the release builds one zip from this tag and
   the ICOR for Life 2.2.0 release zip (pinned by tag, commit and sha256,
   its attestation verified), so `mypka.zip` is the whole folder.

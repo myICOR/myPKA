@@ -10525,8 +10525,18 @@ def s18_attest(muts):
             out.append("%s: fewer than two gh attestation verify calls" % name)
         wf = "/.github/workflows/%s" % name
         for line in calls:
-            for flag in ("--repo \"$GITHUB_REPOSITORY\"", "--signer-workflow \"$GITHUB_REPOSITORY%s\"" % wf,
-                         "--source-ref \"refs/tags/$", "--deny-self-hosted-runners"):
+            # myPKA 7.0.0: the member zip carries the pinned ICOR for Life
+            # release zip, so release-mypka.yml also verifies THAT zip's
+            # attestation. Such a call is held to the same four flags, pinned
+            # to the content repository, its release workflow and the pinned
+            # tag; every other call verifies this repository's own build.
+            if name == "release-mypka.yml" and "--repo \"$ICOR_REPO\"" in line:
+                need = ("--repo \"$ICOR_REPO\"", "--signer-workflow \"$ICOR_REPO/.github/workflows/release.yml\"",
+                        "--source-ref \"refs/tags/$ICOR_PIN\"", "--deny-self-hosted-runners")
+            else:
+                need = ("--repo \"$GITHUB_REPOSITORY\"", "--signer-workflow \"$GITHUB_REPOSITORY%s\"" % wf,
+                        "--source-ref \"refs/tags/$", "--deny-self-hosted-runners")
+            for flag in need:
                 if flag not in line:
                     out.append("%s: a gh attestation verify call lacks %s" % (name, flag.split(" ")[0]))
         vb = [i for i, (_, b) in enumerate(steps) if "gh attestation verify" in b]
