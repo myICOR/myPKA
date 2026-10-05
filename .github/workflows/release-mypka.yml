@@ -77,11 +77,11 @@ env:
   ICOR_REPO: myICOR/icor-for-life-scaffold
   # First release only (M4): ICOR_PIN '' and ICOR_PIN_SHA = the ICOR cut
   # commit. Every later release: ICOR_PIN '2.0.0' (a tag) and its sha.
-  ICOR_PIN: '2.2.0'
-  ICOR_PIN_SHA: '8cede29fbbbc00b72092b47de85e27487cc0b5ff'  # ICOR for Life 2.2.0, tag 2.2.0 (annotated), the content of myPKA 7
+  ICOR_PIN: '2.2.1'
+  ICOR_PIN_SHA: '929561f051e3cd4ed1813afd38ba8318fd34b8ce'  # ICOR for Life 2.2.1, tag 2.2.1 (annotated), the content of myPKA 7
   # The ICOR for Life release zip of ICOR_PIN that goes into the member zip
   # (7.0.0): icor-for-life-obsidian-edition-<ICOR_PIN>.zip, these bytes only.
-  ICOR_EDITION_SHA256: 'd5033621e1a4322edbc3545b237dc5e0299f318594a0d070c35d72ee74378a37'
+  ICOR_EDITION_SHA256: '407fe8ab884fc0cd4e0879bdf523ee7c13c0c6921c6e559002b5e79a57713b98'
 
 defaults:
   run:
@@ -296,14 +296,23 @@ jobs:
           fi
           inside_icor="$(unzip -p "$zip" .icor-for-life/VERSION | tr -d '[:space:]')"
           [ "$inside_icor" = "$ICOR_PIN" ] || { echo "::error::the folder's content says '$inside_icor', the pin is $ICOR_PIN"; exit 1; }
-          # No repo-only file in the zip (the builder strips them; this looks at the zip itself).
-          python3 - "$zip" .mypka/manifest.json <<'PY'
+          # No repo-only file of this repository in the zip (the builder strips
+          # them; this looks at the zips themselves). The team zip may carry
+          # none. The folder may carry a path that is repo-only HERE only when
+          # the content half ships it, byte for byte (README.md and .gitignore
+          # are myPKA repo-only and ICOR for Life content; 7.0.0 checked the
+          # folder as if it were the team zip and refused its own release).
+          python3 - "$team" "$zip" "$content" .mypka/manifest.json <<'PY'
           import json, sys, zipfile
-          names = set(zipfile.ZipFile(sys.argv[1]).namelist())
-          ro = set(json.load(open(sys.argv[2], encoding="utf-8")).get("repo_only") or {})
-          leaked = sorted(names & ro)
+          team, folder, content = (zipfile.ZipFile(p) for p in sys.argv[1:4])
+          ro = set(json.load(open(sys.argv[4], encoding="utf-8")).get("repo_only") or {})
+          leaked = sorted(set(team.namelist()) & ro)
           if leaked:
-              sys.exit("FAIL the zip carries repo-only files: %s" % ", ".join(leaked))
+              sys.exit("FAIL the team zip carries repo-only files: %s" % ", ".join(leaked))
+          cnames = set(content.namelist())
+          for n in sorted(set(folder.namelist()) & ro):
+              if n not in cnames or folder.read(n) != content.read(n):
+                  sys.exit("FAIL the folder carries %s, repo-only here and not the content half's file" % n)
           PY
           inside="$(unzip -p "$zip" .mypka/VERSION | tr -d '[:space:]')"
           [ "$inside" = "$VERSION" ] || { echo "::error::the zip says '$inside', the tag is $VERSION"; exit 1; }

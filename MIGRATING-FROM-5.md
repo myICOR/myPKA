@@ -1,6 +1,6 @@
 # Moving from myPKA v5 to 7
 
-> **7.0.0 (October 2026):** the folder and the team are one download again, as in v5: `mypka-7.0.0.zip` holds the rooms (once "ICOR for Life") and the team. Everything below still applies; where it says 6.0.0 or ICOR for Life 2.0.0, read "the 7.0.0 download", and where it names two zips, use the one `mypka.zip`. A v5 folder's update check now sees 7.x; the updater still refuses a v5 folder and writes nothing, so the move stays the fresh-folder import described here.
+> **myPKA 7 (October 2026):** the folder and the team are one download again, as in v5: `mypka-<version>.zip` (7.0.1 or later) holds the rooms (once "ICOR for Life") and the team. Everything below still applies; where it says 6.0.0 or ICOR for Life 2.0.0, read "the myPKA 7 download", and where it names two zips, use the one `mypka.zip`. A v5 folder's update check now sees 7.x; the updater still refuses a v5 folder and writes nothing, so the move stays the fresh-folder import described here.
 
 This page is for you if you run a myPKA v5 folder (it has `VERSION`, `.scaffold-version`, `PKM/` and `Team/` at the top), or if you forked this repository while it was on v5.
 

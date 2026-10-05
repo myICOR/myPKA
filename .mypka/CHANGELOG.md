@@ -6,6 +6,21 @@ and what was removed or moved, every removed or moved file named in
 backticks. `check-version-bump.py` refuses a release whose shipped files
 changed without a new VERSION and a section here.
 
+## 7.0.1
+
+The first release of myPKA 7. The tag `v7.0.0` exists, but 7.0.0 was never
+released: its release build composed the folder, then refused its own zip
+(the fix below), and a tag never moves. Everything the 7.0.0 section lists
+ships for the first time in 7.0.1. Pairs with ICOR for Life 2.2.1.
+
+- Fixed, repository only: the release workflow's repo-only check looks at
+  the team zip, and lets the folder carry a path that is repo-only here
+  (`README.md`, `.gitignore`) only when the content half ships those exact
+  bytes. 7.0.0 checked the whole folder against this repository's
+  repo-only list and stopped on the content's `README.md` and `.gitignore`.
+- Changed, repository only: the content pin is ICOR for Life 2.2.1, whose
+  README names the download `mypka-<version>.zip`.
+
 ## 7.0.0
 
 **myPKA again: one folder.** The end of an era, and a return: from August to
