@@ -2,8 +2,8 @@
   "schema": 2,
   "name": "myPKA",
   "version": "7.0.0",
-  "built": "2026-10-05T20:49:23Z",
-  "commit": "3be8501",
+  "built": "2026-10-05T21:27:06Z",
+  "commit": "d934168",
   "lab": false,
   "requires": "icor-concepts >=1 <2",
   "files": {
@@ -240,7 +240,7 @@
   },
   "repo_only": {
     ".github/SECURITY.md": "19da61ecea4f8f720b002466ff95d38632ff1d0573e7c8e46d4b355445587eda",
-    ".github/workflows/release-mypka.yml": "47d87a008acbc2ca6b990165e9c394d71083dacc37a0fa20728e894305b06e34",
+    ".github/workflows/release-mypka.yml": "6ee070eb350917c9c19e139c42cefe030ad7b359dbae2749d826870bf8b034aa",
     ".gitignore": "7c99ddb7850a7538fa1e195cae6e5089b8cccf422d26891c49f63ee5e25da888",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-manifest.py": "db7d58083a2ddef28590d1381eeabfaa56f809385d36b2f723ea4b5af55736eb",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-release.sh": "42d62907bf09e425880cce2e2bc245cde52b4a981f508293f52a5fde1a328353",
