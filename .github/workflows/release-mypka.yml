@@ -42,6 +42,16 @@
 #   gh attestation verify mypka-<version>.zip --repo myICOR/myPKA \
 #     --signer-workflow myICOR/myPKA/.github/workflows/release-mypka.yml \
 #     --source-ref refs/tags/v<version> --deny-self-hosted-runners
+# myPKA 7.0.0 (Tom, 2026-10-05: "merge all agents ... in the new last
+# version of ICOR for Life and rename it back to myPKA"): the member zip is
+# ONE folder again. The team zip is built and gated exactly as before; then
+# compose-mypka-folder.sh puts it beside the ICOR for Life release zip of the
+# pinned tag, downloaded from that release, its sha256 pinned here
+# (ICOR_EDITION_SHA256) and its own attestation verified with ICOR's
+# signer workflow. The composed zip is what is attested and published as
+# mypka.zip and mypka-<version>.zip. The halves stay disjoint (Gate 3 on the
+# manifests, the compose script on the bytes), so mypka-update.py updates
+# both from the one zip (--product mypka, then --product icor).
 name: release-mypka
 
 on:
@@ -67,8 +77,11 @@ env:
   ICOR_REPO: myICOR/icor-for-life-scaffold
   # First release only (M4): ICOR_PIN '' and ICOR_PIN_SHA = the ICOR cut
   # commit. Every later release: ICOR_PIN '2.0.0' (a tag) and its sha.
-  ICOR_PIN: '2.0.1'
-  ICOR_PIN_SHA: '6ffb0b3672589da3ed0cfe9c6ae02083440238fc'  # ICOR for Life 2.0.1, tag 2.0.1 (lightweight), C2 of the 2.0.1 cut
+  ICOR_PIN: '2.2.0'
+  ICOR_PIN_SHA: '8cede29fbbbc00b72092b47de85e27487cc0b5ff'  # ICOR for Life 2.2.0, tag 2.2.0 (annotated), the content of myPKA 7
+  # The ICOR for Life release zip of ICOR_PIN that goes into the member zip
+  # (7.0.0): icor-for-life-obsidian-edition-<ICOR_PIN>.zip, these bytes only.
+  ICOR_EDITION_SHA256: '@@ICOR_EDITION_SHA256@@'
 
 defaults:
   run:
@@ -133,6 +146,25 @@ jobs:
           fi
           git -C "$RUNNER_TEMP/icor-history" worktree add --quiet --detach "$RUNNER_TEMP/icor" "$got"
           echo "ICOR for Life ${ICOR_PIN:-(bootstrap, sha only)} at $got"
+
+      - name: Download the ICOR for Life release zip at the pin, and prove its bytes and who built it
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          name="icor-for-life-obsidian-edition-$ICOR_PIN.zip"
+          gh release download "$ICOR_PIN" --repo "$ICOR_REPO" --pattern "$name" --dir "$RUNNER_TEMP/content"
+          got="$(sha256sum "$RUNNER_TEMP/content/$name" | cut -d' ' -f1)"
+          if [ "$got" != "$ICOR_EDITION_SHA256" ]; then
+            echo "::error::$name is $got, the pin says $ICOR_EDITION_SHA256"
+            exit 1
+          fi
+          gh attestation verify "$RUNNER_TEMP/content/$name" --repo "$ICOR_REPO" \
+            --signer-workflow "$ICOR_REPO/.github/workflows/release.yml" \
+            --source-ref "refs/tags/$ICOR_PIN" --deny-self-hosted-runners
+          inside="$(unzip -p "$RUNNER_TEMP/content/$name" .icor-for-life/VERSION | tr -d '[:space:]')"
+          [ "$inside" = "$ICOR_PIN" ] || { echo "::error::$name says version '$inside', the pin is $ICOR_PIN"; exit 1; }
+          echo "content=$RUNNER_TEMP/content/$name" >> "$GITHUB_ENV"
+          echo "ICOR for Life $ICOR_PIN release zip: sha256 $got, attested by $ICOR_REPO release.yml"
 
       # REQUIRED GATES. Each one exits non-zero on its red; none is optional,
       # none continues on error.
@@ -248,13 +280,24 @@ jobs:
         run: |
           bash "$SCRIPTS/build-mypka-release.sh" "$RUNNER_TEMP/dry"
           bash "$SCRIPTS/build-mypka-release.sh" "$RUNNER_TEMP/release"
-          zip="$RUNNER_TEMP/release/myPKA-$VERSION.zip"
-          dry="$RUNNER_TEMP/dry/myPKA-$VERSION.zip"
-          sha="$(sha256sum "$zip" | cut -d' ' -f1)"
-          if [ "$sha" != "$(sha256sum "$dry" | cut -d' ' -f1)" ]; then
-            echo "::error::two builds of tag $VERSION gave two different zips"
+          team="$RUNNER_TEMP/release/myPKA-$VERSION.zip"
+          if [ "$(sha256sum "$team" | cut -d' ' -f1)" != "$(sha256sum "$RUNNER_TEMP/dry/myPKA-$VERSION.zip" | cut -d' ' -f1)" ]; then
+            echo "::error::two builds of tag $VERSION gave two different team zips"
             exit 1
           fi
+          # One folder (7.0.0): the team zip beside the pinned content zip, twice.
+          epoch="$(git log -1 --format=%ct "$MYPKA_REF")"
+          mkdir -p "$RUNNER_TEMP/folder" "$RUNNER_TEMP/folder-dry"
+          sh "$SCRIPTS/compose-mypka-folder.sh" "$team" "$content" "$RUNNER_TEMP/folder/myPKA-$VERSION.zip" "$epoch"
+          sh "$SCRIPTS/compose-mypka-folder.sh" "$RUNNER_TEMP/dry/myPKA-$VERSION.zip" "$content" "$RUNNER_TEMP/folder-dry/myPKA-$VERSION.zip" "$epoch"
+          zip="$RUNNER_TEMP/folder/myPKA-$VERSION.zip"
+          sha="$(sha256sum "$zip" | cut -d' ' -f1)"
+          if [ "$sha" != "$(sha256sum "$RUNNER_TEMP/folder-dry/myPKA-$VERSION.zip" | cut -d' ' -f1)" ]; then
+            echo "::error::two compositions of tag $VERSION gave two different zips"
+            exit 1
+          fi
+          inside_icor="$(unzip -p "$zip" .icor-for-life/VERSION | tr -d '[:space:]')"
+          [ "$inside_icor" = "$ICOR_PIN" ] || { echo "::error::the folder's content says '$inside_icor', the pin is $ICOR_PIN"; exit 1; }
           # No repo-only file in the zip (the builder strips them; this looks at the zip itself).
           python3 - "$zip" .mypka/manifest.json <<'PY'
           import json, sys, zipfile

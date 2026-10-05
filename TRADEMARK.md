@@ -11,7 +11,7 @@ Our licenses are generous with the words and the code. They do not cover our nam
 | myICOR | Unregistered mark in use (™) |
 | myPKA | Unregistered mark in use (™) |
 
-The marks are owned by Paperless Movement, S.L., Madrid, Spain. No license in this repository grants trademark rights (CC BY-SA 4.0 Section 2(b)(2)). The ® symbol refers only to the registrations listed and to the services they cover.
+The marks are owned by Paperless Movement, S.L., Madrid, Spain. No license in this repository grants trademark rights. The ® symbol refers only to the registrations listed and to the services they cover.
 
 ## What you may do without asking
 

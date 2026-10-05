@@ -26,8 +26,9 @@ It reads every tracked file (`git ls-files`, from the work tree). Blockers:
       Tom gives; Marshall replaces the bracket and changes nothing else.
   B3  `LICENSE-myPKA.md` exists (the pre-j5v placeholder; it grants nothing).
   B4  the words "affiliated holding entity" anywhere (one named owner, w8t).
-  B5  `LICENSE` is not the CC BY-SA 4.0 legal code byte for byte (the
-      sha256 Lex recorded), or `Scripts/LICENSE-myPKA` is not the bare MIT
+  B5  `LICENSE` is not the MIT text of 7.0.0 byte for byte (holder line
+      "Thomas Roedl (Tom), Paperless Movement, S.L."; until 6.x it was the
+      CC BY-SA 4.0 legal code, sha256 28a9529c...), or `Scripts/LICENSE-myPKA` is not the bare MIT
       text with the holder line "Paperless Movement, S.L. and the myPKA
       authors".
   B6  `README-myPKA.md` still says it is a placeholder.
@@ -59,8 +60,10 @@ README_PLACEHOLDER = re.compile(r"PLACEHOLDER|\*\*Status: placeholder\.\*\*")
 SECURITY = "SECURITY-myPKA.md"
 SECURITY_PLACEHOLDER = re.compile(r"PLACEHOLDER|\*\*Status: placeholder\.\*\*|Vex splits the scope section")
 EXACT = {
-    # CC BY-SA 4.0 legalcode.txt, 20138 bytes, 428 lines (Lex fetch, 2026-09-24)
-    "LICENSE": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+    # MIT, Copyright (c) 2026 Thomas Roedl (Tom), Paperless Movement, S.L.
+    # (myPKA 7.0.0, Tom 2026-10-05: everything in the folder is MIT; until 6.x
+    # this was CC BY-SA 4.0 legalcode.txt, 28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5)
+    "LICENSE": "0e592ef17c3b1e514c5bc10da0990c0a92a2b4d5e206e65c3c98edca79836a53",
     # bare MIT, Copyright (c) 2026 Paperless Movement, S.L. and the myPKA authors
     # (Lex step 11b, part 2 section 2; holder line per Lex 11f, 2026-09-25)
     SC + "LICENSE-myPKA": "170333a76ed584f3892d02c7b83cb68d8602cb29d09fdbbbe380cee7f6eecf5b",

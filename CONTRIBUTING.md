@@ -4,7 +4,7 @@ This repository does not take pull requests. Bugs and ideas go to the ICOR for L
 
 ## License
 
-myPKA is licensed as `LICENSE-MAP.md` lists: CC BY-SA 4.0 for prose, MIT for code and configuration. You may copy, adapt and share it on those terms, in your own copy or fork.
+myPKA is MIT from 7.0.0, as `LICENSE-MAP.md` explains. You may copy, adapt and share it on those terms, in your own copy or fork.
 
 ## Security problems
 

@@ -51,6 +51,7 @@ declare -a RESIDUE_PATHS=(
   ".github/SECURITY.md"
   "06 AI Team/AI Team Knowledge/Scripts/build-mypka-release.sh"
   "06 AI Team/AI Team Knowledge/Scripts/build-mypka-manifest.py"
+  "06 AI Team/AI Team Knowledge/Scripts/compose-mypka-folder.sh"
   "06 AI Team/AI Team Knowledge/Scripts/check-disjoint.py"
   "06 AI Team/AI Team Knowledge/Scripts/check-release-blockers.py"
   "06 AI Team/AI Team Knowledge/Scripts/check-room-literals.py"

@@ -1,4 +1,6 @@
-# Moving from myPKA v5 to 6.0.0
+# Moving from myPKA v5 to 7
+
+> **7.0.0 (October 2026):** the folder and the team are one download again, as in v5: `mypka-7.0.0.zip` holds the rooms (once "ICOR for Life") and the team. Everything below still applies; where it says 6.0.0 or ICOR for Life 2.0.0, read "the 7.0.0 download", and where it names two zips, use the one `mypka.zip`. A v5 folder's update check now sees 7.x; the updater still refuses a v5 folder and writes nothing, so the move stays the fresh-folder import described here.
 
 This page is for you if you run a myPKA v5 folder (it has `VERSION`, `.scaffold-version`, `PKM/` and `Team/` at the top), or if you forked this repository while it was on v5.
 
@@ -80,7 +82,7 @@ More that changed:
 - To stay on v5, build on the tag `v5.5.2`, not on `main`.
 - Merging our `main` into a v5 branch doesn't update v5. It brings in the whole 6.0.0 tree, with conflicts wherever you changed a file.
 - The download name changed: v5 shipped `mypka-scaffold-latest.zip`, 6.0.0 ships `mypka.zip` and `mypka-<version>.zip`.
-- Your copy keeps the license it came with. Copies from v5.3.0 on are CC BY-SA 4.0; copies before v5.3.0 are CC BY-NC-SA 4.0. Creative Commons licenses can't be revoked. 6.0.0 continues the CC BY-SA 4.0 line for prose and adds MIT for code and configuration: see [LICENSE-MAP.md](LICENSE-MAP.md).
+- Your copy keeps the license it came with. Copies from v5.3.0 on are CC BY-SA 4.0; copies before v5.3.0 are CC BY-NC-SA 4.0. Creative Commons licenses can't be revoked. 6.x continued the CC BY-SA 4.0 line for prose with MIT for code and configuration; from 7.0.0 the whole folder is MIT: see [LICENSE-MAP.md](LICENSE-MAP.md).
 - "Built on myPKA" is fine. Naming your version "myPKA" is not: see [TRADEMARK.md](TRADEMARK.md).
 
 ## What stays yours

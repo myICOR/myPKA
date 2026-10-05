@@ -118,7 +118,7 @@ ID_RE = re.compile(r"(?:^|/)(SOP|WS|GL)-(\d+)-[^/]*$", re.IGNORECASE)
 SHIPPED_IDS = (1000, 1999)
 MEMBER_SUFFIXES = (".local.md", ".update")
 VOLATILE = ("built", "commit")
-V5_NOTE = ("myPKA 6.0.0 does not install over a v5 folder. Coming from myPKA v5? Read "
+V5_NOTE = ("myPKA 6 and later do not install over a v5 folder. Coming from myPKA v5? Read "
            "https://github.com/myICOR/myPKA/blob/main/MIGRATING-FROM-5.md and move by hand")
 
 # The ICOR for Life content rooms (side "source" in the icor-concepts/1

@@ -6,6 +6,53 @@ and what was removed or moved, every removed or moved file named in
 backticks. `check-version-bump.py` refuses a release whose shipped files
 changed without a new VERSION and a section here.
 
+## 7.0.0
+
+**myPKA again: one folder.** The end of an era, and a return: from August to
+October 2026 the folder (ICOR for Life) and the team (myPKA 6) were two
+downloads. From 7.0.0 they are one, `mypka-7.0.0.zip`, under the name it
+started with: the content of ICOR for Life 2.2.0 (rooms, templates,
+guidelines, life scripts, the Obsidian setup with the twelve ICOR for Life
+plugins and the INKLINE theme pre-installed) and this team, in one folder.
+Nothing in your folder is removed or moved; both halves update from the one
+zip (`mypka-update.py`, then `mypka-update.py --product icor`).
+
+- Added: Vex, Felix, Vera and Pixel join the team, from their agent packs
+  2.1.0, byte for byte: `06 AI Team/Agents/Vex/`, `Felix/`, `Vera/`,
+  `Pixel/` (contract, bio, avatar, journal template), their SOPs
+  `EP-SOP-2011`, `EP-SOP-2021`, `EP-SOP-2031`, `EP-SOP-2032`, `EP-SOP-2041`
+  (the pack ids and file names are kept, so a folder that installed a pack
+  holds the same paths), their rows in `06 AI Team/Agents/agent-index.md`
+  and `06 AI Team/AI Team Knowledge/SOPs/INDEX.md`, and the shims and skills
+  `scaffold-init.py` generates from them (`.claude/`, `.codex/`, `.gemini/`
+  agents; `.claude/skills/` and `06 AI Team/AI Team Knowledge/Skills/`
+  `felix-build-ui-component`, `vera-quality-gate`, `vex-review-before-it-runs`,
+  `vex-security-audit`, `pixel-styled-image`). Installed one as a pack?
+  Remove the pack first (README-myPKA.md, "Updating").
+- Added: `06 AI Team/Expansion Library/` with two optional packs that are
+  not switched on, `converter-pack-v1.1.2.zip` and
+  `handwritten-collaboration-loop-v1.0.2.zip` (the released bytes), and a
+  README that says how to install one and that both were written for the
+  older layout. The App Developer and Designer packs are not shipped: every
+  agent they added is in the team.
+- Changed: `LICENSE` is MIT ("Copyright (c) 2026 Thomas Roedl (Tom),
+  Paperless Movement, S.L."), for the whole folder. It was CC BY-SA 4.0 for
+  prose. `LICENSE-MAP.md`, `CONTRIBUTING.md` and `TRADEMARK.md` follow.
+  Earlier copies keep the licence they came with.
+- Changed: `README-myPKA.md` describes one folder, the four new team
+  members, the Expansion Library, updating both halves from one zip, the
+  myPKA course and the Tool Lab note (a starting point, not a product; no
+  support schedule; you are responsible for what you run).
+- Changed: `06 AI Team/Expansions/README.md` says where packs come from now.
+- Changed: `06 AI Team/AI Team Knowledge/Scripts/mypka-update.py` says
+  "myPKA 6 and later" in the v5 refusal.
+- Changed: `06 AI Team/AI Team Knowledge/Scripts/check-release-blockers.py`
+  B5 holds `LICENSE` to the MIT text of 7.0.0.
+- Changed, repository only: the release builds one zip from this tag and
+  the ICOR for Life 2.2.0 release zip (pinned by tag, commit and sha256,
+  its attestation verified), so `mypka.zip` is the whole folder.
+  `README.md` and `MIGRATING-FROM-5.md` say so.
+
 ## 6.0.3
 
 A quick capture has one name, whichever key makes it, and this repository

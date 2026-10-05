@@ -1,24 +1,25 @@
 # myPKA
 
-**An AI team with clear roles, shared instructions and memory across sessions. It already knows ICOR. Open it in Claude Code, Codex, Gemini CLI or Cursor.**
+**Your life and work in one folder of plain markdown, organised by ICOR, with an AI team that works in it with you. Open it in Claude Code, Codex, Gemini CLI or Cursor, or in Obsidian, or just a text editor.**
 
-> **Coming from myPKA v5?** 6.0.0 has a new shape. It doesn't update your v5 folder, and nothing forces you to move. Your v5 folder keeps working, and v5.5.2 stays downloadable from its release page. When you're ready, follow [MIGRATING-FROM-5.md](MIGRATING-FROM-5.md), step by step.
+> **myPKA 7: one folder again.** From August to October 2026 the folder (ICOR for Life) and the AI team (myPKA 6) were two downloads. Since 7.0.0 they are one, under the name it started with: rooms, templates, life scripts, the Obsidian setup with twelve pre-installed plugins, and the whole team, including Vex, Felix, Vera and Pixel, who were separate agent packs. Coming from myPKA 6 or ICOR for Life 2? See "Updating" below. From v5: [MIGRATING-FROM-5.md](MIGRATING-FROM-5.md).
+
+Learn it in the free myPKA course: https://app.myicor.com/courses/mypka-system
 
 ## What myPKA is
 
-myPKA (My Personal Knowledge Assistance) is the architecture for an AI team that works with you. This repository is a ready-made team built on it: the agents, their contracts, the procedures they follow and the scripts that check their work.
+myPKA (My Personal Knowledge Assistance) is the architecture for an AI team that works with you, and the folder it works in.
 
 - **ICOR** is the methodology: how you take things in, keep them under control, turn them into output and refine the loop.
-- **ICOR for Life** is where you put ICOR into practice. It works fully without AI.
-- **myPKA** is the AI team you add when you want help. It works on your ICOR for Life folder.
+- **myPKA** is where you put it into practice: one folder of plain files, with Larry and his specialists. It works fully without AI too.
 
 The team gives your AI better context, a clear job for every agent, procedures it can repeat and a record of what happened last session. It doesn't make the model smarter, and it doesn't make every answer right. You stay in charge, and you review the work.
 
 ## The team
 
-You talk to **Larry**, the orchestrator. He hands each job to the right specialist and brings the result back. Ten specialists work with him, from **Penn**, who files your notes and your journal, to **Nolan**, who hires a new specialist when a job has no owner. The full team, with every job, is in [README-myPKA.md](README-myPKA.md#the-team).
+You talk to **Larry**, the orchestrator. He hands each job to the right specialist and brings the result back: **Penn** files your notes and journal, **Nolan** hires a specialist when a job has no owner, **Pax** researches, **Mack** connects tools, **Silas** keeps the structure, **Iris** and **Charta** do design and visuals, **Flint** knows Obsidian, **Ada** plans and audits, **Mason** fixes plugins, **Vex** reviews security, **Felix** builds web UI, **Vera** gates quality and **Pixel** makes images. The full team: [README-myPKA.md](README-myPKA.md#the-team).
 
-## Works with your AI
+## Any AI. Obsidian optional
 
 `AGENTS.md` is the one entry file, for every host.
 
@@ -30,6 +31,8 @@ You talk to **Larry**, the orchestrator. He hands each job to the right speciali
 | Cursor | Reads it directly |
 | Anything else | Paste `ADAPTER-PROMPT.md` as your first message |
 
+Open the folder in Obsidian and trust the author, and the twelve ICOR for Life plugins (Planner, Focus, Connect, AI Chat, Interface, Scaffold Check, SQLite Viewer, Terminal, Outliner, PDF Annotation, Canvases, Scratchpad) and the INKLINE theme switch on. You never need Obsidian: the plugins only add an interface on top of the same files.
+
 ## Get started
 
 1. **Download** [mypka.zip](https://github.com/myICOR/myPKA/releases/latest/download/mypka.zip) from the latest release.
@@ -40,39 +43,30 @@ You talk to **Larry**, the orchestrator. He hands each job to the right speciali
    ```
 
    Continue only if it prints that verification succeeded. `mypka.zip` is the same bytes and checks with the same command.
-3. **Choose where it lives:**
-   - **Mode A, inside your ICOR for Life folder.** One folder holds both. The two products share no file names, so neither overwrites the other. No extra setup.
-   - **Mode B, in its own folder next to your ICOR for Life folder.** You copy one file, `.mypka/sources.yaml`, that tells the team where your content is.
-4. **Open the folder in your AI** and say hello to Larry.
-
-The full steps, including mode B and moving from ICOR for Life 1.34, are in [README-myPKA.md](README-myPKA.md). That file also ships inside the download.
-
-**Today** the team works on an ICOR for Life folder on your own disk. **Coming:** connecting myPKA to an ICOR for Life setup in Notion or Tana. No connector ships in 6.0.0.
+3. **Unzip it** into a folder of your own.
+4. **Open the folder in your AI** and say hello to Larry, or open it in Obsidian.
 
 ## Updating
 
-From the folder that holds `AGENTS.md`:
+From the folder that holds `AGENTS.md`, the team first, then the content:
 
 ```
 python3 "06 AI Team/AI Team Knowledge/Scripts/mypka-update.py" --release ~/Downloads/mypka-<version>.zip
+python3 "06 AI Team/AI Team Knowledge/Scripts/mypka-update.py" --release ~/Downloads/mypka-<version>.zip --product icor
 ```
 
-That's a dry run: it prints the plan and writes nothing. Read it, then run the same command with `--live` to apply it. The updater never deletes a file, and it never overwrites a file you edited: our new version lands beside yours as `<file>.update`.
+Each is a dry run: it prints the plan and writes nothing. Read it, then run the same command with `--live`. The updater never deletes a file, and it never overwrites a file you edited: our new version lands beside yours as `<file>.update`. Installed Vex, Felix, Vera or Pixel as a pack? Remove the pack first, as [README-myPKA.md](README-myPKA.md#updating) says.
 
-## You stay in control
+## An experiment from Tom's Tool Lab
 
-- Every update is a dry run until you add `--live`.
-- Your edits win. Your own rules live in `AGENTS.local.md`, which no update ever touches.
-- The AI names a script, and you run it.
-- Set `write: ask` and the team shows you each change and waits for your yes.
-- Your keys stay in `.env`, never in the chat.
+myPKA is something Tom (Thomas Roedl) builds and uses himself, shared as a starting point, not a product. It may change from one release to the next; there is no support schedule, no promise of fixes and no release cycle. You are responsible for what you install and run, for its security, and for how you use it in your own systems.
 
 ## License
 
-Prose is licensed under CC BY-SA 4.0 ([LICENSE](LICENSE)). Code and configuration are MIT ([Scripts/LICENSE-myPKA](06%20AI%20Team/AI%20Team%20Knowledge/Scripts/LICENSE-myPKA)). [LICENSE-MAP.md](LICENSE-MAP.md) says in plain words which covers what. The names are not licensed: see [TRADEMARK.md](TRADEMARK.md). Licensor: Paperless Movement, S.L., Madrid, Spain.
+MIT, for the whole folder from 7.0.0 ([LICENSE](LICENSE)). [LICENSE-MAP.md](LICENSE-MAP.md) says in plain words what that covers and which few parts keep their own terms (the INKLINE theme, bundled libraries). The names are not licensed: see [TRADEMARK.md](TRADEMARK.md). Licensor: Thomas Roedl (Tom) and Paperless Movement, S.L., Madrid, Spain.
 
 ## Feedback and security
 
-This repository does not take pull requests. Bugs and ideas go to the ICOR for Life community at https://myicor.com ([CONTRIBUTING.md](CONTRIBUTING.md)). Found a security problem? Report it privately as [SECURITY-myPKA.md](SECURITY-myPKA.md) describes, never in a public issue.
+This repository does not take pull requests. Bugs, questions and ideas go under the myPKA videos on myICOR ([CONTRIBUTING.md](CONTRIBUTING.md)). Found a security problem? Report it privately as [SECURITY-myPKA.md](SECURITY-myPKA.md) describes, never in a public issue.
 
-Versions and what changed: [.mypka/CHANGELOG.md](.mypka/CHANGELOG.md). Older history: the `v5.x` tags.
+Versions and what changed: [.mypka/CHANGELOG.md](.mypka/CHANGELOG.md). The content's own changelog ships in the folder at `.icor-for-life/CHANGELOG.md`. Older history: the `v5.x` and `v6.x` tags.

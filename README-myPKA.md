@@ -1,16 +1,16 @@
 # myPKA: your AI team
 
-myPKA (My Personal Knowledge Assistance) is the architecture for an AI team that works with you: clear roles, shared instructions, repeatable procedures and memory across sessions. This folder is a ready-made team built on it. The team already knows ICOR, and it works on the notes, projects and tasks in your ICOR for Life folder.
+myPKA (My Personal Knowledge Assistance) is the architecture for an AI team that works with you: clear roles, shared instructions, repeatable procedures and memory across sessions. Since myPKA 7.0.0 it ships again as **one folder**: your rooms, templates and life scripts (the content that was called ICOR for Life from August to October 2026), the Obsidian setup, and the team, in one download. The folder's `README.md` is the place to start; this file is the team's own guide.
 
-How the three names fit together:
+How the names fit together:
 
 - **ICOR** is the methodology: how you take things in, keep them under control, turn them into output and refine the loop.
-- **ICOR for Life** is where you put ICOR into practice. It works fully without AI.
-- **myPKA** is the AI team you add when you want help. It's this folder.
+- **myPKA** is the folder where you put it into practice, with an AI team that works in it with you. It works fully without AI too, and fully without Obsidian.
+- **ICOR for Life** is the name the content half carried while it was a separate download (2.x). Its files still keep their technical home, `.icor-for-life/` (version, changelog, manifest), because the updater and the Scaffold Check plugin read them there.
 
 What the team gives your AI is better context, a clear job for every agent, procedures it can repeat and a record of what happened last session. It doesn't make the model smarter, and it doesn't make every answer right. You stay in charge, and you review the work.
 
-This file is called `README-myPKA.md` because, when myPKA sits inside your ICOR for Life folder, the folder's `README.md` belongs to ICOR for Life.
+Learn it in the myPKA course: https://app.myicor.com/courses/mypka-system
 
 ## The team
 
@@ -29,6 +29,12 @@ You talk to Larry. He works out what you need, hands it to the right specialist 
 | **Flint** | The Obsidian platform: plugin and theme questions. |
 | **Ada** | Plans bigger jobs before anyone starts, and audits the team's own setup. |
 | **Mason** | Turns a plugin bug or wish into a fix and a pull request. |
+| **Vex** | Security reviewer. Reviews anything you did not write before it runs, and audits your app's security. Proves, never applies the fix. |
+| **Felix** | Frontend developer. Builds, fixes and audits web UI in your own code projects; code stays outside the folder. |
+| **Vera** | Quality gate for visual and UI work: your design system, WCAG 2.2 AA, the reader's needs. APPROVED, CONDITIONAL or BLOCKED. |
+| **Pixel** | Image maker: thumbnails, social images, covers, illustrations, avatars in your own look, or a ready image brief. |
+
+Vex, Felix, Vera and Pixel were separate agent packs until 7.0.0. They are team members now.
 
 The full routing table is `06 AI Team/Agents/agent-index.md`. When you need a role nobody covers, Nolan hires one.
 
@@ -54,16 +60,16 @@ python3 "06 AI Team/AI Team Knowledge/Scripts/scaffold-init.py" plan
 
 The scripts need Python 3 and nothing else. On Windows, type `py -3` where this page says `python3`.
 
-## Two ways to set it up
+## One folder, or two
 
-**Mode A: inside your ICOR for Life folder.** One folder holds both. This is the usual choice if you already use ICOR for Life. It needs no extra setup. The two products share no file names, so neither one overwrites the other.
+**One folder (the default since 7.0.0).** Unzip the download and everything is in place: the rooms, the team, the Obsidian setup. The team's files and the content's files share no file names, so neither half overwrites the other when you update.
 
-**Mode B: next to your ICOR for Life folder.** myPKA gets its own folder, beside your content:
+**Two folders (mode B), if you already run it that way.** The team can live in its own folder, beside your content:
 
 ```
 your-parent-folder/
   mypka/            start your AI session here
-  icor-for-life/    your ICOR for Life folder
+  icor-for-life/    your content folder
 ```
 
 Mode B needs one file that tells the team where your content is. From inside the `mypka` folder:
@@ -73,30 +79,32 @@ cp .mypka/sources.mode-b.yaml.example .mypka/sources.yaml
 python3 "06 AI Team/AI Team Knowledge/Scripts/resolve.py" --check
 ```
 
-If your ICOR for Life folder has another name or sits somewhere else, change `root:` in `.mypka/sources.yaml` first. The check should report `binding: compatible, mode B`. In mode B, always start your AI session in the `mypka` folder, never in the ICOR for Life folder.
+If your content folder has another name or sits somewhere else, change `root:` in `.mypka/sources.yaml` first. The check should report `binding: compatible, mode B`. In mode B, always start your AI session in the `mypka` folder.
 
-**Moving from mode A to mode B later, with expansion packs installed.** In mode A the install receipts are in your ICOR for Life folder, at `.icor-for-life/expansions/`. In mode B the tools look for them in the `mypka` folder, at `.mypka/expansions/`. When you move the team out, move every file from that folder into `mypka/.mypka/expansions/` too. They stay behind otherwise, and without them `expansion-pack.py` lists your packs as not installed and refuses to remove them.
+**Moving from one folder to two, with expansion packs installed.** In one folder the install receipts are at `.icor-for-life/expansions/`. In mode B the tools look for them at `.mypka/expansions/`. Move every file from the first into the second, or `expansion-pack.py` lists your packs as not installed and refuses to remove them.
 
 `.mypka/sources.yaml` belongs to one device, because it holds a path on that machine. A second computer needs its own copy.
 
+## Expansions
+
+`06 AI Team/Expansion Library/` holds optional packs that ship with myPKA but are not switched on (Voice & File Converter, Handwritten Collaboration Loop). Its `README.md` says how to install one and what to watch for. Packs you add yourself go into `06 AI Team/Expansions/`; your AI inspects them and asks before it installs anything (WS-1006).
+
 ## What works today, and what's coming
 
-Today the team works on an ICOR for Life folder on your own disk, in mode A or mode B.
+Today the team works on the folder on your own disk, in one folder or in mode B.
 
-Coming: connecting myPKA to an ICOR for Life setup in Notion or Tana. `sources.yaml` already has a place for it, but no connector ships in this version.
+Coming: connecting myPKA to an ICOR setup in Notion or Tana. `sources.yaml` already has a place for it, but no connector ships in this version.
 
 ## Install
 
-1. Download `mypka.zip` from the latest release: https://github.com/myICOR/myPKA/releases/latest/download/mypka.zip
+1. Download `mypka.zip` from the latest release: https://github.com/myICOR/myPKA/releases/latest/download/mypka.zip (or from Tom's Tool Lab on myICOR).
 2. Check that it's genuine (next section). Only continue if the check passes.
-3. Unpack it:
-   - Mode A, into your ICOR for Life folder: `unzip mypka.zip -d "/path/to/your ICOR for Life folder"`
-   - Mode B, into a new folder next to it: `unzip mypka.zip -d "/path/to/your-parent-folder/mypka"`, then the mode B step above.
-4. Open the folder in your AI.
+3. Unpack it into a new folder: `unzip mypka.zip -d "/path/to/myPKA"`.
+4. Open the folder in your AI, or in Obsidian as a vault.
 
-The zip holds hidden files and folders whose names start with a dot (`.mypka`, `.claude`, `.codex`, `.gemini`, `.mcp.json`). If you move the files by hand in a file manager that hides them (the Mac Finder does, by default), they get left behind. The `unzip` command keeps them.
+The zip holds hidden files and folders whose names start with a dot (`.mypka`, `.icor-for-life`, `.obsidian`, `.claude`, `.codex`, `.gemini`, `.mcp.json`). If you move the files by hand in a file manager that hides them (the Mac Finder does, by default), they get left behind. The `unzip` command keeps them.
 
-Already running an ICOR for Life folder from version 1.34 or earlier, with the team inside it? Don't unpack over it. Use the steps in "Coming from ICOR for Life 1.34 or earlier" below.
+Already running a folder? Don't unpack over it. Update it (below).
 
 ## Check that a download is genuine
 
@@ -125,26 +133,29 @@ What the updater does, and doesn't do:
 - `.mcp.json` is yours after the first install. An update never overwrites it.
 - It refuses a download whose files don't match its own manifest, an older version than the one you have, and a myPKA v5 folder (see `MIGRATING-FROM-5.md` in the myPKA repository on GitHub).
 
-**ICOR for Life updates run through the same updater.** Update myPKA first, then ICOR for Life:
+**One download, two commands.** The zip holds both halves. Update the team first, then the content, each a dry run first and then `--live`:
 
 ```
-python3 "06 AI Team/AI Team Knowledge/Scripts/mypka-update.py" --release ~/Downloads/icor-for-life-obsidian-edition-<version>.zip --product icor
+python3 "06 AI Team/AI Team Knowledge/Scripts/mypka-update.py" --release ~/Downloads/mypka-<version>.zip
+python3 "06 AI Team/AI Team Knowledge/Scripts/mypka-update.py" --release ~/Downloads/mypka-<version>.zip --product icor
 ```
 
-Again a dry run first, then `--live`. The updater finds your ICOR for Life folder by itself, in both modes.
+The updater finds your content by itself, in one folder and in mode B.
+
+**Vex, Felix, Vera or Pixel installed as a pack before 7.0.0?** Remove the pack first, as its README says (`expansion-pack.py remove <name> --approved`, after taking out its roster and SOP rows). It deletes only files you never edited; your journal and `AGENT.local.md` stay. Then update: the team version comes in. Do not install the App Developer Pack or the Designer Pack any more: every agent they added is in the team.
 
 ### Coming from ICOR for Life 1.34 or earlier
 
 Until 1.34, the AI team shipped inside ICOR for Life. Your folder already holds it, but not the new updater yet, so you run the one inside the download:
 
-1. Unpack `mypka-6.0.0.zip` into a temporary folder. Not into your ICOR for Life folder.
+1. Unpack `mypka-<version>.zip` into a temporary folder. Not into your ICOR for Life folder.
 2. Run the updater from that temporary folder, pointed at your folder. Dry run first, then again with `--live`:
 
    ```
-   python3 "<temporary folder>/06 AI Team/AI Team Knowledge/Scripts/mypka-update.py" --release mypka-6.0.0.zip --target "/path/to/your ICOR for Life folder"
+   python3 "<temporary folder>/06 AI Team/AI Team Knowledge/Scripts/mypka-update.py" --release mypka-<version>.zip --target "/path/to/your ICOR for Life folder"
    ```
 
-3. Then update ICOR for Life to 2.0.0 from your own folder, with the `--product icor` command above.
+3. Then update the content from your own folder, with the `--product icor` command above.
 
 Your notes aren't touched. Team files you edited are kept, with `.update` beside them where we changed them too. An old `CLAUDE.md` or `GEMINI.md` stays where it is, because the updater never deletes. If it only points to `AGENTS.md`, it does no harm. If you wrote your own rules into it, move them to `AGENTS.local.md`.
 
@@ -159,12 +170,14 @@ Your notes aren't touched. Team files you edited are kept, with `.update` beside
 
 ## License
 
-- Prose (`AGENTS.md`, agent contracts, SOPs, Workstreams, Guidelines, this file): CC BY-SA 4.0, in `LICENSE`.
-- Code and configuration: MIT, in `06 AI Team/AI Team Knowledge/Scripts/LICENSE-myPKA`.
-- `LICENSE-MAP.md` says in plain words which license covers what.
-- The names and logos are covered by neither license: see `TRADEMARK.md`.
+- Everything in this folder is MIT from 7.0.0: `LICENSE` (and `06 AI Team/AI Team Knowledge/Scripts/LICENSE-myPKA` for the scripts, as before).
+- `LICENSE-MAP.md` says in plain words what that covers, and the few parts with their own terms (the INKLINE theme, libraries some plugins bundle).
+- The names and logos are not licensed: see `TRADEMARK.md`.
+- Earlier copies keep the license they came with.
 
-In mode A each file keeps its own license: ICOR for Life's files follow ICOR for Life's `LICENSE.md`.
+## An experiment, not a product
+
+myPKA comes from Tom's Tool Lab: a starting point and inspiration. It may change from one release to the next; there is no support schedule, no promise of fixes and no release cycle. You are responsible for what you install and run, for its security, and for how you use it in your own systems.
 
 ## Security
 

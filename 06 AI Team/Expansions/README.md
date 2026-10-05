@@ -4,9 +4,9 @@ Optional packs extend your AI Team with agents, procedures, templates or
 content conversions. They sit on top of myPKA; they do not replace its
 shared entry contract, core team or knowledge architecture.
 
-Download packs from Tool Lab on myICOR (https://app.myicor.com/tool-lab)
-with a monthly, Inner Circle or lifetime membership. Extract a pack into
-its own folder here, then tell your AI:
+Packs come from Tom's Tool Lab on myICOR, free with any account, and
+two optional ones ship with myPKA in `06 AI Team/Expansion Library/`.
+Extract a pack into its own folder here, then tell your AI:
 
 > I added an expansion to `06 AI Team/Expansions`. Inspect it, explain
 > what it adds and install it through the expansion workflow.

@@ -1,39 +1,34 @@
 # myPKA License Map
 
-**In one sentence:** use myPKA for anything, including in and for your business, change it, and share it. Credit it, keep shared changes open, and do not name your version "myPKA".
+**In one sentence:** from myPKA 7.0.0 everything in this folder is MIT: use it for anything, including in and for your business, change it and share it; keep the copyright line and the licence text, and do not name your version "myPKA".
 
-This file is a plain-language guide to our own license terms. The binding terms are the license files it points to. Where this guide and a license file differ, the license file wins.
+This file is a plain-language guide. The binding terms are the license files it points to. Where this guide and a license file differ, the license file wins.
 
 ## 1. What governs what
 
-| Part of this repository | License | License file |
+| Part | License | License file |
 |---|---|---|
-| Everything not listed in the next row: `AGENTS.md`, `AGENT.md`, `ADAPTER-PROMPT.md`, host pointer files, agent contracts, SOPs, workstreams, guidelines, templates, tool profiles, skill files (`SKILL.md`), READMEs and all other prose | CC BY-SA 4.0 | `LICENSE` |
-| Code and configuration: `06 AI Team/AI Team Knowledge/Scripts/` (including `tests/`), `.mypka/`, `.claude/`, `.codex/`, `.gemini/`, `.agents/`, `.github/`, `.mcp.json` | MIT | `06 AI Team/AI Team Knowledge/Scripts/LICENSE-myPKA` |
+| Everything in this folder that the next row does not name: the rooms, templates, guidelines and prose (once ICOR for Life content), `AGENTS.md`, `AGENT.md`, `ADAPTER-PROMPT.md`, agent contracts, SOPs, Workstreams, skills, READMEs, the code and configuration (`06 AI Team/AI Team Knowledge/Scripts/`, `.mypka/`, `.claude/`, `.codex/`, `.gemini/`, `.mcp.json`), the ICOR for Life plugins, and the packs in `06 AI Team/Expansion Library/` | MIT | `LICENSE` (and `LICENSE.md`, `06 AI Team/AI Team Knowledge/Scripts/LICENSE-myPKA`: the same MIT terms) |
+| The INKLINE theme (`.obsidian/themes/ICOR`), libraries some plugins bundle, the Anthropic SDK inside the AI Chat plugin | Their own terms | `LICENSE.md` ("Parts with their own terms"), `THIRD-PARTY-NOTICES.md`, `THIRD-PARTY-NOTICES-myPKA.md` |
 
-Licensor for both: Paperless Movement, S.L., Madrid, Spain.
+Licensor: Thomas Roedl (Tom) and Paperless Movement, S.L., Madrid, Spain.
+
+The two packs in the Expansion Library still say "proprietary" inside their zips: that line is from when they were sold separately. The licensor adds the MIT licence for every copy, so the MIT terms apply to them as to the rest of the folder.
 
 ## 2. What is not covered
 
-- **Expansion packs.** Packs from Tool Lab on myICOR are separate products. Each pack carries its own license file, and this repository's licenses do not apply to them. Where a pack contains myPKA text, that text stays CC BY-SA 4.0; the pack's own files follow the pack license.
-- **ICOR for Life.** If you keep myPKA and ICOR for Life in one folder, each file keeps its own license. ICOR for Life's files are listed in `.icor-for-life/manifest.json` and governed by its `LICENSE.md`. Sharing myPKA files does not make ICOR for Life files shareable.
-- **Names and logos.** No license here covers our trade marks (CC BY-SA 4.0 Section 2(b)(2)). See `TRADEMARK.md`.
-- **Third-party material.** Listed in `THIRD-PARTY-NOTICES-myPKA.md`, under its own terms.
+- **Names and logos.** No license here covers our trade marks. See `TRADEMARK.md`.
+- **Third-party material.** Listed in `THIRD-PARTY-NOTICES.md` and `THIRD-PARTY-NOTICES-myPKA.md`, under its own terms.
 
-## 3. What the licenses let you do
+## 3. What changes for you
 
-- **Prose (CC BY-SA 4.0):** copy, adapt and share, for any purpose, including commercial. When you share, give credit, link the license, say what you changed, and license your adapted version under CC BY-SA 4.0 (Section 3 of the license). A forked agent you publish is an adapted version, so it is CC BY-SA 4.0 too.
-- **Code (MIT):** use, change and redistribute, including in closed products. Keep the copyright line and the license text.
-- Suggested credit line: "Built on myPKA by Paperless Movement, S.L. (github.com/myICOR/myPKA), CC BY-SA 4.0."
-
-## 4. What changes for you
-
-- **ICOR for Life Scaffold members (1.34.x and earlier):** nothing you may do today is taken away, and the team files you already have keep the license they came with. In addition, every text that myPKA 6.0.0 publishes under CC BY-SA 4.0 or MIT may be used under those terms, whichever copy of it you hold. Texts that are not part of myPKA keep only their ICOR for Life license.
-- **Your ICOR for Life rooms and templates:** unchanged. They stay under the ICOR for Life license (`LICENSE.md`), for personal use as defined there.
-- **Earlier myPKA copies (v5.x):** copies before v5.3.0 stay CC BY-NC-SA 4.0; copies from v5.3.0 stay CC BY-SA 4.0. Creative Commons licenses cannot be revoked. myPKA 6.0.0 continues the CC BY-SA 4.0 line.
-- **Plugins and INKLINE:** unchanged.
+- **Copies before 7.0.0 keep the license they came with**, and gain nothing they did not have. In addition, every text and file that myPKA 7.0.0 ships may be used under MIT, whichever copy of it you hold.
+  - myPKA 6.x prose: CC BY-SA 4.0; myPKA 6.x code and configuration: MIT.
+  - myPKA v5.3.0 to 5.5.2: CC BY-SA 4.0; before v5.3.0: CC BY-NC-SA 4.0. Creative Commons licenses cannot be revoked.
+  - ICOR for Life 2.1.0 and earlier: the ICOR for Life Source-Available License (Content) for the content, MIT for the scripts and plugins.
+  - The agent packs (Vex, Felix, Vera, Pixel) and the other Tool Lab packs: the pack license they came with.
 - **Your membership:** this release does not change your myICOR membership terms or price.
 
-## 5. Contributions
+## 4. Contributions
 
 This repository does not take pull requests: `CONTRIBUTING.md`.

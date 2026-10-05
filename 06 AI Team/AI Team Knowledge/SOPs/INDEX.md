@@ -24,3 +24,8 @@ The scaffold's own SOPs carry numbers from 1001 up; yours take 001 to
 | [[SOP-1015-digest-a-meeting-transcript\|SOP-1015 Digest a meeting transcript]] | Penn | a transcript from any tool is turned into the part of a meeting note worth keeping |
 | [[SOP-1016-run-the-red-tests-and-gate-a-release\|SOP-1016 Run the red tests and gate a release]] | Mack | "run the red tests", after any guard is written or changed, and before every release |
 | [[SOP-1017-answer-the-six-life-questions-from-the-snapshot\|SOP-1017 Answer the six life questions from the snapshot]] | Mack | "what are my goals", "what should I focus on", "weekly priorities", "highlight of today", "my key elements", "what am I paying attention to" |
+| [[EP-SOP-2031-review-third-party-code-before-it-runs\|SOP-2031 Review third-party code before it runs]] | Vex | "is this safe to install", a new MCP server, plugin, script or pack |
+| [[EP-SOP-2032-audit-an-applications-security\|SOP-2032 Audit an application's security]] | Vex | "audit my app for security", "I think a key leaked" |
+| [[EP-SOP-2011-build-a-ui-component\|SOP-2011 Build a UI component]] | Felix | "build me a component", a UI bug fix |
+| [[EP-SOP-2021-run-the-quality-gate\|SOP-2021 Run the quality gate]] | Vera | "check this before I send it", a UI code change before merge |
+| [[EP-SOP-2041-generate-a-styled-image\|SOP-2041 Generate a styled image]] | Pixel | "make me a thumbnail", "create a hero image" |
