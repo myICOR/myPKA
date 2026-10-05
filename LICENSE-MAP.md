@@ -17,6 +17,7 @@ The two packs in the Expansion Library still say "proprietary" inside their zips
 
 ## 2. What is not covered
 
+- **Packs you add yourself.** Packs from Tool Lab on myICOR are separate products. Each pack carries its own license file; a pack's copy of myPKA text may also be used under MIT, like the rest of this folder. The two packs in `06 AI Team/Expansion Library/` are MIT (section 1).
 - **Names and logos.** No license here covers our trade marks. See `TRADEMARK.md`.
 - **Third-party material.** Listed in `THIRD-PARTY-NOTICES.md` and `THIRD-PARTY-NOTICES-myPKA.md`, under its own terms.
 

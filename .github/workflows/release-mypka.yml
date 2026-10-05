@@ -158,9 +158,7 @@ jobs:
             echo "::error::$name is $got, the pin says $ICOR_EDITION_SHA256"
             exit 1
           fi
-          gh attestation verify "$RUNNER_TEMP/content/$name" --repo "$ICOR_REPO" \
-            --signer-workflow "$ICOR_REPO/.github/workflows/release.yml" \
-            --source-ref "refs/tags/$ICOR_PIN" --deny-self-hosted-runners
+          gh attestation verify "$RUNNER_TEMP/content/$name" --repo "$ICOR_REPO" --signer-workflow "$ICOR_REPO/.github/workflows/release.yml" --source-ref "refs/tags/$ICOR_PIN" --deny-self-hosted-runners
           inside="$(unzip -p "$RUNNER_TEMP/content/$name" .icor-for-life/VERSION | tr -d '[:space:]')"
           [ "$inside" = "$ICOR_PIN" ] || { echo "::error::$name says version '$inside', the pin is $ICOR_PIN"; exit 1; }
           echo "content=$RUNNER_TEMP/content/$name" >> "$GITHUB_ENV"

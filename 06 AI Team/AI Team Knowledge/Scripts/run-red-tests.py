@@ -9724,7 +9724,10 @@ def s12_x2_check_hire_22_reads_receipts(muts):
     return out
 
 
-_X3_PACKS = (("felix-agent", "Felix"), ("pixel-agent", "Pixel"), ("vera-agent", "Vera"), ("vex-agent", "Vex"))
+# Fixture names no shipped agent carries: since 7.0.0 Felix, Pixel, Vera and Vex
+# are core team members, so a pack under their names collides with the team
+# (the install refuses existing targets, rightly) and proves nothing about X3.
+_X3_PACKS = (("quill-agent", "Quill"), ("rook-agent", "Rook"), ("sage-agent", "Sage"), ("tess-agent", "Tess"))
 
 
 def _x3_start(team):
@@ -9749,12 +9752,12 @@ def s12_x3_session_start_names_every_pack(muts):
         for pid, _a in _X3_PACKS:
             if pid not in block:
                 out.append("mode %s: session start never named the pack %s" % (mode, pid))
-        r = _s12_py(team / _S12_SC / "expansion-pack.py", "install", "vex-agent", "--approved", cwd=team)
-        _s12_expect(out, "mode %s install vex-agent" % mode, r, 0)
+        r = _s12_py(team / _S12_SC / "expansion-pack.py", "install", "tess-agent", "--approved", cwd=team)
+        _s12_expect(out, "mode %s install tess-agent" % mode, r, 0)
         block = _x3_start(team).stdout
         block = block[block.find("expansion packs:"):]
         if "installed-files" not in block:
-            out.append("mode %s: after install, session start does not report vex-agent installed" % mode)
+            out.append("mode %s: after install, session start does not report tess-agent installed" % mode)
     return out
 
 

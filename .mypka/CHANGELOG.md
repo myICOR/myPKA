@@ -48,6 +48,10 @@ zip (`mypka-update.py`, then `mypka-update.py --product icor`).
   "myPKA 6 and later" in the v5 refusal.
 - Changed: `06 AI Team/AI Team Knowledge/Scripts/check-release-blockers.py`
   B5 holds `LICENSE` to the MIT text of 7.0.0.
+- Changed: `06 AI Team/AI Team Knowledge/Scripts/run-red-tests.py` case
+  step12/X3 builds its four fixture packs under names no agent carries
+  (Quill, Rook, Sage, Tess). Under Felix, Pixel, Vera and Vex they now
+  collide with the team, and the install rightly refuses existing targets.
 - Changed, repository only: the release builds one zip from this tag and
   the ICOR for Life 2.2.0 release zip (pinned by tag, commit and sha256,
   its attestation verified), so `mypka.zip` is the whole folder.
