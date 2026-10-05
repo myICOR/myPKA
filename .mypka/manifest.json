@@ -1,9 +1,9 @@
 {
   "schema": 2,
   "name": "myPKA",
-  "version": "7.0.0",
-  "built": "2026-10-05T21:27:06Z",
-  "commit": "d934168",
+  "version": "7.0.1",
+  "built": "2026-10-05T21:54:46Z",
+  "commit": "395a55d",
   "lab": false,
   "requires": "icor-concepts >=1 <2",
   "files": {
@@ -64,8 +64,8 @@
     ".gemini/agents/vex.md": "eb04271090f66790a5ad80b2f6971ec84b2f90e1bbc4e174eed3756c836b2225",
     ".gemini/settings.json": "7b8b6ffcbc620569ad9c0df7dc278d3e41c5dafb9065a8578827241defd4e886",
     ".mcp.json": "8cd11fec1f55e34f5d3121943c23913ce57336cf80487c5dc82d0efba887b3c7",
-    ".mypka/CHANGELOG.md": "c7dd01325c1fab168704bce0e154d766045b472be1ad0840f857e5bb73f8db65",
-    ".mypka/VERSION": "746472de66b936ac885ca6d6e68058242b4e909e3260c6317f3ec719f78f76cc",
+    ".mypka/CHANGELOG.md": "430a80ecd56ef6d39761e3ec2857b7978dbf0477679f6069b4a2e0f5304bf44b",
+    ".mypka/VERSION": "318630f32c0dac5c715d91aecff9c07b2ce055b792ccb015a815cb013ea80fc6",
     ".mypka/icor-concepts-1.json": "278e54515b31ef7738d5a8028475eddc51b696e6ab9a13be4dc6523398889275",
     ".mypka/manifest.json": "self",
     ".mypka/sources.mode-b.yaml.example": "8e113653e12326213a67ae6d66c7d675b482e183268f510468ae0c8d26658764",
@@ -240,7 +240,7 @@
   },
   "repo_only": {
     ".github/SECURITY.md": "19da61ecea4f8f720b002466ff95d38632ff1d0573e7c8e46d4b355445587eda",
-    ".github/workflows/release-mypka.yml": "6ee070eb350917c9c19e139c42cefe030ad7b359dbae2749d826870bf8b034aa",
+    ".github/workflows/release-mypka.yml": "f59a5799e5f9a32bfe5f1cb77a5137e28b41d48f8fa46c62672376d2093ffe4b",
     ".gitignore": "7c99ddb7850a7538fa1e195cae6e5089b8cccf422d26891c49f63ee5e25da888",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-manifest.py": "db7d58083a2ddef28590d1381eeabfaa56f809385d36b2f723ea4b5af55736eb",
     "06 AI Team/AI Team Knowledge/Scripts/build-mypka-release.sh": "42d62907bf09e425880cce2e2bc245cde52b4a981f508293f52a5fde1a328353",
@@ -261,9 +261,9 @@
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/p7b.py": "61a9818f50c4edd73a01b25fd4c97eed30ef114e5c54bd6a46f2f01978747fd4",
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/verify-fixed.py": "c64ed872c0ca96d3bdc1abd17392310184b3a458dbcb73c513ecf4c14a133724",
     "06 AI Team/AI Team Knowledge/Scripts/tests/updater-poc/verify.py": "f2a0dcd865a2f7ce252f0bab0a0d82544293609fc6053adeab16863895bda44d",
-    "MIGRATING-FROM-5.md": "70ca0e60c23612d19f967bcdf84505d785e3ec1bdffeefc13743658211e60a71",
+    "MIGRATING-FROM-5.md": "4b7a743e4b3ed253f7fef486c858975e9a14c91892aaa576735bfd7e38b54cfd",
     "README.md": "e7476ed62120496623972ae3dd6aa2d7f1015f28543924cdb1ea7706c7ba41eb",
-    "VERSION": "746472de66b936ac885ca6d6e68058242b4e909e3260c6317f3ec719f78f76cc"
+    "VERSION": "318630f32c0dac5c715d91aecff9c07b2ce055b792ccb015a815cb013ea80fc6"
   },
   "generated": {
     ".agents/skills/answer-the-six-life-questions/SKILL.md": {
@@ -408,6 +408,13 @@
     }
   ],
   "history": [
+    {
+      "version": "7.0.1",
+      "date": "2026-10-05",
+      "removed": [],
+      "renamed": [],
+      "added": []
+    },
     {
       "version": "7.0.0",
       "date": "2026-10-05",
@@ -633,11 +640,13 @@
       "177be0594a51136c8704a825260d3b8cddbccdc35c212431c9c0997544017565",
       "a482c6471d92e50f57e84ab6c1a3082ecf80d9fc58cd0b9650dbb5a189049e30",
       "bc75c70bd3b2366bdf2091b4cd97636c830e1b7ea5ab6a3c4b5436285645b98e",
+      "c7dd01325c1fab168704bce0e154d766045b472be1ad0840f857e5bb73f8db65",
       "c9d8ccef6905d00a9bea07bd14e36afca85f807522cc34db986a8d09d06786cf"
     ],
     ".mypka/VERSION": [
       "1f74ac9075fd39230aa56323c819e2db112b69906238b4ab3e5e97f8cd267b46",
       "54ef76332b31df830699e9d4138396885ab72bae260a034a81ff02bf32d8e90a",
+      "746472de66b936ac885ca6d6e68058242b4e909e3260c6317f3ec719f78f76cc",
       "8adcc17e039842d2f4d92ca25f72a8963ede072c885ef5f762c0682b87c6d872",
       "cf3701cb2416e87a99c0e77dbd0518fc4fc27e390f025c024e6ed1c389c928e0"
     ],
