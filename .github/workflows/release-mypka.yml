@@ -81,7 +81,7 @@ env:
   ICOR_PIN_SHA: '8cede29fbbbc00b72092b47de85e27487cc0b5ff'  # ICOR for Life 2.2.0, tag 2.2.0 (annotated), the content of myPKA 7
   # The ICOR for Life release zip of ICOR_PIN that goes into the member zip
   # (7.0.0): icor-for-life-obsidian-edition-<ICOR_PIN>.zip, these bytes only.
-  ICOR_EDITION_SHA256: '@@ICOR_EDITION_SHA256@@'
+  ICOR_EDITION_SHA256: 'd5033621e1a4322edbc3545b237dc5e0299f318594a0d070c35d72ee74378a37'
 
 defaults:
   run:
